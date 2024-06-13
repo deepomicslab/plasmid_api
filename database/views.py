@@ -109,9 +109,33 @@ class CrisprViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing user instances.
     """
 
-    queryset = Crispr.objects.all()
+    # queryset = Crispr.objects.all()
     serializer_class = CrisprSerializer
     pagination_class = LargeResultsSetPagination
+
+    def get_queryset(self):
+        queryset = Crispr.objects.all()
+        q_expression = Q()
+
+        if 'plasmid_id' in self.request.GET:
+            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid=plasmid)
+        
+        # if 'search' in self.request.GET:
+        #     searchstr = self.request.GET['search']
+        #     q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+        #     q_expression |= Q(protein_id__icontains=searchstr)
+        #     q_expression |= Q(prediction__icontains=searchstr)
+        
+        # if 'source' in self.request.GET:
+        #     source = int(self.request.GET['source'])
+        #     if source != -1:
+        #         print(source)
+        #         q_expression &= Q(plasmid__source=source)
+        
+        queryset = queryset.filter(q_expression)
+        return queryset
 
 class ClusterViewSet(viewsets.ModelViewSet):
     """
@@ -498,7 +522,7 @@ def get_plasmid_fasta(request, plasmid_id):
     return response
 
 @api_view(["GET"])
-def get_cluster_plamids(request):
+def get_cluster_plasmids(request):
     cluster_id = request.GET.get('cluster_id')
     cluster = Cluster.objects.get(id=cluster_id)
     data = []
@@ -554,4 +578,28 @@ def get_subcluster_plasmids(request):
             },)
         except:
             pass
+    return Response(data)
+
+@api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+def get_plasmid_crisprs(request):
+    data = []
+    plasmid_id = int(request.GET['plasmid_id'])
+    plasmid = Plasmid.objects.get(id=plasmid_id)
+    cas_ids = []
+    for crispr in plasmid.crisprs.all():
+        if crispr.cas_id not in cas_ids:
+            cas_ids.append(crispr.cas_id)
+            data.append({
+                "id": crispr.cas_id,
+                "type": "Cas",
+                "start":crispr.cas_start,
+                "end": crispr.cas_end,
+            })
+        data.append({
+            "id": crispr.crispr_id,
+            "type": "CRISPR",
+            "start":crispr.start,
+            "end": crispr.end,
+        })
     return Response(data)

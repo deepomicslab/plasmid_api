@@ -25,8 +25,11 @@ urlpatterns =  [
     url(r'^host_node/$', PlasmidHostNodeView.as_view()),
     url(r'^host_view/$', PlasmidHostView.as_view()),
     url(r'^get_plasmid_tmhs/$', get_plasmid_tmhs, name='get_plasmid_tmhs'),
-    url(r'^get_cluster_plamids/$', get_cluster_plamids, name='get_cluster_plamids'),
+    url(r'^get_cluster_plasmids/$', get_cluster_plasmids, name='get_cluster_plasmids'),
     url(r'^get_subcluster_plasmids/$', get_subcluster_plasmids, name='get_subcluster_plasmids'),
+    url(r'^get_subcluster_plasmids/$', get_subcluster_plasmids, name='get_subcluster_plasmids'),
+    url(r'^get_plasmid_crisprs/$', get_plasmid_crisprs, name='get_plasmid_crisprs'),
+
     # url(r'^get_plasmid_/$', get_plasmid_tmhs, name='get_plasmid_tmhs'),
 
 ]
