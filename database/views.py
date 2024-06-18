@@ -510,7 +510,8 @@ def get_plasmid_tmhs(request):
 @api_view(["GET"])
 def get_plasmid_fasta(request, plasmid_id):
     plasmid = Plasmid.objects.get(id=plasmid_id)
-    fasta = os.path.join(utils.root_path(), '../media/data/fasta/{0}.fasta'.format(plasmid.plasmid_id))
+    source = plasmid.get_source_display()
+    fasta = os.path.join(utils.root_path(), '../media/data/{0}/fasta/{1}.fasta'.format(source, plasmid.plasmid_id))
     content = ''
     with open(fasta, 'r') as file:
         content = content+file.read()
