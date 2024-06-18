@@ -15,12 +15,12 @@ Helices.objects.all().delete()
 VirulentFactor.objects.all().delete()
 Crispr.objects.all().delete()
 
-for d_source in datasource:
+for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
     print('load plasmid list')
     data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
     for index, row in data.iterrows():
-        Plasmid.objects.create(plasmid_id=row[0], source=1, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10])
+        Plasmid.objects.create(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10])
 
     print('load host list')
     data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
