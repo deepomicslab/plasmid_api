@@ -3,16 +3,27 @@ from database.models import *
 
 datasource = ['COMPASS', 'Kraken2']
 
+Plasmid.objects.all().delete()
+Host.objects.all().delete()
+tRNA.objects.all().delete()
+Protein.objects.all().delete()
+AntimicrobialResistanceGene.objects.all().delete()
+SecondaryMetabolism.objects.all().delete()
+SignalPeptides.objects.all().delete()
+TransmembraneHelices.objects.all().delete()
+Helices.objects.all().delete()
+VirulentFactor.objects.all().delete()
+Crispr.objects.all().delete()
+
 for d_source in datasource:
+    print(d_source, '=======')
     print('load plasmid list')
     data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
-    Plasmid.objects.all().delete()
     for index, row in data.iterrows():
         Plasmid.objects.create(plasmid_id=row[0], source=1, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10])
 
     print('load host list')
     data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
-    Host.objects.all().delete()
     for index, row in data.iterrows():
         plasmid_id=row[0]
         plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
@@ -20,7 +31,6 @@ for d_source in datasource:
 
     print('load trna list')
     data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
-    tRNA.objects.all().delete()
     for index, row in data.iterrows():
         plasmid_id=row[0]
         plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
@@ -32,7 +42,6 @@ for d_source in datasource:
 
     print('load protein list')
     data = pd.read_csv('media/data/{0}/data/{0}.protein_list.xls'.format(d_source), sep='\t')
-    Protein.objects.all().delete()
     for index, row in data.iterrows():
         plasmid_id=row[0]
         plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
@@ -40,7 +49,9 @@ for d_source in datasource:
             strand = 0
         else:
             strand = 1
-        Protein.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22], uni_port_kb=row[23], sequence=row[24])
+        Protein.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
+        #  uni_port_kb=row[23], 
+         sequence=row[23])
 
     print('load hostnode list')
     for host in Host.objects.values('phylum').distinct():
@@ -81,7 +92,6 @@ for d_source in datasource:
 
     print('load args list')
     data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
-    AntimicrobialResistanceGene.objects.all().delete()
     for index, row in data.iterrows():
         if index > 10000:
             break
@@ -95,7 +105,6 @@ for d_source in datasource:
 
     print('load sms list')
     data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
-    SecondaryMetabolism.objects.all().delete()
     for index, row in data.iterrows():
         if index > 10000:
             break
@@ -105,7 +114,6 @@ for d_source in datasource:
 
     print('load sps list')
     data = pd.read_csv('media/data/{0}/data/{0}.SP_list.xls'.format(d_source), sep='\t')
-    SignalPeptides.objects.all().delete()
     for index, row in data.iterrows():
         if index > 10000:
             break
@@ -119,8 +127,7 @@ for d_source in datasource:
 
     print('load tmhs list')
     data = pd.read_csv('media/data/{0}/data/{0}.TMHs_list.xls'.format(d_source), sep='\t')
-    TransmembraneHelices.objects.all().delete()
-    Helices.objects.all().delete()
+ 
     tmh = None
     for index, row in data.iterrows():
         if index > 10000:
@@ -140,7 +147,6 @@ for d_source in datasource:
 
     print('load vfs list')
     data = pd.read_csv('media/data/{0}/data/{0}.VF_list.xls'.format(d_source), sep='\t')
-    VirulentFactor.objects.all().delete()
     for index, row in data.iterrows():
         if index > 10000:
             break
@@ -154,7 +160,6 @@ for d_source in datasource:
 
     print('load crispr list')
     data = pd.read_csv('media/data/{0}/data/{0}.CRISPR-Cas_list.xls'.format(d_source), sep='\t')
-    Crispr.objects.all().delete()
     for index, row in data.iterrows():
         plasmid_id=row[0]
         plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
