@@ -79,12 +79,12 @@ WSGI_APPLICATION = 'plasmid_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'plasmid_db',
         'USER': 'plasmid_admin',
         'PASSWORD': 'Io81iwv!J@3u',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '5432',
     }
 }
 

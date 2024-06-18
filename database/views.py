@@ -17,7 +17,7 @@ import os
 from . import utils
 from io import BytesIO
 import ast
-
+from django.db.models import Count
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 30
@@ -601,5 +601,83 @@ def get_plasmid_crisprs(request):
             "type": "CRISPR",
             "start":crispr.start,
             "end": crispr.end,
+        })
+    return Response(data)
+
+@api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+def get_database_overview(request):
+    data = {
+        "overview": {
+            "plasmid": Plasmid.objects.all().count(),
+            "host": Host.objects.all().count(),
+            "protein": Protein.objects.all().count(),
+            'trna': tRNA.objects.all().count(),
+            'arg': AntimicrobialResistanceGene.objects.all().count(),
+            'sm': SecondaryMetabolism.objects.all().count(),
+            'sp': SignalPeptides.objects.all().count(),
+            'tmh': TransmembraneHelices.objects.all().count(),
+            'vf': VirulentFactor.objects.all().count(),
+            'crispr': Crispr.objects.all().count()
+        },
+        "hosts": [],
+        "datasources": {
+            "sources": [],
+            "counts": [],
+        },
+        "datahosts": {
+            "hosts": [],
+            "counts": [],
+        },
+        "piedatasource": [],
+        "piehosts": [],
+        "treedata": []
+    }
+    for host in HostNode.objects.filter(rank='Phylum').all():
+        data['hosts'].append(host.node)
+
+    SOURCE_TYPE = (
+        (0, 'COMPASS'),
+        (1, 'Kraken2'),
+    )
+
+    for source in SOURCE_TYPE:
+        count = Plasmid.objects.filter(source=source[0]).count()
+        data['datasources']['sources'].append(source[1])
+        data['datasources']['counts'].append(count)
+        data['piedatasource'].append({
+            "value": count,
+            "name": source[1]
+        })
+
+    for host in HostNode.objects.filter(rank='Phylum'):
+        data['datahosts']['hosts'].append(host.node)
+        data['datahosts']['counts'].append(host.plasmid_count)
+        data['piehosts'].append({
+            "value": host.plasmid_count,
+            "name": host.node
+        })
+        host_children = []
+        
+        for class_node in HostNode.objects.filter(rank='Class', parent=host.node):
+            class_children = []
+            for order_node in HostNode.objects.filter(rank='Order', parent=class_node.node):
+                class_children.append({
+                    'name': order_node.node, 
+                    'value': order_node.plasmid_count, 
+                    'children': [], 
+                    'rank': 'Order'
+                })
+            host_children.append({
+                'name': class_node.node, 
+                'value': class_node.plasmid_count, 
+                'children': class_children, 
+                'rank': 'Class'
+            })
+        data['treedata'].append({
+            'name': host.node, 
+            'value': host.plasmid_count, 
+            'children': host_children, 
+            'rank': 'Phylum'
         })
     return Response(data)
