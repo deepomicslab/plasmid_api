@@ -53,43 +53,6 @@ for d_index, d_source in enumerate(datasource):
         #  uni_port_kb=row[23], 
          sequence=row[23])
 
-    print('load hostnode list')
-    for host in Host.objects.values('phylum').distinct():
-        phylum = host['phylum']
-        if phylum == 'nan': continue
-        plasmid_count = Host.objects.filter(phylum=phylum).count()
-        HostNode.objects.create(node=phylum, rank='Phylum', plasmid_count=plasmid_count)
-
-        for host_class in Host.objects.filter(phylum=phylum).values('phylum', 'host_class').distinct():
-            class_node = host_class['host_class']
-            if class_node == 'nan': continue
-            plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node).count()
-            HostNode.objects.create(node=class_node, rank='Class', plasmid_count=plasmid_count, parent=phylum)
-
-            for order in Host.objects.filter(phylum=phylum, host_class=class_node).values('phylum', 'host_class', 'order').distinct():
-                order_node = order['order']
-                if order_node == 'nan': continue
-                plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node).count()
-                HostNode.objects.create(node=order_node, rank='Order', plasmid_count=plasmid_count, parent=class_node)
-
-                for family in Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node).values('phylum', 'host_class', 'order', 'family').distinct():
-                    family_node = family['family']
-                    if family_node == 'nan': continue
-                    plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node).count()
-                    HostNode.objects.create(node=family_node, rank='Family', plasmid_count=plasmid_count, parent=order_node)
-
-                    for genus in Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node).values('phylum', 'host_class', 'order', 'family', 'genus').distinct():
-                        genus_node = genus['genus']
-                        if genus_node == 'nan': continue
-                        plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node, genus=genus_node).count()
-                        HostNode.objects.create(node=genus_node, rank='Genus', plasmid_count=plasmid_count, parent=family_node)
-
-                        for species in Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node, genus=genus_node).values('phylum', 'host_class', 'order', 'family', 'genus', 'species').distinct():
-                            species_node = species['species']
-                            if species_node == 'nan': continue
-                            plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node, genus=genus_node, species=species_node).count()
-                            HostNode.objects.create(node=species_node, rank='Species', plasmid_count=plasmid_count, parent=genus_node)
-
     print('load args list')
     data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
     for index, row in data.iterrows():
@@ -179,3 +142,40 @@ for d_index, d_source in enumerate(datasource):
     #     cluster_id =row[5]
     #     cluster = Cluster.objects.get(cluster_id=cluster_id)
     #     Subcluster.objects.create(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3])
+
+print('load hostnode list')
+for host in Host.objects.values('phylum').distinct():
+    phylum = host['phylum']
+    if phylum == 'nan': continue
+    plasmid_count = Host.objects.filter(phylum=phylum).count()
+    HostNode.objects.create(node=phylum, rank='Phylum', plasmid_count=plasmid_count)
+
+    for host_class in Host.objects.filter(phylum=phylum).values('phylum', 'host_class').distinct():
+        class_node = host_class['host_class']
+        if class_node == 'nan': continue
+        plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node).count()
+        HostNode.objects.create(node=class_node, rank='Class', plasmid_count=plasmid_count, parent=phylum)
+
+        for order in Host.objects.filter(phylum=phylum, host_class=class_node).values('phylum', 'host_class', 'order').distinct():
+            order_node = order['order']
+            if order_node == 'nan': continue
+            plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node).count()
+            HostNode.objects.create(node=order_node, rank='Order', plasmid_count=plasmid_count, parent=class_node)
+
+            for family in Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node).values('phylum', 'host_class', 'order', 'family').distinct():
+                family_node = family['family']
+                if family_node == 'nan': continue
+                plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node).count()
+                HostNode.objects.create(node=family_node, rank='Family', plasmid_count=plasmid_count, parent=order_node)
+
+                for genus in Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node).values('phylum', 'host_class', 'order', 'family', 'genus').distinct():
+                    genus_node = genus['genus']
+                    if genus_node == 'nan': continue
+                    plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node, genus=genus_node).count()
+                    HostNode.objects.create(node=genus_node, rank='Genus', plasmid_count=plasmid_count, parent=family_node)
+
+                    for species in Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node, genus=genus_node).values('phylum', 'host_class', 'order', 'family', 'genus', 'species').distinct():
+                        species_node = species['species']
+                        if species_node == 'nan': continue
+                        plasmid_count = Host.objects.filter(phylum=phylum, host_class=class_node, order=order_node, family=family_node, genus=genus_node, species=species_node).count()
+                        HostNode.objects.create(node=species_node, rank='Species', plasmid_count=plasmid_count, parent=genus_node)
