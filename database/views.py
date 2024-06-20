@@ -122,17 +122,16 @@ class CrisprViewSet(viewsets.ModelViewSet):
             plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid=plasmid)
         
-        # if 'search' in self.request.GET:
-        #     searchstr = self.request.GET['search']
-        #     q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
-        #     q_expression |= Q(protein_id__icontains=searchstr)
-        #     q_expression |= Q(prediction__icontains=searchstr)
+        if 'search' in self.request.GET:
+            searchstr = self.request.GET['search']
+            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            # q_expression |= Q(trna_type__icontains=searchstr)
         
-        # if 'source' in self.request.GET:
-        #     source = int(self.request.GET['source'])
-        #     if source != -1:
-        #         print(source)
-        #         q_expression &= Q(plasmid__source=source)
+        if 'source' in self.request.GET:
+            source = int(self.request.GET['source'])
+            if source != -1:
+                print(source)
+                q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -241,7 +240,6 @@ class tRNAViewSet(viewsets.ModelViewSet):
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
             q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
-            q_expression |= Q(protein_id__icontains=searchstr)
             q_expression |= Q(trna_type__icontains=searchstr)
         
         if 'source' in self.request.GET:
