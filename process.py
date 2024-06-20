@@ -144,6 +144,7 @@ for index, row in data.iterrows():
     Subcluster.objects.create(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3])
 
 print('load hostnode list')
+HostNode.objects.all().delete()
 for host in Host.objects.values('phylum').distinct():
     phylum = host['phylum']
     if phylum == 'nan': continue

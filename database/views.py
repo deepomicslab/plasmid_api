@@ -622,8 +622,15 @@ def get_database_overview(request):
         data['hosts'].append(host.node)
 
     SOURCE_TYPE = (
-        (0, 'COMPASS'),
-        (1, 'Kraken2'),
+        (0, 'PLSDB'),
+        (1, 'IMG-PR'),
+        (2, 'COMPASS'),
+        (3, 'GenBank'),
+        (4, 'RefSeq'),
+        (5, 'EMBL'),
+        (6, 'Kraken2'),
+        (7, 'DDBJ'),
+        (8, 'TPA'),
     )
 
     for source in SOURCE_TYPE:
