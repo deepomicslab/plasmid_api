@@ -1,7 +1,7 @@
 import pandas as pd
 from database.models import *
 
-datasource = ['COMPASS', 'Kraken2']
+datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DDBJ','TPA']
 
 Plasmid.objects.all().delete()
 Host.objects.all().delete()
@@ -129,19 +129,19 @@ for d_index, d_source in enumerate(datasource):
         
         Crispr.objects.create(plasmid=plasmid, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11])
 
-    # print('load cluster list')
-    # data = pd.read_csv('media/data/{0}/data/clusters_list.xls', sep='\t')
-    # Cluster.objects.all().delete()
-    # for index, row in data.iterrows():
-    #     Cluster.objects.create(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6])
+print('load cluster list')
+data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
+Cluster.objects.all().delete()
+for index, row in data.iterrows():
+    Cluster.objects.create(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6])
 
-    # print('load subcluster list')
-    # data = pd.read_csv('media/data/{0}/subclusters_list.xls', sep='\t')
-    # Subcluster.objects.all().delete()
-    # for index, row in data.iterrows(): 
-    #     cluster_id =row[5]
-    #     cluster = Cluster.objects.get(cluster_id=cluster_id)
-    #     Subcluster.objects.create(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3])
+print('load subcluster list')
+data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
+Subcluster.objects.all().delete()
+for index, row in data.iterrows(): 
+    cluster_id =row[5]
+    cluster = Cluster.objects.get(cluster_id=cluster_id)
+    Subcluster.objects.create(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3])
 
 print('load hostnode list')
 for host in Host.objects.values('phylum').distinct():

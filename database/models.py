@@ -3,8 +3,15 @@ from django.db import models
 # Create your models here.
 class Plasmid(models.Model):
     SOURCE_TYPE = (
-        (0, 'COMPASS'),
-        (1, 'Kraken2'),
+        (0, 'PLSDB'),
+        (1, 'IMG-PR'),
+        (2, 'COMPASS'),
+        (3, 'GenBank'),
+        (4, 'RefSeq'),
+        (5, 'EMBL'),
+        (6, 'Kraken2'),
+        (7, 'DDBJ'),
+        (8, 'TPA'),
     )
     plasmid_id = models.CharField(max_length=200)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)

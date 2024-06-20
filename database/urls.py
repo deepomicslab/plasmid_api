@@ -29,6 +29,7 @@ urlpatterns =  [
     re_path(r'^get_subcluster_plasmids/$', get_subcluster_plasmids, name='get_subcluster_plasmids'),
     re_path(r'^get_plasmid_crisprs/$', get_plasmid_crisprs, name='get_plasmid_crisprs'),
     re_path(r'^get_database_overview/$', get_database_overview, name='get_database_overview'),
+    re_path(r'^get_home_overview/$', get_home_overview, name='get_home_overview'),
 
     # url(r'^get_plasmid_/$', get_plasmid_tmhs, name='get_plasmid_tmhs'),
 

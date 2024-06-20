@@ -130,7 +130,6 @@ class CrisprViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -180,7 +179,6 @@ class PlasmidHostNodeView(APIView):
                     rank=rank, parent=node)
             else:
                 queryset = HostNode.objects.filter(rank=rank)
-            print(queryset)
             serializer = HostNodeSerializer(queryset, many=True)
             for i in serializer.data:
                 treenode = {}
@@ -245,7 +243,6 @@ class tRNAViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -279,7 +276,6 @@ class AntimicrobialResistanceGeneViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -313,7 +309,6 @@ class SecondaryMetabolismViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -346,7 +341,6 @@ class SignalPeptidesViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -379,7 +373,6 @@ class TransmembraneHelicesViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -413,7 +406,6 @@ class VirulentFactorViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                print(source)
                 q_expression &= Q(plasmid__source=source)
         
         queryset = queryset.filter(q_expression)
@@ -426,7 +418,6 @@ def get_plasmid_tmhs(request):
     plasmid_id = int(request.GET['plasmid_id'])
     plasmid = Plasmid.objects.get(id=plasmid_id)
     for tmh in plasmid.tmhs.all():
-        print(tmh.helices.count())
         helices = tmh.helices.order_by('self_start')
         i = 0
         flag = False
@@ -449,7 +440,6 @@ def get_plasmid_tmhs(request):
                     outsideend = helice.self_end
                 continue
             if i%2 == 0 and flag:
-                print(i)
                 data.append({
                     "id": tmh.id,
                     "protein_id": tmh.protein_id,
@@ -479,7 +469,6 @@ def get_plasmid_tmhs(request):
                     outsideend = helice.self_end
                 i = i + 1
             else:
-                print(i)
                 if helice.position == 'inside':
                     insidestart = helice.self_start
                     insideend = helice.self_end
@@ -526,9 +515,7 @@ def get_cluster_plasmids(request):
     cluster = Cluster.objects.get(id=cluster_id)
     data = []
     for sub in cluster.subclusters.all():
-        print(sub.members)
         members = ast.literal_eval(sub.members)
-        print(members)
         for plasmid_id in members:
             try:
                 plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
@@ -557,7 +544,6 @@ def get_subcluster_plasmids(request):
     data = []
     
     members = ast.literal_eval(subcluster.members)
-    print(members)
     for plasmid_id in members:
         try:
             plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
@@ -679,4 +665,22 @@ def get_database_overview(request):
             'children': host_children, 
             'rank': 'Phylum'
         })
+    return Response(data)
+
+
+@api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+def get_home_overview(request):
+    data = {
+            "plasmid": Plasmid.objects.all().count(),
+            "host": Host.objects.all().count(),
+            "protein": Protein.objects.all().count(),
+            'trna': tRNA.objects.all().count(),
+            'arg': AntimicrobialResistanceGene.objects.all().count(),
+            'sm': SecondaryMetabolism.objects.all().count(),
+            'sp': SignalPeptides.objects.all().count(),
+            'tmh': TransmembraneHelices.objects.all().count(),
+            'vf': VirulentFactor.objects.all().count(),
+            'crispr': Crispr.objects.all().count()
+        }
     return Response(data)
