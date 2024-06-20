@@ -18,6 +18,7 @@ from . import utils
 from io import BytesIO
 import ast
 from django.db.models import Count
+import json
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 30
@@ -691,3 +692,43 @@ def get_home_overview(request):
             'crispr': Crispr.objects.all().count()
         }
     return Response(data)
+
+@api_view(["POST"])
+# @permission_classes([IsAuthenticated])
+def plasmid_filter(request):
+    filterdatajson = json.loads(request.data['filterdata'])
+    q_expression = Q()
+    if filterdatajson['HostType'] != '':
+        host = filterdatajson['HostType']
+        q_expression &= Q(host=host)
+    if filterdatajson['cluster'] != '':
+        cluster = filterdatajson['cluster']
+        q_expression &= Q(cluster=cluster)
+    if filterdatajson['subcluster'] != '':
+        subcluster = filterdatajson['subcluster']
+        q_expression &= Q(subcluster=subcluster)
+    # if filterdatajson['quality'] != '':
+    #     quality = filterdatajson['quality']
+    #     q_expression &= Q(completeness__exact=quality)
+    if filterdatajson['datasets'] != []:
+        datasets = filterdatajson['datasets']
+        q_expression &= Q(source__in=datasets)
+    # if filterdatajson['lifestyle'] != '' and filterdatajson['lifestyle'] != 'all':
+    #     lifestyle = filterdatajson['lifestyle']
+    #     qs = phage_lifestyle.objects.filter(lifestyle=lifestyle)
+    #     q_expression &= Q(phage_lifestyle__in=qs)
+    # if filterdatajson['Taxonomy'] != '':
+    #     taxonomy = filterdatajson['Taxonomy']
+    #     q_expression &= Q(taxonomy=taxonomy)
+    length_s = filterdatajson['LengthS']*1000
+    length_e = filterdatajson['LengthE']*1000
+    q_expression &= Q(length__gte=length_s, length__lte=length_e)
+    gc_s = filterdatajson['gcContentS']/100
+    gc_e = filterdatajson['gcContentE']/100
+    q_expression &= Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
+    total_queryset = Plasmid.objects.filter(q_expression)
+    paginator = LargeResultsSetPagination()
+    paginated_plasmids = paginator.paginate_queryset(
+        total_queryset, request)
+    serializer = PlasmidSerializer(paginated_plasmids, many=True)
+    return paginator.get_paginated_response(serializer.data)
