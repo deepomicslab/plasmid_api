@@ -123,13 +123,14 @@ for d_index, d_source in enumerate(datasource):
             strand = 1
         VirulentFactor.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, vf_seq_id = row[6], identity = row[7], e_value=row[8], gene_name=row[9], product=row[10], vf_id=row[11], vf_name=row[12], vf_fullname=row[13], vf_cid=row[14], vf_category=row[15], characteristics=row[16], structure=row[17], function=row[18], mechanism=row[19], sequence=row[20])
 
-    print('load crispr list')
-    data = pd.read_csv('media/data/{0}/data/{0}.CRISPR-Cas_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        
-        Crispr.objects.create(plasmid=plasmid, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11])
+    if d_source != 'TPA':
+        print('load crispr list')
+        data = pd.read_csv('media/data/{0}/data/{0}.CRISPR-Cas_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            
+            Crispr.objects.create(plasmid=plasmid, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11])
 
 print('load cluster list')
 data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
