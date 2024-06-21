@@ -68,13 +68,14 @@ for d_index, d_source in enumerate(datasource):
             AntimicrobialResistanceGene.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18])
 
         print('load sms list')
-        data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
-        for index, row in data.iterrows():
-            if index > 10000:
-                break
-            plasmid_id=row[0]
-            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-            SecondaryMetabolism.objects.create(plasmid=plasmid, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6])
+        if d_source != 'GenBank':
+            data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
+            for index, row in data.iterrows():
+                if index > 10000:
+                    break
+                plasmid_id=row[0]
+                plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+                SecondaryMetabolism.objects.create(plasmid=plasmid, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6])
 
         print('load sps list')
         data = pd.read_csv('media/data/{0}/data/{0}.SP_list.xls'.format(d_source), sep='\t')
