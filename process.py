@@ -3,90 +3,91 @@ from database.models import *
 
 datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DDBJ','TPA']
 
-Plasmid.objects.all().delete()
-Host.objects.all().delete()
-tRNA.objects.all().delete()
-Protein.objects.all().delete()
-AntimicrobialResistanceGene.objects.all().delete()
-SecondaryMetabolism.objects.all().delete()
-SignalPeptides.objects.all().delete()
+# Plasmid.objects.all().delete()
+# Host.objects.all().delete()
+# tRNA.objects.all().delete()
+# Protein.objects.all().delete()
+# AntimicrobialResistanceGene.objects.all().delete()
+# SecondaryMetabolism.objects.all().delete()
+# SignalPeptides.objects.all().delete()
 TransmembraneHelices.objects.all().delete()
-Helices.objects.all().delete()
-VirulentFactor.objects.all().delete()
-Crispr.objects.all().delete()
+# Helices.objects.all().delete()
+# VirulentFactor.objects.all().delete()
+# Crispr.objects.all().delete()
 
 for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
-    print('load plasmid list')
-    data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        Plasmid.objects.create(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10])
+    if d_index != 0:
+        print('load plasmid list')
+        data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            Plasmid.objects.create(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10])
 
-    print('load host list')
-    data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        Host.objects.create(plasmid=plasmid, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8])
+        print('load host list')
+        data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            Host.objects.create(plasmid=plasmid, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8])
 
-    print('load trna list')
-    data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        if row[5] == 'forward':
-            strand = 0
-        else:
-            strand = 1
-        tRNA.objects.create(plasmid=plasmid, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7])
+        print('load trna list')
+        data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            if row[5] == 'forward':
+                strand = 0
+            else:
+                strand = 1
+            tRNA.objects.create(plasmid=plasmid, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7])
 
-    print('load protein list')
-    data = pd.read_csv('media/data/{0}/data/{0}.protein_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        if row[6] == '+':
-            strand = 0
-        else:
-            strand = 1
-        Protein.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
-        #  uni_port_kb=row[23], 
-         sequence=row[23])
+        print('load protein list')
+        data = pd.read_csv('media/data/{0}/data/{0}.protein_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            if row[6] == '+':
+                strand = 0
+            else:
+                strand = 1
+            Protein.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
+            #  uni_port_kb=row[23], 
+            sequence=row[23])
 
-    print('load args list')
-    data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        if index > 10000:
-            break
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        if row[5] == '+':
-            strand = 0
-        else:
-            strand = 1
-        AntimicrobialResistanceGene.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18])
+        print('load args list')
+        data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            if index > 10000:
+                break
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            if row[5] == '+':
+                strand = 0
+            else:
+                strand = 1
+            AntimicrobialResistanceGene.objects.create(plasmid=plasmid, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18])
 
-    print('load sms list')
-    data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        if index > 10000:
-            break
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        SecondaryMetabolism.objects.create(plasmid=plasmid, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6])
+        print('load sms list')
+        data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            if index > 10000:
+                break
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            SecondaryMetabolism.objects.create(plasmid=plasmid, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6])
 
-    print('load sps list')
-    data = pd.read_csv('media/data/{0}/data/{0}.SP_list.xls'.format(d_source), sep='\t')
-    for index, row in data.iterrows():
-        if index > 10000:
-            break
-        plasmid_id=row[0]
-        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        if row[4] == '+':
-            strand = 0
-        else:
-            strand = 1
-        SignalPeptides.objects.create(plasmid=plasmid, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[6], other=row[7], sp=row[8], lipo=row[9], tat=row[10], tatlipo=row[11], pilin=row[12], cs_position=row[13], probability_of_cs_position=row[14])
+        print('load sps list')
+        data = pd.read_csv('media/data/{0}/data/{0}.SP_list.xls'.format(d_source), sep='\t')
+        for index, row in data.iterrows():
+            if index > 10000:
+                break
+            plasmid_id=row[0]
+            plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            if row[4] == '+':
+                strand = 0
+            else:
+                strand = 1
+            SignalPeptides.objects.create(plasmid=plasmid, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[6], other=row[7], sp=row[8], lipo=row[9], tat=row[10], tatlipo=row[11], pilin=row[12], cs_position=row[13], probability_of_cs_position=row[14])
 
     print('load tmhs list')
     data = pd.read_csv('media/data/{0}/data/{0}.TMHs_list.xls'.format(d_source), sep='\t')
