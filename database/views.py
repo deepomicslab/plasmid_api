@@ -180,11 +180,13 @@ class PlasmidHostNodeView(APIView):
             if querydict.get('node') is not None:
                 node = querydict['node']
                 queryset = HostNode.objects.filter(
-                    rank=rank, parent=node)
+                    rank=rank, parent=node).order_by('node')
             else:
-                queryset = HostNode.objects.filter(rank=rank)
+                queryset = HostNode.objects.filter(rank=rank).order_by('node')
             serializer = HostNodeSerializer(queryset, many=True)
             for i in serializer.data:
+                if i['node'] == '-':
+                    continue
                 treenode = {}
                 # treenode['label'] = i['node']+'('+str(i['phagecount'])+')'
                 treenode['label'] = i['node']
@@ -646,7 +648,9 @@ def get_database_overview(request):
             "name": source[1]
         })
 
-    for host in HostNode.objects.filter(rank='Phylum'):
+    for host in HostNode.objects.filter(rank='Phylum').order_by('node'):
+        if host.node == '-':
+            continue
         data['datahosts']['hosts'].append(host.node)
         data['datahosts']['counts'].append(host.plasmid_count)
         data['piehosts'].append({
