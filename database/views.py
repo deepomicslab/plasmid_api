@@ -73,8 +73,8 @@ class ProteinViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression |= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
 
         if 'protein_id' in self.request.GET:
             protein_id = self.request.GET['protein_id']
@@ -82,7 +82,7 @@ class ProteinViewSet(viewsets.ModelViewSet):
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(orf_source__icontains=searchstr)
             q_expression |= Q(product__icontains=searchstr)
             q_expression |= Q(function_source__icontains=searchstr)
@@ -91,7 +91,7 @@ class ProteinViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -121,18 +121,18 @@ class CrisprViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             # q_expression |= Q(trna_type__icontains=searchstr)
         
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -234,18 +234,18 @@ class tRNAViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(trna_type__icontains=searchstr)
         
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -265,12 +265,12 @@ class AntimicrobialResistanceGeneViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(protein_id__icontains=searchstr)
             q_expression |= Q(orf_source__icontains=searchstr)
             q_expression |= Q(product__icontains=searchstr)
@@ -278,7 +278,7 @@ class AntimicrobialResistanceGeneViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -298,12 +298,12 @@ class SecondaryMetabolismViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(region__icontains=searchstr)
             q_expression |= Q(most_similar_known_cluster__icontains=searchstr)
             q_expression |= Q(similarity__icontains=searchstr)
@@ -311,7 +311,7 @@ class SecondaryMetabolismViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -331,19 +331,19 @@ class SignalPeptidesViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(protein_id__icontains=searchstr)
             q_expression |= Q(prediction__icontains=searchstr)
         
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -363,19 +363,19 @@ class TransmembraneHelicesViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(protein_id__icontains=searchstr)
             q_expression |= Q(source__icontains=searchstr)
         
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -395,12 +395,12 @@ class VirulentFactorViewSet(viewsets.ModelViewSet):
 
         if 'plasmid_id' in self.request.GET:
             plasmid_id = int(self.request.GET['plasmid_id'])
-            plasmid = Plasmid.objects.get(id=plasmid_id)
-            q_expression &= Q(plasmid=plasmid)
+            # plasmid = Plasmid.objects.get(id=plasmid_id)
+            q_expression &= Q(plasmid_id=plasmid_id)
         
         if 'search' in self.request.GET:
             searchstr = self.request.GET['search']
-            q_expression |= Q(plasmid__plasmid_id__icontains=searchstr)
+            q_expression |= Q(plasmid_id__icontains=searchstr)
             q_expression |= Q(protein_id__icontains=searchstr)
             q_expression |= Q(orf_source__icontains=searchstr)
             q_expression |= Q(vf_category__icontains=searchstr)
@@ -408,7 +408,7 @@ class VirulentFactorViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(plasmid__source=source)
+                q_expression &= Q(source=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
@@ -418,8 +418,8 @@ class VirulentFactorViewSet(viewsets.ModelViewSet):
 def get_plasmid_tmhs(request):
     data = []
     plasmid_id = int(request.GET['plasmid_id'])
-    plasmid = Plasmid.objects.get(id=plasmid_id)
-    for tmh in plasmid.tmhs.all():
+    # plasmid = Plasmid.objects.get(id=plasmid_id)
+    for tmh in TransmembraneHelices.objects.filter(plasmid_id=plasmid_id).all():
         helices = tmh.helices.order_by('self_start')
         i = 0
         flag = False
@@ -572,9 +572,9 @@ def get_subcluster_plasmids(request):
 def get_plasmid_crisprs(request):
     data = []
     plasmid_id = int(request.GET['plasmid_id'])
-    plasmid = Plasmid.objects.get(id=plasmid_id)
+    # plasmid = Plasmid.objects.get(id=plasmid_id)
     cas_ids = []
-    for crispr in plasmid.crisprs.all():
+    for crispr in Crispr.objects.filter(plasmid_id=plasmid_id).all():
         if crispr.cas_id not in cas_ids:
             cas_ids.append(crispr.cas_id)
             data.append({
@@ -597,13 +597,13 @@ def get_database_overview(request):
     data = {
         "overview": {
             "plasmid": Plasmid.objects.all().count(),
-            "host": Host.objects.all().count(),
+            "host": HostNode.objects.all().count(),
             "protein": Protein.objects.all().count(),
             'trna': tRNA.objects.all().count(),
             'arg': AntimicrobialResistanceGene.objects.all().count(),
             'sm': SecondaryMetabolism.objects.all().count(),
             'sp': SignalPeptides.objects.all().count(),
-            'tmh': TransmembraneHelices.objects.all().count(),
+            'tmh': Helices.objects.all().count(),
             'vf': VirulentFactor.objects.all().count(),
             'crispr': Crispr.objects.all().count()
         },
@@ -682,13 +682,13 @@ def get_database_overview(request):
 def get_home_overview(request):
     data = {
             "plasmid": Plasmid.objects.all().count(),
-            "host": Host.objects.all().count(),
+            "host": HostNode.objects.all().count(),
             "protein": Protein.objects.all().count(),
             'trna': tRNA.objects.all().count(),
             'arg': AntimicrobialResistanceGene.objects.all().count(),
             'sm': SecondaryMetabolism.objects.all().count(),
             'sp': SignalPeptides.objects.all().count(),
-            'tmh': TransmembraneHelices.objects.all().count(),
+            'tmh': Helices.objects.all().count(),
             'vf': VirulentFactor.objects.all().count(),
             'crispr': Crispr.objects.all().count()
         }

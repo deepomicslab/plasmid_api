@@ -30,7 +30,7 @@ for d_index, d_source in enumerate(datasource):
     for index, row in data.iterrows():
         plasmid_id=row[0]
         # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        host_list.append(Host(plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
+        host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
     Host.objects.bulk_create(host_list)
 
     print('load trna list')
@@ -43,7 +43,7 @@ for d_index, d_source in enumerate(datasource):
             strand = 0
         else:
             strand = 1
-        trna_list.append(tRNA(plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
+        trna_list.append(tRNA(source=d_index, plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
     tRNA.objects.bulk_create(trna_list)
     
     print('load args list')
@@ -58,7 +58,7 @@ for d_index, d_source in enumerate(datasource):
             strand = 0
         else:
             strand = 1
-        arg_list.append(AntimicrobialResistanceGene(plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18]))
+        arg_list.append(AntimicrobialResistanceGene(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18]))
     AntimicrobialResistanceGene.objects.bulk_create(arg_list)
 
     print('load sms list')
@@ -70,7 +70,7 @@ for d_index, d_source in enumerate(datasource):
                 break
             plasmid_id=row[0]
             # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-            sm_list.append(SecondaryMetabolism(plasmid_id=plasmid_id, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6]))
+            sm_list.append(SecondaryMetabolism(source=d_index, plasmid_id=plasmid_id, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6]))
         SecondaryMetabolism.objects.bulk_create(sm_list)
 
     print('load sps list')
@@ -85,7 +85,10 @@ for d_index, d_source in enumerate(datasource):
             strand = 0
         else:
             strand = 1
-        sp_list.append(SignalPeptides(plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[6], other=row[7], sp=row[8], lipo=row[9], tat=row[10], tatlipo=row[11], pilin=row[12], cs_position=row[13], probability_of_cs_position=row[14]))
+        if d_source == 'IMG-PR':
+            sp_list.append(SignalPeptides(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[7], other=row[8], sp=row[9], lipo=row[10], tat=row[11], tatlipo=row[12], pilin=row[13], cs_position=row[14], probability_of_cs_position=row[15]))
+        else:
+            sp_list.append(SignalPeptides(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[6], other=row[7], sp=row[8], lipo=row[9], tat=row[10], tatlipo=row[11], pilin=row[12], cs_position=row[13], probability_of_cs_position=row[14]))
     SignalPeptides.objects.bulk_create(sp_list)
 
 
@@ -102,7 +105,7 @@ for d_index, d_source in enumerate(datasource):
             strand = 0
         else:
             strand = 1
-        vf_list.append(VirulentFactor(plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, vf_seq_id = row[6], identity = row[7], e_value=row[8], gene_name=row[9], product=row[10], vf_id=row[11], vf_name=row[12], vf_fullname=row[13], vf_cid=row[14], vf_category=row[15], characteristics=row[16], structure=row[17], function=row[18], mechanism=row[19], sequence=row[20]))
+        vf_list.append(VirulentFactor(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, vf_seq_id = row[6], identity = row[7], e_value=row[8], gene_name=row[9], product=row[10], vf_id=row[11], vf_name=row[12], vf_fullname=row[13], vf_cid=row[14], vf_category=row[15], characteristics=row[16], structure=row[17], function=row[18], mechanism=row[19], sequence=row[20]))
     VirulentFactor.objects.bulk_create(vf_list)
 
     if d_source != 'TPA':
@@ -113,7 +116,7 @@ for d_index, d_source in enumerate(datasource):
             plasmid_id=row[0]
             # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
             
-            crispr_list.append(Crispr(plasmid_id=plasmid_id, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11]))
+            crispr_list.append(Crispr(source=d_index, plasmid_id=plasmid_id, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11]))
         Crispr.objects.bulk_create(crispr_list)
 
 for d_index, d_source in enumerate(datasource):
@@ -128,7 +131,7 @@ for d_index, d_source in enumerate(datasource):
             strand = 0
         else:
             strand = 1
-        protein_list.append(Protein(plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
+        protein_list.append(Protein(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
         #  uni_port_kb=row[23], 
         sequence=row[23]))
     Protein.objects.bulk_create(protein_list)
@@ -150,7 +153,7 @@ for d_index, d_source in enumerate(datasource):
 
         if tmh == None or int(row[9]) == 1:
             tmh_list.append()
-            tmh = TransmembraneHelices(plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, length = row[5], number_of_predicted_tmhs = row[6], source=row[7], exp_number_of_aas_in_tmhs=row[11], exp_numberof_first_60_aas=row[12], total_prob_of_n_in=row[13])
+            tmh = TransmembraneHelices(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, length = row[5], number_of_predicted_tmhs = row[6], source=row[7], exp_number_of_aas_in_tmhs=row[11], exp_numberof_first_60_aas=row[12], total_prob_of_n_in=row[13])
             tmh_list.append(tmh)
             helices_list.append(Helices(tmh=tmh, position=row[8], self_start=row[9], self_end=row[10]))
         else:
