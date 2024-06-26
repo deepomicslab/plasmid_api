@@ -118,8 +118,10 @@ datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DD
             
 #             crispr_list.append(Crispr(source=d_index, plasmid_id=plasmid_id, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11]))
 #         Crispr.objects.bulk_create(crispr_list)
-Protein.objects.all().delete()
+# Protein.objects.all().delete()
 for d_index, d_source in enumerate(datasource):
+    if d_index in [0, 1, 2]:
+        continue
     print(d_source, '=======')
     print('load protein list')
     data = pd.read_csv('media/data/{0}/data/{0}.protein_list.xls'.format(d_source), sep='\t')
