@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [("database", "0012_alter_plasmid_plasmid_id")]
+    dependencies = [("database", "0010_transmembranehelices_datasource")]
 
     operations = [
         migrations.AlterField(
