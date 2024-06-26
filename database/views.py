@@ -34,7 +34,7 @@ class PlasmidViewSet(viewsets.ModelViewSet):
     # queryset = Plasmid.objects.all()
     serializer_class = PlasmidSerializer
     pagination_class = LargeResultsSetPagination
-
+    
     def get_queryset(self):
         queryset = Plasmid.objects.all()
         q_expression = Q()
@@ -72,7 +72,7 @@ class ProteinViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
 
@@ -120,7 +120,7 @@ class CrisprViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -233,7 +233,7 @@ class tRNAViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -264,7 +264,7 @@ class AntimicrobialResistanceGeneViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -297,7 +297,7 @@ class SecondaryMetabolismViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -330,7 +330,7 @@ class SignalPeptidesViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -362,7 +362,7 @@ class TransmembraneHelicesViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -394,7 +394,7 @@ class VirulentFactorViewSet(viewsets.ModelViewSet):
         q_expression = Q()
 
         if 'plasmid_id' in self.request.GET:
-            plasmid_id = int(self.request.GET['plasmid_id'])
+            plasmid_id = self.request.GET['plasmid_id']
             # plasmid = Plasmid.objects.get(id=plasmid_id)
             q_expression &= Q(plasmid_id=plasmid_id)
         
@@ -417,7 +417,7 @@ class VirulentFactorViewSet(viewsets.ModelViewSet):
 # @permission_classes([IsAuthenticated])
 def get_plasmid_tmhs(request):
     data = []
-    plasmid_id = int(request.GET['plasmid_id'])
+    plasmid_id = request.GET['plasmid_id']
     # plasmid = Plasmid.objects.get(id=plasmid_id)
     for tmh in TransmembraneHelices.objects.filter(plasmid_id=plasmid_id).all():
         helices = tmh.helices.order_by('self_start')
@@ -571,7 +571,7 @@ def get_subcluster_plasmids(request):
 # @permission_classes([IsAuthenticated])
 def get_plasmid_crisprs(request):
     data = []
-    plasmid_id = int(request.GET['plasmid_id'])
+    plasmid_id = request.GET['plasmid_id']
     # plasmid = Plasmid.objects.get(id=plasmid_id)
     cas_ids = []
     for crispr in Crispr.objects.filter(plasmid_id=plasmid_id).all():
