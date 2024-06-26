@@ -20,6 +20,8 @@ import ast
 from django.db.models import Count
 import json
 from plasmid_api import settings
+import pandas as pd
+import random
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 30
@@ -36,7 +38,7 @@ class PlasmidViewSet(viewsets.ModelViewSet):
     pagination_class = LargeResultsSetPagination
     
     def get_queryset(self):
-        queryset = Plasmid.objects.all()
+        queryset = Plasmid.objects.all().order_by('id')
         q_expression = Q()
 
         if 'search' in self.request.GET:
@@ -746,4 +748,149 @@ def downloadbypaath(request, path):
         response['Content-Type'] = 'application/x-gzip'
     else:   
         response['Content-Type'] = 'text/plain'
+    return response
+
+@api_view(["GET"])
+def download_plasmid_fasta(request):
+    querydict = request.query_params.dict()
+    if 'plasmid_id' in querydict:
+        plasmid_id = querydict['plasmid_id']
+        plasmid = Plasmid.objects.get(id=plasmid_id)
+        source = plasmid.get_source_display()
+        fasta = os.path.join(utils.root_path(), '../media/data/{0}/fasta/{1}.fasta'.format(source, plasmid.plasmid_id))
+        pathlist = [fasta]
+    elif 'plasmid_ids' in querydict:
+        plasmid_id = querydict['plasmid_ids']
+        plasmid_ids = plasmid_id.split(',')
+        plasmid_obj = Plasmid.objects.filter(id__in=plasmid_ids)
+        pathlist = []
+        for plasmid in plasmid_obj:
+            source = plasmid.get_source_display()
+            fasta = os.path.join(utils.root_path(), '../media/data/{0}/fasta/{1}.fasta'.format(source, plasmid.plasmid_id))
+            pathlist.append(fasta)
+    # else:
+    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
+    #     response = FileResponse(file)
+    #     filename = file.name.split('/')[-1]
+    #     response['Content-Disposition'] = "attachment; filename="+filename
+    #     response['Content-Type'] = 'application/x-gzip'
+    #     return response
+        
+
+    content = ''
+    for path in pathlist:
+        with open(path, 'r') as file:
+            content = content+file.read()
+    content_bytes = content.encode('utf-8')
+    buffer = BytesIO(content_bytes)
+    response = response = FileResponse(buffer)
+    response['Content-Disposition'] = 'attachment; filename="sequence.fasta"'
+    response['Content-Type'] = 'text/plain'
+
+    return response
+
+@api_view(["GET"])
+def download_plasmid_gbk(request):
+    querydict = request.query_params.dict()
+    if 'plasmid_id' in querydict:
+        plasmid_id = querydict['plasmid_id']
+        plasmid = Plasmid.objects.get(id=plasmid_id)
+        source = plasmid.get_source_display()
+        gbk = os.path.join(utils.root_path(), '../media/data/{0}/gbk/{1}.gbk'.format(source, plasmid.plasmid_id))
+        pathlist = [gbk]
+    elif 'plasmid_ids' in querydict:
+        plasmid_id = querydict['plasmid_ids']
+        plasmid_ids = plasmid_id.split(',')
+        plasmid_obj = Plasmid.objects.filter(id__in=plasmid_ids)
+        pathlist = []
+        for plasmid in plasmid_obj:
+            source = plasmid.get_source_display()
+            gbk = os.path.join(utils.root_path(), '../media/data/{0}/gbk/{1}.gbk'.format(source, plasmid.plasmid_id))
+            pathlist.append(gbk)
+    # else:
+    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
+    #     response = FileResponse(file)
+    #     filename = file.name.split('/')[-1]
+    #     response['Content-Disposition'] = "attachment; filename="+filename
+    #     response['Content-Type'] = 'application/x-gzip'
+    #     return response
+        
+
+    content = ''
+    for path in pathlist:
+        with open(path, 'r') as file:
+            content = content+file.read()
+    content_bytes = content.encode('utf-8')
+    buffer = BytesIO(content_bytes)
+    response = response = FileResponse(buffer)
+    response['Content-Disposition'] = 'attachment; filename="sequence.gbk"'
+    response['Content-Type'] = 'text/plain'
+
+    return response
+
+@api_view(["GET"])
+def download_plasmid_gff(request):
+    querydict = request.query_params.dict()
+    if 'plasmid_id' in querydict:
+        plasmid_id = querydict['plasmid_id']
+        plasmid = Plasmid.objects.get(id=plasmid_id)
+        source = plasmid.get_source_display()
+        gff = os.path.join(utils.root_path(), '../media/data/{0}/gff/{1}.gff'.format(source, plasmid.plasmid_id))
+        pathlist = [gff]
+    elif 'plasmid_ids' in querydict:
+        plasmid_id = querydict['plasmid_ids']
+        plasmid_ids = plasmid_id.split(',')
+        plasmid_obj = Plasmid.objects.filter(id__in=plasmid_ids)
+        pathlist = []
+        for plasmid in plasmid_obj:
+            source = plasmid.get_source_display()
+            gff = os.path.join(utils.root_path(), '../media/data/{0}/gff/{1}.gff'.format(source, plasmid.plasmid_id))
+            pathlist.append(gff)
+    # else:
+    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
+    #     response = FileResponse(file)
+    #     filename = file.name.split('/')[-1]
+    #     response['Content-Disposition'] = "attachment; filename="+filename
+    #     response['Content-Type'] = 'application/x-gzip'
+    #     return response
+        
+
+    content = ''
+    for path in pathlist:
+        with open(path, 'r') as file:
+            content = content+file.read()
+    content_bytes = content.encode('utf-8')
+    buffer = BytesIO(content_bytes)
+    response = response = FileResponse(buffer)
+    response['Content-Disposition'] = 'attachment; filename="sequence.gff"'
+    response['Content-Type'] = 'text/plain'
+
+    return response
+
+@api_view(["GET"])
+def download_plasmid_meta(request):
+    querydict = request.query_params.dict()
+    if 'plasmid_id' in querydict:
+        plasmid_id = querydict['plasmid_id']
+        plasmid = Plasmid.objects.get(id=plasmid_id)
+        plasmid_data = [PlasmidSerializer(plasmid).data]
+    elif 'plasmid_ids' in querydict:
+        plasmid_id = querydict['plasmid_ids']
+        plasmid_ids = plasmid_id.split(',')
+        plasmid_obj = Plasmid.objects.filter(id__in=plasmid_ids)
+        plasmid_data = PlasmidSerializer(plasmid_obj, many=True).data
+    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
+    #     response = FileResponse(file)
+    #     filename = file.name.split('/')[-1]
+    #     response['Content-Disposition'] = "attachment; filename="+filename
+    #     response['Content-Type'] = 'application/x-gzip'
+    #     return response
+    plasmidmetadata = pd.DataFrame(plasmid_data)
+    tmppath = settings.TEMPPATH + \
+        str(random.randint(1000, 9999))+"_phagemetadata.tsv"
+    plasmidmetadata.to_csv(tmppath, sep="\t", index=False)
+    file = open(tmppath, 'rb')
+    response = FileResponse(file)
+    response['Content-Disposition'] = 'attachment; filename="metadata.tsv"'
+    response['Content-Type'] = 'text/plain'
     return response

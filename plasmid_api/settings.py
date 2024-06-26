@@ -125,7 +125,7 @@ PHAGEFASTA = '/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta
 PHAGEGBK = '/home/platform/phage_db/phage_data/data/phage_sequence/phage_gbk/individual_data/'
 PHAGEGFF = '/home/platform/phage_db/phage_data/data/phage_sequence/phage_gff3/individual_data/'
 PROTEINSEQUENCE = '/home/platform/phage_db/phage_data/data/phage_sequence/proteins/'
-TEMPPATH = '/home/platform/phage_db/phage_data/data/tmp/'
+TEMPPATH = '/home/platform/project/plasmid_platform/plasmid_api/media/data/tmp/'
 
 
 CLUSTERTREEPATH = '/home/platform/phage_db/phage_data/data/phage_sequence/cluster_tree_v2/'

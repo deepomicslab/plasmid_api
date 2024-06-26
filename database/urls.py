@@ -34,5 +34,9 @@ urlpatterns =  [
     path('files/<path:path>/', downloadbypaath, name='downloadbypaath'),
 
     # url(r'^get_plasmid_/$', get_plasmid_tmhs, name='get_plasmid_tmhs'),
+    re_path(r'^download_plasmid_fasta/$', download_plasmid_fasta, name='download_plasmid_fasta'),
+    re_path(r'^download_plasmid_meta/$', download_plasmid_meta, name='download_plasmid_meta'),
+    re_path(r'^download_plasmid_gbk/$', download_plasmid_gbk, name='download_plasmid_gbk'),
+    re_path(r'^download_plasmid_gff/$', download_plasmid_gff, name='download_plasmid_gff'),
 
 ]
