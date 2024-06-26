@@ -153,7 +153,7 @@ for d_index, d_source in enumerate(datasource):
 
         if tmh == None or int(row[9]) == 1:
             tmh_list.append()
-            tmh = TransmembraneHelices(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, length = row[5], number_of_predicted_tmhs = row[6], source=row[7], exp_number_of_aas_in_tmhs=row[11], exp_numberof_first_60_aas=row[12], total_prob_of_n_in=row[13])
+            tmh = TransmembraneHelices(datasource=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, length = row[5], number_of_predicted_tmhs = row[6], source=row[7], exp_number_of_aas_in_tmhs=row[11], exp_numberof_first_60_aas=row[12], total_prob_of_n_in=row[13])
             tmh_list.append(tmh)
             helices_list.append(Helices(tmh=tmh, position=row[8], self_start=row[9], self_end=row[10]))
         else:

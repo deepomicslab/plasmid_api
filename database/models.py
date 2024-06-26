@@ -231,7 +231,7 @@ class TransmembraneHelices(models.Model):
         (8, 'TPA'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
-    source = models.IntegerField(default=0, choices=SOURCE_TYPE)
+    datasource = models.IntegerField(default=0, choices=SOURCE_TYPE)
     protein_id = models.CharField(max_length=200)
     start = models.IntegerField(null=True, blank=True)
     end = models.IntegerField(null=True, blank=True)

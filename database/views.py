@@ -375,7 +375,7 @@ class TransmembraneHelicesViewSet(viewsets.ModelViewSet):
         if 'source' in self.request.GET:
             source = int(self.request.GET['source'])
             if source != -1:
-                q_expression &= Q(source=source)
+                q_expression &= Q(datasource=source)
         
         queryset = queryset.filter(q_expression)
         return queryset
