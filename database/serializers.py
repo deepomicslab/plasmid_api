@@ -7,7 +7,7 @@ class PlasmidSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProteinSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     strand = serializers.CharField(
         source='get_strand_display'
     )
@@ -16,7 +16,7 @@ class ProteinSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class HostSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     class Meta:
         model = Host
@@ -28,7 +28,7 @@ class HostNodeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class tRNASerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     strand = serializers.CharField(
         source='get_strand_display'
@@ -38,7 +38,7 @@ class tRNASerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AntimicrobialResistanceGeneSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     strand = serializers.CharField(
         source='get_strand_display'
@@ -48,7 +48,7 @@ class AntimicrobialResistanceGeneSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SecondaryMetabolismSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     class Meta:
         model = SecondaryMetabolism
@@ -56,7 +56,7 @@ class SecondaryMetabolismSerializer(serializers.ModelSerializer):
     
 
 class SignalPeptidesSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     strand = serializers.CharField(
         source='get_strand_display'
@@ -71,7 +71,7 @@ class HelicesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TransmembraneHelicesSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     helices = HelicesSerializer(many=True, read_only=True)
     strand = serializers.CharField(
@@ -82,7 +82,7 @@ class TransmembraneHelicesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VirulentFactorSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     source = serializers.CharField(source='plasmid.source')
     strand = serializers.CharField(
         source='get_strand_display'
@@ -92,7 +92,7 @@ class VirulentFactorSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
 class CrisprSerializer(serializers.ModelSerializer):
-    plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
+    # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     class Meta:
         model = Crispr
         fields = '__all__'

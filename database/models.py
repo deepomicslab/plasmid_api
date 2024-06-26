@@ -30,7 +30,7 @@ class Protein(models.Model):
         (0, '+'),
         (1, '-'),
     )
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="proteins")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     protein_id = models.CharField(max_length=200)
     orf_source = models.CharField(max_length=200, null=True, blank=True)
     start = models.IntegerField(null=True, blank=True)
@@ -56,7 +56,7 @@ class Protein(models.Model):
     sequence = models.TextField(blank=True, null=True)
 
 class Host(models.Model):
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="hosts")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     name = models.CharField(max_length=200)
     species = models.CharField(max_length=200, null=True, blank=True)
     genus = models.CharField(max_length=200, null=True, blank=True)
@@ -77,7 +77,7 @@ class tRNA(models.Model):
         (0, 'forward'),
         (1, 'reverse'),
     )
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="trans")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     trna_id = models.CharField(max_length=200)
     trna_type = models.CharField(max_length=200, null=True, blank=True)
     start = models.IntegerField(null=True, blank=True)
@@ -91,7 +91,7 @@ class AntimicrobialResistanceGene(models.Model):
         (0, '+'),
         (1, '-'),
     )
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="args")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     protein_id = models.CharField(max_length=200)
     orf_source = models.CharField(max_length=200, null=True, blank=True)
     start = models.IntegerField(null=True, blank=True)
@@ -113,7 +113,7 @@ class AntimicrobialResistanceGene(models.Model):
     
 
 class SecondaryMetabolism(models.Model):
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="sms")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     region = models.CharField(max_length=200, null=True, blank=True)
     start = models.IntegerField(null=True, blank=True)
     end = models.IntegerField(null=True, blank=True)
@@ -126,7 +126,7 @@ class SignalPeptides(models.Model):
         (0, '+'),
         (1, '-'),
     )
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="sps")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     protein_id = models.CharField(max_length=200)
     start = models.IntegerField(null=True, blank=True)
     end = models.IntegerField(null=True, blank=True)
@@ -147,7 +147,7 @@ class TransmembraneHelices(models.Model):
         (0, '+'),
         (1, '-'),
     )
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="tmhs")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     protein_id = models.CharField(max_length=200)
     start = models.IntegerField(null=True, blank=True)
     end = models.IntegerField(null=True, blank=True)
@@ -170,7 +170,7 @@ class VirulentFactor(models.Model):
         (0, '+'),
         (1, '-'),
     )
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="vfs")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     protein_id = models.CharField(max_length=200)
     orf_source = models.CharField(max_length=200, null=True, blank=True)
     start = models.IntegerField(null=True, blank=True)
@@ -193,7 +193,7 @@ class VirulentFactor(models.Model):
     sequence = models.TextField(blank=True, null=True)
 
 class Crispr(models.Model):
-    plasmid = models.ForeignKey(Plasmid, on_delete=models.CASCADE, related_name="crisprs")
+    plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     cas_id = models.CharField(max_length=200)
     cas_start = models.IntegerField(null=True, blank=True)
     cas_end = models.IntegerField(null=True, blank=True)
