@@ -894,3 +894,59 @@ def download_plasmid_meta(request):
     response['Content-Disposition'] = 'attachment; filename="metadata.tsv"'
     response['Content-Type'] = 'text/plain'
     return response
+
+@api_view(["GET"])
+def download_cluster_fasta(request):
+    querydict = request.query_params.dict()
+    if 'clusterid' in querydict:
+        pathlist = []
+        clusterid = querydict['clusterid']
+        cluster = Cluster.objects.get(id=clusterid)
+        for subcluster in cluster.subclusters.all():
+            members = ast.literal_eval(subcluster.members)
+            for plasmid_id in members:
+                try:
+                    plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+                    source = plasmid.get_source_display()
+                    fasta = os.path.join(utils.root_path(), '../media/data/{0}/fasta/{1}.fasta'.format(source, plasmid.plasmid_id))
+                    pathlist.append(fasta)
+                except:
+                    pass
+        filename=cluster.cluster_id+'.fasta'
+
+    elif 'clusterids' in querydict:
+        pathlist = []
+        clusterids = querydict['clusterids']
+        clusterids = clusterids.split(',')
+        for cluster in Cluster.objects.filter(id__in=clusterids):
+            for subcluster in cluster.subclusters.all():
+                members = ast.literal_eval(subcluster.members)
+                for plasmid_id in members:
+                    try:
+                        plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+                        source = plasmid.get_source_display()
+                        fasta = os.path.join(utils.root_path(), '../media/data/{0}/fasta/{1}.fasta'.format(source, plasmid.plasmid_id))
+                        pathlist.append(fasta)
+                    except:
+                        pass
+        filename = 'cluster.fasta'
+    # else:
+    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
+    #     response = FileResponse(file)
+    #     filename = file.name.split('/')[-1]
+    #     response['Content-Disposition'] = "attachment; filename="+filename
+    #     response['Content-Type'] = 'application/x-gzip'
+    #     return response
+        
+
+    content = ''
+    for path in pathlist:
+        with open(path, 'r') as file:
+            content = content+file.read()
+    content_bytes = content.encode('utf-8')
+    buffer = BytesIO(content_bytes)
+    response = response = FileResponse(buffer)
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
+    response['Content-Type'] = 'text/plain'
+
+    return response
