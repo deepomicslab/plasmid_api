@@ -624,7 +624,9 @@ def get_database_overview(request):
         "piehosts": [],
         "treedata": []
     }
-    for host in HostNode.objects.filter(rank='Phylum').all():
+    for host in HostNode.objects.filter(rank='Phylum').all().order_by('node'):
+        if host.node == '-':
+            continue
         data['hosts'].append(host.node)
 
     SOURCE_TYPE = (
