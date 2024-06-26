@@ -19,6 +19,7 @@ from io import BytesIO
 import ast
 from django.db.models import Count
 import json
+from plasmid_api import settings
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 30
@@ -732,3 +733,17 @@ def plasmid_filter(request):
         total_queryset, request)
     serializer = PlasmidSerializer(paginated_plasmids, many=True)
     return paginator.get_paginated_response(serializer.data)
+
+@api_view(['GET'])
+def downloadbypaath(request, path):
+
+    file_path = settings.METADATA + path
+    file = open(file_path, 'rb')
+    response = FileResponse(file)
+    filename = file.name.split('/')[-1]
+    response['Content-Disposition'] = "attachment; filename="+filename
+    if path.endswith('.gz'):
+        response['Content-Type'] = 'application/x-gzip'
+    else:   
+        response['Content-Type'] = 'text/plain'
+    return response

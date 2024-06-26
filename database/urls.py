@@ -31,6 +31,7 @@ urlpatterns =  [
     re_path(r'^get_database_overview/$', get_database_overview, name='get_database_overview'),
     re_path(r'^get_home_overview/$', get_home_overview, name='get_home_overview'),
     re_path(r'^plasmid_filter/$', plasmid_filter, name='plasmid_filter'),
+    path('files/<path:path>/', downloadbypaath, name='downloadbypaath'),
 
     # url(r'^get_plasmid_/$', get_plasmid_tmhs, name='get_plasmid_tmhs'),
 

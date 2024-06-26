@@ -8,7 +8,9 @@ router = DefaultRouter()
 
 urlpatterns =  [
     path('', include(router.urls)),
-    path('tasks/list/', viewtask),
+    path('task_list/', task_list, name='task_list'),
+    path('submit_task/', submit_task, name='submit_task'),
+
     # url(r'^phone_login/$', phone_login, name='phone_login'),
     # re_path(r'^get_plasmid_fasta/(?P<plasmid_id>\d+)/$', get_plasmid_fasta, name='get_plasmid_fasta'),
     # # url(r'^query_temp_data/(?P<device_id>[\w\-]+)/$', query_temp_data, name='query_temp_data'),
