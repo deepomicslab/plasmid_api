@@ -120,7 +120,7 @@ datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DD
 #         Crispr.objects.bulk_create(crispr_list)
 # Protein.objects.all().delete()
 for d_index, d_source in enumerate(datasource):
-    if d_index in [0, 1, 2, 3]:
+    if d_index in [0, 1, 2, 3, 4]:
         continue
     print(d_source, '=======')
     print('load protein list')
