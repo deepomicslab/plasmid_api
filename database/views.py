@@ -785,8 +785,11 @@ def download_plasmid_fasta(request):
 
     content = ''
     for path in pathlist:
-        with open(path, 'r') as file:
-            content = content+file.read()
+        try:
+            with open(path, 'r') as file:
+                content = content+file.read()
+        except:
+            continue
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
@@ -863,8 +866,11 @@ def download_plasmid_gff(request):
 
     content = ''
     for path in pathlist:
-        with open(path, 'r') as file:
-            content = content+file.read()
+        try:
+            with open(path, 'r') as file:
+                content = content+file.read()
+        except:
+            continue
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
@@ -947,8 +953,11 @@ def download_cluster_fasta(request):
 
     content = ''
     for path in pathlist:
-        with open(path, 'r') as file:
-            content = content+file.read()
+        try:
+            with open(path, 'r') as file:
+                content = content+file.read()
+        except:
+            continue
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
@@ -990,8 +999,11 @@ def download_protein_pdb(request):
 
     content = ''
     for path in pathlist:
-        with open(path, 'r') as file:
-            content = content+file.read()
+        try:
+            with open(path, 'r') as file:
+                content = content+file.read()
+        except:
+            continue
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
