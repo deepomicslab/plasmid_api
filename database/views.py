@@ -965,6 +965,8 @@ def download_protein_pdb(request):
         protein = Protein.objects.get(id=protein_id)
         source = protein.get_source_display()
         pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
+        if not os.path.exists(pdb):
+            utils.esm_fold_api(protein.sequence, pdb)
         pathlist = [pdb]
     # elif 'protein_ids' in querydict:
     #     protein_ids = querydict['protein_ids']
@@ -982,7 +984,6 @@ def download_protein_pdb(request):
     #     response['Content-Disposition'] = "attachment; filename="+filename
     #     response['Content-Type'] = 'application/x-gzip'
     #     return response
-        
 
     content = ''
     for path in pathlist:
