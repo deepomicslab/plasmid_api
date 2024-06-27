@@ -39,5 +39,6 @@ urlpatterns =  [
     re_path(r'^download_plasmid_gbk/$', download_plasmid_gbk, name='download_plasmid_gbk'),
     re_path(r'^download_plasmid_gff/$', download_plasmid_gff, name='download_plasmid_gff'),
     re_path(r'^download_cluster_fasta/$', download_cluster_fasta, name='download_cluster_fasta'),
+    re_path(r'^download_protein_pdb/$', download_protein_pdb, name='download_protein_pdb'),
 
 ]

@@ -956,3 +956,42 @@ def download_cluster_fasta(request):
     response['Content-Type'] = 'text/plain'
 
     return response
+
+@api_view(["GET"])
+def download_protein_pdb(request):
+    querydict = request.query_params.dict()
+    if 'protein_id' in querydict:
+        protein_id = querydict['protein_id']
+        protein = Protein.objects.get(id=protein_id)
+        source = protein.get_source_display()
+        pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
+        pathlist = [pdb]
+    # elif 'protein_ids' in querydict:
+    #     protein_ids = querydict['protein_ids']
+    #     protein_ids = protein_ids.split(',')
+    #     protein_obj = Plasmid.objects.filter(id__in=protein_ids)
+    #     pathlist = []
+    #     for protein in protein_obj:
+    #         source = protein.get_source_display()
+    #         pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
+    #         pathlist.append(pdb)
+    # else:
+    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
+    #     response = FileResponse(file)
+    #     filename = file.name.split('/')[-1]
+    #     response['Content-Disposition'] = "attachment; filename="+filename
+    #     response['Content-Type'] = 'application/x-gzip'
+    #     return response
+        
+
+    content = ''
+    for path in pathlist:
+        with open(path, 'r') as file:
+            content = content+file.read()
+    content_bytes = content.encode('utf-8')
+    buffer = BytesIO(content_bytes)
+    response = response = FileResponse(buffer)
+    response['Content-Disposition'] = 'attachment; filename="{0}.pdb"'.format(protein.protein_id)
+    response['Content-Type'] = 'text/plain'
+
+    return response
