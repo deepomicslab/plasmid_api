@@ -964,8 +964,11 @@ def download_protein_pdb(request):
         protein_id = querydict['protein_id']
         protein = Protein.objects.get(id=protein_id)
         source = protein.get_source_display()
+        pdb_folder = os.path.join(utils.root_path(), '../media/data/{0}/pdb'.format(source))
         pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
         if not os.path.exists(pdb):
+            if not os.path.exists(pdb_folder):
+                os.makedirs(pdb_folder)
             utils.esm_fold_api(protein.sequence, pdb)
         pathlist = [pdb]
     # elif 'protein_ids' in querydict:
