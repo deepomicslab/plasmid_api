@@ -5,5 +5,4 @@ from analysis.models import *
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['id','name', 'user', 'uploadpath', 'analysis_type', 'modulelist', 'status', 'task_log', 'created_at']
-
+        fields = ['id','name', 'user', 'uploadpath', 'analysis_type', 'modulelist', 'status', 'task_log', 'task_detail', 'created_at']
