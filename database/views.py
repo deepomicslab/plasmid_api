@@ -624,7 +624,7 @@ def get_database_overview(request):
         "piehosts": [],
         "treedata": []
     }
-    for host in HostNode.objects.filter(rank='Phylum').order_by('plasmid_count')[:11]:
+    for host in HostNode.objects.filter(rank='Phylum').order_by('-plasmid_count')[:11]:
         if host.node == '-':
             continue
         data['hosts'].append(host.node)
