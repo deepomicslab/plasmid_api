@@ -9,6 +9,11 @@ from plasmid_api import settings
 import time
 import os
 import shutil
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import json
+from utils import tools, task
+import traceback
 
 # Create your views here.
 @api_view(['GET'])
@@ -49,16 +54,16 @@ def submit_task(request):
     if request.data['rundemo'] == 'true':
         if 'demopath' in request.data:
             shutil.copy(
-                settings.DEMOFILE+request.data['demopath'], uploadfilepath+'sequence.fasta')
+                settings.DEMOFILE+request.data['demopath'], uploadfilepath+'plasmid.fasta')
         else:
             shutil.copy(
-                settings.DEMOFILE+"sequence.fasta", uploadfilepath+'sequence.fasta')
-        path = uploadfilepath+'sequence.fasta'
+                settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'plasmid.fasta')
+        path = uploadfilepath+'plasmid.fasta'
     else:
         if request.data['inputtype'] == 'upload':
             file = request.FILES['submitfile']
             path = default_storage.save(
-                uploadfilepath+'sequence.fasta', ContentFile(file.read()))
+                uploadfilepath+'plasmid.fasta', ContentFile(file.read()))
             
         elif request.data['inputtype'] == 'paste':
             path = uploadfilepath+'sequence.fasta'
@@ -76,7 +81,7 @@ def submit_task(request):
             tools.uploadphagefastapreprocess(path)
 
             name = request.data['analysistype'] + \
-                " " + str(tasks.objects.last().id+1)
+                " " + str(Task.objects.last().id+1)
             modulejson = json.loads(request.data['modulelist'])
             modulelist = []
             for key, value in modulejson.items():
@@ -85,7 +90,7 @@ def submit_task(request):
             if 'alignment' in modulelist:
                 tools.fixIdLong(path)
             # create task object
-            newtask = tasks.objects.create(
+            newtask = Task.objects.create(
                 name=name, user=request.data['userid'], uploadpath=usertask,
                 analysis_type=request.data['analysistype'], modulelist=modulelist, status='Created')
             userpath = settings.ABSUSERTASKPATH+'/' + usertask

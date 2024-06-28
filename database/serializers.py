@@ -1,10 +1,24 @@
 from rest_framework import serializers
+from plasmid_api import settings
 from database.models import *
+import os
 
 class PlasmidSerializer(serializers.ModelSerializer):
+    fastapath = serializers.SerializerMethodField()
+    gbkpath = serializers.SerializerMethodField()
+    gffpath = serializers.SerializerMethodField()
     class Meta:
         model = Plasmid
         fields = '__all__'
+
+    def get_fastapath(self, obj):
+        return os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(obj.get_source_display(), obj.plasmid_id))
+
+    def get_gbkpath(self, obj):
+        return os.path.join(settings.METADATA, '{0}/gbk/{1}.gbk'.format(obj.get_source_display(), obj.plasmid_id))
+    
+    def get_gffpath(self, obj):
+        return os.path.join(settings.METADATA, '{0}/gff/{1}.gff'.format(obj.get_source_display(), obj.plasmid_id))
 
 class ProteinSerializer(serializers.ModelSerializer):
     # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')

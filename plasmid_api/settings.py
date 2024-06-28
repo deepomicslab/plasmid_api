@@ -120,10 +120,8 @@ MEDIA_URL = "/media/"
 
 # analysis module path 
 USERTASKPATH = 'workspace/user_task'
-ABSUSERTASKPATH = '/home/platform/phage_db/phage_api/workspace/user_task'
-PHAGEFASTA = '/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/'
-PHAGEGBK = '/home/platform/phage_db/phage_data/data/phage_sequence/phage_gbk/individual_data/'
-PHAGEGFF = '/home/platform/phage_db/phage_data/data/phage_sequence/phage_gff3/individual_data/'
+ABSUSERTASKPATH = '/home/platform/project/plasmid_platform/plasmid_api/workspace/user_task'
+# PLASMIDDATA = '/home/platform/project/plasmid_platform/plasmid_api/media/data/'
 PROTEINSEQUENCE = '/home/platform/phage_db/phage_data/data/phage_sequence/proteins/'
 TEMPPATH = '/home/platform/project/plasmid_platform/plasmid_api/media/data/tmp/'
 
@@ -137,7 +135,7 @@ FASTAPATH = '/home/platform/phage_db/phage_data/data/'
 
 
 ANALYSIS = '/home/platform/phage_db/phage_api/workspace/analysis_script/'
-TASKLOG = '/home/platform/phage_db/phage_api/workspace/task_log/'
+TASKLOG = '/home/platform/project/plasmid_platform/plasmid_api/workspace/task_log'
 
 
-DEMOFILE = '/home/platform/phage_db/phage_api/demo_file/'
+DEMOFILE = '/home/platform/project/plasmid_platform/plasmid_api/demo_file/'
