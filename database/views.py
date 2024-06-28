@@ -636,8 +636,12 @@ def get_database_overview(request):
         })
         host_children = []
         for class_node in HostNode.objects.filter(rank='Class', parent=host.node):
+            if class_node.node == '-':
+                continue
             class_children = []
             for order_node in HostNode.objects.filter(rank='Order', parent=class_node.node):
+                if order_node.node == '-':
+                    continue
                 class_children.append({
                     'name': order_node.node, 
                     'value': order_node.plasmid_count, 
