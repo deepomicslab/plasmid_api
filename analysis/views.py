@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+from database.models import *
 from analysis.models import *
 from analysis.serializers import *
 from rest_framework.response import Response
@@ -9,7 +10,6 @@ import time
 import os
 import shutil
 
-
 # Create your views here.
 @api_view(['GET'])
 def task_list(request):
@@ -17,6 +17,24 @@ def task_list(request):
     taskslist = Task.objects.filter(user=userid)
     serializer = TaskSerializer(taskslist, many=True)
     return Response({'results': serializer.data})
+
+@api_view(['POST'])
+def check_plasmid_ids(request):
+    res = {}
+    
+    split_plasmidids = request.data['plasmidids'].split(';')
+    search_pids=[]
+    phages = Plasmid.objects.filter(plasmid_id__in=split_plasmidids)
+    for ph in phages:
+        search_pids.append(ph.plasmid_id)
+    #       idlist.value = res.idlist
+    # inputfeedback.value = res.message
+    # validationstatus.value = res.status
+
+    res['idlist']=search_pids
+    res['message']='Your selected phage ids are valid: '+', '.join(search_pids)
+    res['status']='success'
+    return Response(res)
 
 @api_view(['POST'])
 def submit_task(request):

@@ -10,6 +10,7 @@ urlpatterns =  [
     path('', include(router.urls)),
     path('task_list/', task_list, name='task_list'),
     path('submit_task/', submit_task, name='submit_task'),
+    path('check_plasmid_ids/', check_plasmid_ids, name='check_plasmid_ids'),
 
     # url(r'^phone_login/$', phone_login, name='phone_login'),
     # re_path(r'^get_plasmid_fasta/(?P<plasmid_id>\d+)/$', get_plasmid_fasta, name='get_plasmid_fasta'),
