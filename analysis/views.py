@@ -177,15 +177,23 @@ def view_task_result(request):
 
 @api_view(['GET'])
 def view_task_result_proteins(request):
+    params_dict=request.query_params.dict()
     taskid = request.query_params.dict()['taskid']
-    phageid = request.query_params.dict()['phageid']
     task = Task.objects.get(id=taskid)
     path = settings.USERTASKPATH+'/' + \
-        task.uploadpath+'/output/result/protein.tsv'
-    proteins = pd.read_csv(path, sep='\t', index_col=False)
-    proteindict = proteins[proteins['phageid']
-                        == phageid].to_dict(orient='records')
-    return Response({'results': proteindict})
+            task.uploadpath+'/output/result/protein.tsv'
+    if 'phageid' in params_dict:
+        phageid = request.query_params.dict()['phageid']
+        proteins = pd.read_csv(path, sep='\t', index_col=False)
+        proteins['phageid']=proteins['phageid'].astype(str)
+        proteindict = proteins[proteins['phageid']
+                            == phageid].to_dict(orient='records')
+        return Response({'results': proteindict})
+    else:
+        proteins = pd.read_csv(path, sep='\t', index_col=False)
+        #for heatmap
+        proteindict =  proteins[['Protein_id', 'phageid','Protein_function_classification']].to_dict(orient='records')
+        return Response({'results': proteindict})
 
 @api_view(['GET'])
 def view_task_result_plasmid_detail(request):
