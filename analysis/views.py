@@ -58,16 +58,16 @@ def submit_task(request):
     if request.data['rundemo'] == 'true':
         if 'demopath' in request.data:
             shutil.copy(
-                settings.DEMOFILE+request.data['demopath'], uploadfilepath+'plasmid.fasta')
+                settings.DEMOFILE+request.data['demopath'], uploadfilepath+'sequence.fasta')
         else:
             shutil.copy(
-                settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'plasmid.fasta')
-        path = uploadfilepath+'plasmid.fasta'
+                settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'sequence.fasta')
+        path = uploadfilepath+'sequence.fasta'
     else:
         if request.data['inputtype'] == 'upload':
             file = request.FILES['submitfile']
             path = default_storage.save(
-                uploadfilepath+'plasmid.fasta', ContentFile(file.read()))
+                uploadfilepath+'sequence.fasta', ContentFile(file.read()))
             
         elif request.data['inputtype'] == 'paste':
             path = uploadfilepath+'sequence.fasta'
