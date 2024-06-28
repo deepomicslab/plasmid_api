@@ -80,8 +80,12 @@ def submit_task(request):
         if is_upload:
             tools.uploadphagefastapreprocess(path)
 
-            name = request.data['analysistype'] + \
-                " " + str(Task.objects.last().id+1)
+            if Task.objects.all().count() == 0:
+                name = request.data['analysistype'] + \
+                    " " + str(1)
+            else:
+                name = request.data['analysistype'] + \
+                    " " + str(Task.objects.last().id+1)
             modulejson = json.loads(request.data['modulelist'])
             modulelist = []
             for key, value in modulejson.items():
