@@ -139,7 +139,7 @@ FASTAPATH = '/home/platform/phage_db/phage_data/data/'
 
 
 ANALYSIS = '/home/platform/phage_db/phage_api/workspace/analysis_script/'
-TASKLOG = '/home/platform/project/plasmid_platform/plasmid_api/workspace/task_log'
+TASKLOG = '/home/platform/project/plasmid_platform/plasmid_api/workspace/task_log/'
 
 
 DEMOFILE = '/home/platform/project/plasmid_platform/plasmid_api/demo_file/'
