@@ -624,35 +624,10 @@ def get_database_overview(request):
         "piehosts": [],
         "treedata": []
     }
-    for host in HostNode.objects.filter(rank='Phylum').all().order_by('node'):
+    for host in HostNode.objects.filter(rank='Phylum').order_by('plasmid_count')[:11]:
         if host.node == '-':
             continue
         data['hosts'].append(host.node)
-
-    SOURCE_TYPE = (
-        (0, 'PLSDB'),
-        (1, 'IMG-PR'),
-        (2, 'COMPASS'),
-        (3, 'GenBank'),
-        (4, 'RefSeq'),
-        (5, 'EMBL'),
-        (6, 'Kraken2'),
-        (7, 'DDBJ'),
-        (8, 'TPA'),
-    )
-
-    for source in SOURCE_TYPE:
-        count = Plasmid.objects.filter(source=source[0]).count()
-        data['datasources']['sources'].append(source[1])
-        data['datasources']['counts'].append(count)
-        data['piedatasource'].append({
-            "value": count,
-            "name": source[1]
-        })
-
-    for host in HostNode.objects.filter(rank='Phylum').order_by('node'):
-        if host.node == '-':
-            continue
         data['datahosts']['hosts'].append(host.node)
         data['datahosts']['counts'].append(host.plasmid_count)
         data['piehosts'].append({
@@ -660,7 +635,6 @@ def get_database_overview(request):
             "name": host.node
         })
         host_children = []
-        
         for class_node in HostNode.objects.filter(rank='Class', parent=host.node):
             class_children = []
             for order_node in HostNode.objects.filter(rank='Order', parent=class_node.node):
@@ -682,6 +656,33 @@ def get_database_overview(request):
             'children': host_children, 
             'rank': 'Phylum'
         })
+    
+    SOURCE_TYPE = (
+        (0, 'PLSDB'),
+        (1, 'IMG-PR'),
+        (2, 'COMPASS'),
+        (3, 'GenBank'),
+        (4, 'RefSeq'),
+        (5, 'EMBL'),
+        (6, 'Kraken2'),
+        (7, 'DDBJ'),
+        (8, 'TPA'),
+    )
+
+    for source in SOURCE_TYPE:
+        count = Plasmid.objects.filter(source=source[0]).count()
+        data['datasources']['sources'].append(source[1])
+        data['datasources']['counts'].append(count)
+        data['piedatasource'].append({
+            "value": count,
+            "name": source[1]
+        })
+
+    # for host in HostNode.objects.filter(rank='Phylum').order_by('node'):
+    #     if host.node == '-':
+    #         continue
+        
+        
     return Response(data)
 
 
