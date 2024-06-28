@@ -11,6 +11,8 @@ urlpatterns =  [
     path('task_list/', task_list, name='task_list'),
     path('submit_task/', submit_task, name='submit_task'),
     path('check_plasmid_ids/', check_plasmid_ids, name='check_plasmid_ids'),
+    path('view_task_detail/', view_task_detail, name='view_task_detail'),
+    path('view_task_log/', view_task_log, name='view_task_log'),
 
     # url(r'^phone_login/$', phone_login, name='phone_login'),
     # re_path(r'^get_plasmid_fasta/(?P<plasmid_id>\d+)/$', get_plasmid_fasta, name='get_plasmid_fasta'),

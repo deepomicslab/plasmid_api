@@ -12,7 +12,7 @@ import shutil
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
-from utils import tools, task
+from utils import tools, task, slurm_api
 import traceback
 
 # Create your views here.
@@ -126,4 +126,31 @@ def submit_task(request):
             res['message'] = 'Pipline create failed: The file you uploaded is not a fasta file'
     return Response(res)
 
+@api_view(['GET'])
+def view_task_detail(request):
+    # userid = request.query_params.dict()['userid']
+    taskid = request.query_params.dict()['taskid']
 
+    # taskslist = tasks.objects.filter(user=userid, id=taskid)
+    taskslist = Task.objects.filter(id=taskid)
+    serializer = TaskSerializer(taskslist, many=True)
+    return Response({'results': serializer.data[0]})
+
+@api_view(['GET'])
+def view_task_log(request):
+    # userid = request.query_params.dict()['userid']
+    taskid = request.query_params.dict()['taskid']
+    moudlename = request.query_params.dict()['moudlename']
+    task_object = Task.objects.get(id=taskid)
+    task_detail=json.loads(task_object.task_detail)
+    job_id=None
+    for module in  task_detail['task_que']:
+        if module['module']==moudlename:
+            job_id=module['job_id']
+            break
+    task_log='no log'
+    task_error='no log'
+    if job_id != None:
+        task_log=slurm_api.get_job_output(job_id)
+        task_error=slurm_api.get_job_error(job_id)
+    return Response({'task_log': task_log,'task_error':task_error})
