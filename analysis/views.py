@@ -23,7 +23,7 @@ from django.http import FileResponse
 @api_view(['GET'])
 def task_list(request):
     userid = request.query_params.dict()['userid']
-    taskslist = Task.objects.filter(user=userid)
+    taskslist = Task.objects.filter(user=userid).order_by('-created_at')
     serializer = TaskSerializer(taskslist, many=True)
     return Response({'results': serializer.data})
 
@@ -136,7 +136,7 @@ def view_task_detail(request):
     taskid = request.query_params.dict()['taskid']
 
     # taskslist = tasks.objects.filter(user=userid, id=taskid)
-    taskslist = Task.objects.filter(id=taskid)
+    taskslist = Task.objects.filter(id=taskid).order_by('-created_at')
     serializer = TaskSerializer(taskslist, many=True)
     return Response({'results': serializer.data[0]})
 
