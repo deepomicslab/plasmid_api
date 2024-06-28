@@ -662,14 +662,14 @@ def get_database_overview(request):
         })
     
     SOURCE_TYPE = (
-        (0, 'PLSDB'),
         (1, 'IMG-PR'),
-        (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
+        (0, 'PLSDB'),
+        (2, 'COMPASS'),
         (5, 'EMBL'),
-        (6, 'Kraken2'),
         (7, 'DDBJ'),
+        (6, 'Kraken2'),
         (8, 'TPA'),
     )
 
