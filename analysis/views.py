@@ -14,6 +14,10 @@ from django.core.files.base import ContentFile
 import json
 from utils import tools, task, slurm_api
 import traceback
+import csv
+import pandas as pd
+from django.http import FileResponse
+
 
 # Create your views here.
 @api_view(['GET'])
@@ -154,3 +158,55 @@ def view_task_log(request):
         task_log=slurm_api.get_job_output(job_id)
         task_error=slurm_api.get_job_error(job_id)
     return Response({'task_log': task_log,'task_error':task_error})
+
+@api_view(['GET'])
+def view_task_result(request):
+    taskid = request.query_params.dict()['taskid']
+    task = Task.objects.get(id=taskid)
+    path = settings.USERTASKPATH+'/' + \
+        task.uploadpath+'/output/result/phage.tsv'
+
+    phagelist = []
+    with open(path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter='\t')
+        for id, row in enumerate(reader):
+            dictr = dict(row)
+            dictr['id'] = id+1
+            phagelist.append(dictr)
+    return Response({'results': phagelist})
+
+@api_view(['GET'])
+def view_task_result_proteins(request):
+    taskid = request.query_params.dict()['taskid']
+    phageid = request.query_params.dict()['phageid']
+    task = Task.objects.get(id=taskid)
+    path = settings.USERTASKPATH+'/' + \
+        task.uploadpath+'/output/result/protein.tsv'
+    proteins = pd.read_csv(path, sep='\t', index_col=False)
+    proteindict = proteins[proteins['phageid']
+                        == phageid].to_dict(orient='records')
+    return Response({'results': proteindict})
+
+@api_view(['GET'])
+def view_task_result_plasmid_detail(request):
+    taskid = request.query_params.dict()['taskid']
+    phageid = request.query_params.dict()['phageid']
+    task = Task.objects.get(id=taskid)
+    path = settings.USERTASKPATH+'/' + \
+        task.uploadpath+'/output/result/phage.tsv'
+    phages = pd.read_csv(path, sep='\t', index_col=False)
+    phage = phages[phages['Acession_ID'] == phageid].to_dict(orient='records')
+    return Response({'results': phage[0]})
+
+@api_view(['GET'])
+def view_task_result_plasmid_fasta(request):
+    taskid = request.query_params.dict()['taskid']
+    phageid = request.query_params.dict()['phageid']
+    task = Task.objects.get(id=taskid)
+    path = settings.USERTASKPATH+'/' + \
+        task.uploadpath+'/output/result/' + phageid + '/sequence.fasta'
+    file = open(path, 'rb')
+    response = FileResponse(file)
+    response['Content-Disposition'] = 'attachment; filename="sequence.fasta"'
+    response['Content-Type'] = 'text/plain'
+    return response

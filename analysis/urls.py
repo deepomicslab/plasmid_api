@@ -13,6 +13,10 @@ urlpatterns =  [
     path('check_plasmid_ids/', check_plasmid_ids, name='check_plasmid_ids'),
     path('view_task_detail/', view_task_detail, name='view_task_detail'),
     path('view_task_log/', view_task_log, name='view_task_log'),
+    path('view_task_result/', view_task_result, name='view_task_result'),
+    path('view_task_result_proteins/', view_task_result_proteins, name='view_task_result_proteins'),
+    path('view_task_result_plasmid_detail/', view_task_result_plasmid_detail, name='view_task_result_plasmid_detail'),
+    path('view_task_result_plasmid_fasta/', view_task_result_plasmid_fasta, name='view_task_result_plasmid_fasta'),
 
     # url(r'^phone_login/$', phone_login, name='phone_login'),
     # re_path(r'^get_plasmid_fasta/(?P<plasmid_id>\d+)/$', get_plasmid_fasta, name='get_plasmid_fasta'),
