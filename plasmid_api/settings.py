@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'database',
     'drf_yasg',
     'analysis',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+CRONJOBS = [
+    ('*/1 * * * *', 'analysis.cron.task_status_update')
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
