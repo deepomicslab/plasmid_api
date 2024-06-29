@@ -72,7 +72,10 @@ def task_status_update():
 
             task.save()
         except:
-            continue
+            task.status = 'Failed'
+            task.task_detail = json.dumps(taskdetail_dict)
+            task.save()
+            
     with open('/home/platform/phage_db/phage_api/workspace/tmp/my_cronjob.log', 'a') as f:
         f.write('exec update complete  '+str(current_time)+"\n")
     # tasktools.task_status_updata(task, taskdetail_dict)
