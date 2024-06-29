@@ -17,7 +17,7 @@ datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DD
 
 for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
-    if d_index in [0, 1, 2]:
+    if d_index in [0, 1, 2, 3, 4]:
         continue
     # print('load plasmid list')
     # data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
@@ -26,8 +26,8 @@ for d_index, d_source in enumerate(datasource):
     #     plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
     # Plasmid.objects.bulk_create(plasmid_list)
 
-    print('load host list')
-    if d_index != 3:
+    if d_index != 5:
+        print('load host list')
         data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
         host_list = []
         for index, row in data.iterrows():
@@ -49,28 +49,28 @@ for d_index, d_source in enumerate(datasource):
             trna_list.append(tRNA(source=d_index, plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
         tRNA.objects.bulk_create(trna_list, batch_size=1000000)
     
-    print('load args list')
-    data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
-    arg_list = []
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        if row[5] == '+':
-            strand = 0
-        else:
-            strand = 1
-        arg_list.append(AntimicrobialResistanceGene(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18]))
-    AntimicrobialResistanceGene.objects.bulk_create(arg_list, batch_size=1000000)
+        print('load args list')
+        data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
+        arg_list = []
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            if row[5] == '+':
+                strand = 0
+            else:
+                strand = 1
+            arg_list.append(AntimicrobialResistanceGene(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18]))
+        AntimicrobialResistanceGene.objects.bulk_create(arg_list, batch_size=1000000)
 
-    print('load sms list')
-    # if d_source != 'GenBank':
-    data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
-    sm_list = []
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        sm_list.append(SecondaryMetabolism(source=d_index, plasmid_id=plasmid_id, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6]))
-    SecondaryMetabolism.objects.bulk_create(sm_list, batch_size=1000000)
+        print('load sms list')
+        # if d_source != 'GenBank':
+        data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
+        sm_list = []
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            sm_list.append(SecondaryMetabolism(source=d_index, plasmid_id=plasmid_id, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6]))
+        SecondaryMetabolism.objects.bulk_create(sm_list, batch_size=1000000)
 
     print('load sps list')
     data = pd.read_csv('media/data/{0}/data/{0}.SP_list.xls'.format(d_source), sep='\t')
