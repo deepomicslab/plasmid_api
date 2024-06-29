@@ -130,6 +130,88 @@ def submit_task(request):
             res['message'] = 'Pipline create failed: The file you uploaded is not a fasta file'
     return Response(res)
 
+def submit_cluster_task(request):
+    res = {}
+    usertask = str(int(time.time()))+'_' + \
+        str(random.randint(1000, 9999))
+    uploadfilepath = settings.USERTASKPATH+'/' + \
+        usertask + '/upload/'
+    os.makedirs(uploadfilepath, exist_ok=False)
+    if request.data['rundemo'] == 'true':
+        ##!!!need to use settings_local config
+        shutil.copy(
+            settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'sequence.fasta')
+        path = uploadfilepath+'sequence.fasta'
+    else:
+        if request.data['inputtype'] == 'upload':
+            file = request.FILES['submitfile']
+            path = default_storage.save(
+                uploadfilepath+'sequence.fasta', ContentFile(file.read()))
+            
+        #request.data['inputtype'] == 'paste'
+        else :
+            path = uploadfilepath+'sequence.fasta'
+            with open(path, 'w') as file:
+                file.write(request.data['file'])
+            
+
+    with open(path, 'r') as file:
+        # file format check
+        is_upload = tools.is_fasta(path)
+        if is_upload:
+            is_multi = tools.is_multifasta(path)
+            if is_multi:
+                tools.uploadphagefastapreprocess(path)
+                if Task.objects.all().count() == 0:
+                    name = request.data['analysistype'] + \
+                        " " + str(1)
+                else:
+                    name = request.data['analysistype'] + \
+                        " " + str(Task.objects.last().id+1)
+                
+                modulejson = json.loads(request.data['modulelist'])
+                modulelist = []
+                for key, value in modulejson.items():
+                    if value:
+                        modulelist.append(key)
+                # create task object
+                newtask = Task.objects.create(
+                    name=name, user=request.data['userid'], uploadpath=usertask,
+                    analysis_type=request.data['analysistype'], modulelist=modulelist, status='Created')
+                userpath = settings.ABSUSERTASKPATH+'/' + usertask
+                infodict = {'taskid': newtask.id, 'userpath': userpath, 'modulelist': modulelist,
+                            'analysis_type': request.data['analysistype'], 'userid': request.data['userid']}
+                
+                taskdetail_dict = task.init_taskdetail_dict(
+                    infodict)
+                
+                newtask.task_detail = json.dumps(taskdetail_dict)
+                # run task
+                try:
+                    taskdetail_dict = task.run_cluster_pipline(
+                        taskdetail_dict)
+                    res['status'] = 'Success'
+                    res['message'] = 'Pipline create successfully'
+                    res['data'] = {'taskid': newtask.id}
+                    print(taskdetail_dict)
+                    newtask.task_detail = json.dumps(taskdetail_dict)
+                    newtask.status = 'Running'
+                    pass
+                except Exception as e:
+                    res['status'] = 'Failed'
+                    res['message'] = 'Pipline create failed'
+                    newtask.status = 'Failed'
+                    traceback.print_exc()
+                newtask.save()
+            else:
+                res['status'] = 'Failed'
+                res['message'] = 'The number of file sequences you uploaded is less than 2.'
+
+        else:
+            res['status'] = 'Failed'
+            res['message'] = 'Pipline create failed: The file you uploaded is not a fasta file'
+    return Response(res)
+
 @api_view(['GET'])
 def view_task_detail(request):
     # userid = request.query_params.dict()['userid']

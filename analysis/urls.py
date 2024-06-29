@@ -10,6 +10,7 @@ urlpatterns =  [
     path('', include(router.urls)),
     path('task_list/', task_list, name='task_list'),
     path('submit_task/', submit_task, name='submit_task'),
+    path('submit_cluster_task/', submit_cluster_task, name='submit_cluster_task'),
     path('check_plasmid_ids/', check_plasmid_ids, name='check_plasmid_ids'),
     path('view_task_detail/', view_task_detail, name='view_task_detail'),
     path('view_task_log/', view_task_log, name='view_task_log'),
