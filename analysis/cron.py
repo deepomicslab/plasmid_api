@@ -41,35 +41,38 @@ def task_status_update():
     tasklist = Task.objects.filter(status='Running')
 
     for task in tasklist:
-        isComplete = False
-        taskdetail_dict = json.loads(task.task_detail)
-        taskqueue = taskdetail_dict['task_que']
-        statuslist = []
-        for module in taskqueue:
-            if module['job_id'] != '':
-                job_id = int(module['job_id'])
-                module['module_satus'] = slurm_api.get_job_status(job_id)
+        try:
+            isComplete = False
+            taskdetail_dict = json.loads(task.task_detail)
+            taskqueue = taskdetail_dict['task_que']
+            statuslist = []
+            for module in taskqueue:
+                if module['job_id'] != '':
+                    job_id = int(module['job_id'])
+                    module['module_satus'] = slurm_api.get_job_status(job_id)
 
-                module['module_log']['output'] = slurm_api.get_job_output(
-                    job_id)
-                module['module_log']['error'] = slurm_api.get_job_error(job_id)
-                statuslist.append(module['module_satus'])
-            else:
-                statuslist.append('Failed')
-        for status in statuslist:
-            if status != 'COMPLETED':
-                isComplete = False
-                break
-            else:
-                isComplete = True
-        if isComplete:
-            procesee_task(taskdetail_dict)
-            task.status = 'Success'
-        if 'FAILED' in statuslist:
-            task.status = 'Failed'
-        task.task_detail = json.dumps(taskdetail_dict)
+                    module['module_log']['output'] = slurm_api.get_job_output(
+                        job_id)
+                    module['module_log']['error'] = slurm_api.get_job_error(job_id)
+                    statuslist.append(module['module_satus'])
+                else:
+                    statuslist.append('Failed')
+            for status in statuslist:
+                if status != 'COMPLETED':
+                    isComplete = False
+                    break
+                else:
+                    isComplete = True
+            if isComplete:
+                procesee_task(taskdetail_dict)
+                task.status = 'Success'
+            if 'FAILED' in statuslist:
+                task.status = 'Failed'
+            task.task_detail = json.dumps(taskdetail_dict)
 
-        task.save()
+            task.save()
+        except:
+            continue
     with open('/home/platform/phage_db/phage_api/workspace/tmp/my_cronjob.log', 'a') as f:
         f.write('exec update complete  '+str(current_time)+"\n")
     # tasktools.task_status_updata(task, taskdetail_dict)
