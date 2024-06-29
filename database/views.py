@@ -38,7 +38,7 @@ class PlasmidViewSet(viewsets.ModelViewSet):
     pagination_class = LargeResultsSetPagination
     
     def get_queryset(self):
-        queryset = Plasmid.objects.all().order_by('length')
+        queryset = Plasmid.objects.all().order_by('-length')
         q_expression = Q()
 
         if 'search' in self.request.GET:
