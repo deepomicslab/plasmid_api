@@ -130,6 +130,7 @@ def submit_task(request):
             res['message'] = 'Pipline create failed: The file you uploaded is not a fasta file'
     return Response(res)
 
+@api_view(['POST'])
 def submit_cluster_task(request):
     res = {}
     usertask = str(int(time.time()))+'_' + \
