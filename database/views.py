@@ -607,7 +607,7 @@ def get_database_overview(request):
             'arg': AntimicrobialResistanceGene.objects.all().count(),
             'sm': SecondaryMetabolism.objects.all().count(),
             'sp': SignalPeptides.objects.all().count(),
-            'tmh': Helices.objects.all().count(),
+            'tmh': TransmembraneHelices.objects.all().count(),
             'vf': VirulentFactor.objects.all().count(),
             'crispr': Crispr.objects.all().count()
         },
@@ -701,7 +701,7 @@ def get_home_overview(request):
             'arg': AntimicrobialResistanceGene.objects.all().count(),
             'sm': SecondaryMetabolism.objects.all().count(),
             'sp': SignalPeptides.objects.all().count(),
-            'tmh': Helices.objects.all().count(),
+            'tmh': TransmembraneHelices.objects.all().count(),
             'vf': VirulentFactor.objects.all().count(),
             'crispr': Crispr.objects.all().count()
         }
