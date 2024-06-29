@@ -218,3 +218,13 @@ def view_task_result_plasmid_fasta(request):
     response['Content-Disposition'] = 'attachment; filename="sequence.fasta"'
     response['Content-Type'] = 'text/plain'
     return response
+
+@api_view(['GET'])
+def download_task_result_output_file(request, path):
+    file_path = settings.USERTASKPATH + '/' + path
+    file = open(file_path, 'rb')
+    response = FileResponse(file)
+    filename = file.name.split('/')[-1]
+    response['Content-Disposition'] = "attachment; filename="+filename
+    response['Content-Type'] = 'text/plain'
+    return response

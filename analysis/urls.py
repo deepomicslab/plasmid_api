@@ -17,6 +17,7 @@ urlpatterns =  [
     path('view_task_result_proteins/', view_task_result_proteins, name='view_task_result_proteins'),
     path('view_task_result_plasmid_detail/', view_task_result_plasmid_detail, name='view_task_result_plasmid_detail'),
     path('view_task_result_plasmid_fasta/', view_task_result_plasmid_fasta, name='view_task_result_plasmid_fasta'),
+    path('download_task_result_output_file/<path:path>/', download_task_result_output_file, name='download_task_result_output_file'),
 
     # url(r'^phone_login/$', phone_login, name='phone_login'),
     # re_path(r'^get_plasmid_fasta/(?P<plasmid_id>\d+)/$', get_plasmid_fasta, name='get_plasmid_fasta'),
