@@ -3,20 +3,22 @@ from database.models import *
 
 datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DDBJ','TPA']
 
-Host.objects.all().delete()
-tRNA.objects.all().delete()
-# Protein.objects.all().delete()
-AntimicrobialResistanceGene.objects.all().delete()
-SecondaryMetabolism.objects.all().delete()
-SignalPeptides.objects.all().delete()
-Helices.objects.all().delete()
-TransmembraneHelices.objects.all().delete()
-VirulentFactor.objects.all().delete()
-Crispr.objects.all().delete()
+# Host.objects.all().delete()
+# tRNA.objects.all().delete()
+# # Protein.objects.all().delete()
+# AntimicrobialResistanceGene.objects.all().delete()
+# SecondaryMetabolism.objects.all().delete()
+# SignalPeptides.objects.all().delete()
+# Helices.objects.all().delete()
+# TransmembraneHelices.objects.all().delete()
+# VirulentFactor.objects.all().delete()
+# Crispr.objects.all().delete()
 # Plasmid.objects.all().delete()
 
 for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
+    if d_index in [0, 1, 2]:
+        continue
     # print('load plasmid list')
     # data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
     # plasmid_list = []
@@ -25,26 +27,27 @@ for d_index, d_source in enumerate(datasource):
     # Plasmid.objects.bulk_create(plasmid_list)
 
     print('load host list')
-    data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
-    host_list = []
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
-    Host.objects.bulk_create(host_list, batch_size=1000000)
+    if d_index != 3:
+        data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
+        host_list = []
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
+        Host.objects.bulk_create(host_list, batch_size=1000000)
 
-    print('load trna list')
-    data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
-    trna_list = []
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        if row[5] == 'forward':
-            strand = 0
-        else:
-            strand = 1
-        trna_list.append(tRNA(source=d_index, plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
-    tRNA.objects.bulk_create(trna_list, batch_size=1000000)
+        print('load trna list')
+        data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
+        trna_list = []
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            if row[5] == 'forward':
+                strand = 0
+            else:
+                strand = 1
+            trna_list.append(tRNA(source=d_index, plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
+        tRNA.objects.bulk_create(trna_list, batch_size=1000000)
     
     print('load args list')
     data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
