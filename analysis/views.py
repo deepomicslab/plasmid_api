@@ -299,7 +299,7 @@ def view_task_result_proteins(request):
                 "sequence": item['sequence'],
             }
             newdict.append(item|new_item)
-        return Response({'results': proteindict})
+        return Response({'results': newdict})
     else:
         proteins = pd.read_csv(path, sep='\t', index_col=False)
         #for heatmap
