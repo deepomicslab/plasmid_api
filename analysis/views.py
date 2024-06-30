@@ -266,12 +266,34 @@ def view_task_result_proteins(request):
     task = Task.objects.get(id=taskid)
     path = settings.USERTASKPATH+'/' + \
             task.uploadpath+'/output/result/protein.tsv'
+    originpath = settings.USERTASKPATH+'/' + \
+            task.uploadpath+'/output/rawdata/annotation/emapper_out.emapper.annotations'
     if 'phageid' in params_dict:
         phageid = request.query_params.dict()['phageid']
         proteins = pd.read_csv(path, sep='\t', index_col=False)
         proteins['phageid']=proteins['phageid'].astype(str)
         proteindict = proteins[proteins['phageid']
                             == phageid].to_dict(orient='records')
+        newdict = []
+        data = pd.read_csv(originpath, header=None, sep='\t', comment='#')
+        # data = data[data[0].str.contains(phageid)]
+
+        for item in proteindict:
+            cog_category = data[data[0] == item["Protein_id"]][6][0]
+            if cog_category == '-':
+                cog_category == 'S'
+            new_item = {
+                "protein_id": item["Protein_id"],
+                "plasmid_id": item["phageid"],
+                "product": item["Protein_product"],
+                "cog_category": cog_category,
+                "protein_function_prediction_source": item['protein_function_prediction_source'],
+                "start": item['Start_location'],
+                "end": item['Stop_location'],
+                "strand": item['Strand'],
+                "sequence": item['sequence'],
+            }
+            newdict.append(item|new_item)
         return Response({'results': proteindict})
     else:
         proteins = pd.read_csv(path, sep='\t', index_col=False)
