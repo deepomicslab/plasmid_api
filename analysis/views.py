@@ -303,7 +303,25 @@ def view_task_result_proteins(request):
         proteins = pd.read_csv(path, sep='\t', index_col=False)
         #for heatmap
         proteindict =  proteins[['Protein_id', 'phageid','Protein_function_classification']].to_dict(orient='records')
-        return Response({'results': proteindict})
+        newdict = []
+        data = pd.read_csv(originpath, header=None, sep='\t', comment='#')
+        # data = data[data[0].str.contains(phageid)]
+
+        for item in proteindict:
+            cog_category = list(data[data[0] == item["Protein_id"]][6])
+            if len(cog_category):
+                cog_category = cog_category[0]
+            else:
+                cog_category = 'S'
+            if cog_category == '-':
+                cog_category == 'S'
+            new_item = {
+                "protein_id": item["Protein_id"],
+                "plasmid_id": item["phageid"],
+                "cog_category": cog_category,
+            }
+            newdict.append(item|new_item)
+        return Response({'results': newdict})
 
 @api_view(['GET'])
 def view_task_result_plasmid_detail(request):
