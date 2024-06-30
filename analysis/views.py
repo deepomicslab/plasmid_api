@@ -279,7 +279,8 @@ def view_task_result_proteins(request):
         # data = data[data[0].str.contains(phageid)]
 
         for item in proteindict:
-            cog_category = data[data[0] == item["Protein_id"]][6][0]
+            print(data[data[0] == item["Protein_id"]][6])
+            cog_category = data[data[0] == item["Protein_id"]][6]
             if cog_category == '-':
                 cog_category == 'S'
             new_item = {
