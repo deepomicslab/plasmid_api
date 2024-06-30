@@ -17,6 +17,7 @@ import traceback
 import csv
 import pandas as pd
 from django.http import FileResponse
+import utils.modules as taskmodules
 
 
 # Create your views here.
@@ -311,3 +312,71 @@ def download_task_result_output_file(request, path):
     response['Content-Disposition'] = "attachment; filename="+filename
     response['Content-Type'] = 'text/plain'
     return response
+
+@api_view(['GET'])
+def view_task_result_modules(request):
+    taskid = request.query_params.dict()['taskid']
+    module = request.query_params.dict()['module']
+    task = Task.objects.get(id=taskid)
+    path = settings.USERTASKPATH+'/' + \
+        task.uploadpath
+
+    if module == 'lifestyle':
+        results = taskmodules.lifestyle(path)
+    elif module == 'host':
+        results = taskmodules.host(path)
+    elif module == 'transmembrane':
+        results = taskmodules.transmembrane(path)
+    elif module == 'cluster':
+        results = taskmodules.cluster(path)
+    elif module == 'trna':
+        results = taskmodules.trna(path)
+    elif module == 'alignment':
+        if 'phageids' in request.query_params.dict() :
+            phageids=request.query_params.dict()['phageids'].split(', ')
+        else:
+            phageids=None
+        if 'clusterid' in  request.query_params.dict() :
+            cid=request.query_params.dict()['clusterid']
+            results = taskmodules.alignmentdetail(
+                path,cid,pids=phageids)
+        elif 'subclusterid' in request.query_params.dict() :
+            cid=request.query_params.dict()['subclusterid']
+            results = taskmodules.alignmentdetail(
+                path,cid,pids=phageids)
+        else:
+            results = taskmodules.alignmentdetail(
+                    path,pids=phageids)
+    elif module == 'terminator':
+        results = taskmodules.terminatordetail(
+                path)
+    elif module == 'taxonomic':
+        results = taskmodules.taxonomicdetail(path)
+    elif module == 'crispr':
+        results = taskmodules.crisprdetail(path)
+    elif module == 'arvf':
+        results = taskmodules.arvgdetail(path)
+    elif module == 'anticrispr':
+        results = taskmodules.anticrisprdetail(path)
+    else:
+        results = []
+    return Response({'results': results})
+
+@api_view(['GET'])
+def view_task_result_tree(request):
+    query_params = request.query_params.dict()
+    taskid = query_params['taskid']
+    task = Task.objects.get(id=taskid)
+    if 'clsuter_id' in query_params:
+        clsuter_id = request.query_params.dict()['clsuter_id']
+        file_path =settings.USERTASKPATH+'/' + \
+            task.uploadpath+'/output/rawdata/tree/'+clsuter_id+'/sequence.phy'
+    else:
+        file_path = settings.USERTASKPATH+'/' + \
+            task.uploadpath+'/output/rawdata/tree/sequence.phy'
+
+    if os.path.exists(file_path):
+        file = open(file_path, 'rb')
+        return Response( file.read().decode('utf-8'))
+    else:
+        return Response('')

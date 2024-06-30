@@ -15,9 +15,11 @@ urlpatterns =  [
     path('view_task_detail/', view_task_detail, name='view_task_detail'),
     path('view_task_log/', view_task_log, name='view_task_log'),
     path('view_task_result/', view_task_result, name='view_task_result'),
+    path('view_task_result_modules/', view_task_result_modules, name='view_task_result_modules'),
     path('view_task_result_proteins/', view_task_result_proteins, name='view_task_result_proteins'),
     path('view_task_result_plasmid_detail/', view_task_result_plasmid_detail, name='view_task_result_plasmid_detail'),
     path('view_task_result_plasmid_fasta/', view_task_result_plasmid_fasta, name='view_task_result_plasmid_fasta'),
+    path('view_task_result_tree/', view_task_result_tree, name='view_task_result_tree'),
     path('download_task_result_output_file/<path:path>/', download_task_result_output_file, name='download_task_result_output_file'),
 
     # url(r'^phone_login/$', phone_login, name='phone_login'),
