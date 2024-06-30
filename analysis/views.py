@@ -285,7 +285,7 @@ def view_task_result_proteins(request):
             else:
                 cog_category = 'S'
             if cog_category == '-':
-                cog_category == 'S'
+                cog_category = 'S'
             new_item = {
                 "protein_id": item["Protein_id"],
                 "plasmid_id": item["phageid"],
@@ -314,7 +314,7 @@ def view_task_result_proteins(request):
             else:
                 cog_category = 'S'
             if cog_category == '-':
-                cog_category == 'S'
+                cog_category = 'S'
             new_item = {
                 "protein_id": item["Protein_id"],
                 "plasmid_id": item["phageid"],
