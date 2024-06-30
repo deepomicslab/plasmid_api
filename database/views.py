@@ -994,7 +994,7 @@ def download_protein_pdb(request):
                 except:
                     continue
         else:
-            sequence = querydict['sequence']
+            sequence = querydict['sequence'][:-1]
             content = utils.esm_fold_api(sequence)
     # elif 'protein_ids' in querydict:
     #     protein_ids = querydict['protein_ids']
