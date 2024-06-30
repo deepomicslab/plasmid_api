@@ -976,15 +976,26 @@ def download_protein_pdb(request):
     querydict = request.query_params.dict()
     if 'protein_id' in querydict:
         protein_id = querydict['protein_id']
-        protein = Protein.objects.get(id=protein_id)
-        source = protein.get_source_display()
-        pdb_folder = os.path.join(utils.root_path(), '../media/data/{0}/pdb'.format(source))
-        pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
-        if not os.path.exists(pdb):
-            if not os.path.exists(pdb_folder):
-                os.makedirs(pdb_folder)
-            utils.esm_fold_api(protein.sequence, pdb)
-        pathlist = [pdb]
+        if protein_id != 'undefined':
+            protein = Protein.objects.get(id=protein_id)
+            source = protein.get_source_display()
+            pdb_folder = os.path.join(utils.root_path(), '../media/data/{0}/pdb'.format(source))
+            pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
+            if not os.path.exists(pdb):
+                if not os.path.exists(pdb_folder):
+                    os.makedirs(pdb_folder)
+                utils.esm_fold_api(protein.sequence, pdb)
+            pathlist = [pdb]
+            content = ''
+            for path in pathlist:
+                try:
+                    with open(path, 'r') as file:
+                        content = content+file.read()
+                except:
+                    continue
+        else:
+            sequence = querydict['sequence']
+            content = utils.esm_fold_api(sequence)
     # elif 'protein_ids' in querydict:
     #     protein_ids = querydict['protein_ids']
     #     protein_ids = protein_ids.split(',')
@@ -1002,13 +1013,7 @@ def download_protein_pdb(request):
     #     response['Content-Type'] = 'application/x-gzip'
     #     return response
 
-    content = ''
-    for path in pathlist:
-        try:
-            with open(path, 'r') as file:
-                content = content+file.read()
-        except:
-            continue
+    
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
