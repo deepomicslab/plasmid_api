@@ -1017,7 +1017,7 @@ def download_protein_pdb(request):
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
-    response['Content-Disposition'] = 'attachment; filename="{0}.pdb"'.format(protein.protein_id)
+    response['Content-Disposition'] = 'attachment; filename="protein.pdb"'
     response['Content-Type'] = 'text/plain'
 
     return response
