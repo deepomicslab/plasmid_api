@@ -380,3 +380,55 @@ def view_task_result_tree(request):
         return Response( file.read().decode('utf-8'))
     else:
         return Response('')
+    
+@api_view(['GET'])
+def view_task_result_arvgs(request):
+    taskid = request.query_params.dict()['taskid']
+    phageid = request.query_params.dict()['phageid']
+    task = Task.objects.get(id=taskid)
+    def split_and_join(protein_id):
+        return '_'.join(protein_id.split('_')[:-1])
+    taskpath = settings.USERTASKPATH+'/' + task.uploadpath
+    arvg_argpath = taskpath+'/output/rawdata/arvf/antimicrobial_resistance_gene_result/antimicrobial_resistance_gene_results.tsv'
+    arvg_arg = pd.read_csv(arvg_argpath, sep='\t', index_col=False,names=[
+                        'Protein_id', 'Aligned_Protein_in_CARD']).astype(str)
+    arvg_arg['Phage_id'] = arvg_arg['Protein_id'].apply(split_and_join)
+    arvg_vfrpath = taskpath+'/output/rawdata/arvf/virulence_factor_result/virulent_factor_results.tsv'
+    arvg_vfr = pd.read_csv(arvg_vfrpath, sep='\t', index_col=False,names=[
+                        'Protein_id', 'Aligned_Protein_in_VFDB']).astype(str)
+    arvg_vfr['Phage_id'] = arvg_vfr['Protein_id'].apply(split_and_join)
+    arvg_vfr = arvg_vfr[arvg_vfr['Phage_id']== phageid]
+    arvg_arg = arvg_arg[arvg_arg['Phage_id']== phageid]
+    arvg_arg = arvg_arg.reset_index().rename(columns={'index':'id'})
+    arvg_vfr = arvg_vfr.reset_index().rename(columns={'index':'id'})
+
+    arvg_vfr = arvg_vfr.to_dict(orient='records')
+    arvg_arg = arvg_arg.to_dict(orient='records')
+    return Response({'results': {'ar':arvg_arg,'vf':arvg_vfr}})
+
+@api_view(['GET'])
+def view_task_result_transmembranes(request):
+    taskid = request.query_params.dict()['taskid']
+    phageid = request.query_params.dict()['phageid']
+    task = Task.objects.get(id=taskid)
+    transmembranepath = settings.USERTASKPATH+'/' + \
+        task.uploadpath+'/output/result/transmembrane.tsv'
+    transmembranes = pd.read_csv(transmembranepath, sep='\t', index_col=False).astype(
+        str)
+    transmembranes = transmembranes[transmembranes['Phage_Acession_ID']
+                        == phageid]
+    transmembranes = transmembranes.reset_index().rename(columns={'index':'id'})
+    result = transmembranes.to_dict(orient='records')
+    return Response({'results': result})
+
+@api_view(['GET'])
+def view_task_trnas(request):
+    taskid = request.query_params.dict()['taskid']
+    phageid = request.query_params.dict()['phageid']
+    task = Task.objects.get(id=taskid)
+    path = settings.USERTASKPATH+'/' + \
+        task.uploadpath+'/output/result/trna.tsv'
+    trnas = pd.read_csv(path, sep='\t', index_col=False).astype(str)
+    trnasdict = trnas[trnas['phage_accid']
+                        == phageid].to_dict(orient='records')
+    return Response({'results': trnasdict})
