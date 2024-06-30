@@ -280,7 +280,7 @@ def view_task_result_proteins(request):
 
         for item in proteindict:
             print(data[data[0] == item["Protein_id"]][6])
-            cog_category = data[data[0] == item["Protein_id"]][6]
+            cog_category = data[data[0] == item["Protein_id"]][6][0]
             if cog_category == '-':
                 cog_category == 'S'
             new_item = {
