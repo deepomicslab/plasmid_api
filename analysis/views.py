@@ -113,14 +113,14 @@ def submit_task(request):
                 taskdetail_dict = task.run_annotation_pipline(
                     taskdetail_dict)
                 res['status'] = 'Success'
-                res['message'] = 'Pipline create successfully'
+                res['message'] = 'Pipeline create successfully'
                 res['data'] = {'taskid': newtask.id}
                 newtask.task_detail = json.dumps(taskdetail_dict)
                 newtask.status = 'Running'
                 pass
             except Exception as e:
                 res['status'] = 'Failed'
-                res['message'] = 'Pipline create failed'
+                res['message'] = 'Pipeline create failed'
                 newtask.status = 'Failed'
                 traceback.print_exc()
 
@@ -128,7 +128,7 @@ def submit_task(request):
 
         else:
             res['status'] = 'Failed'
-            res['message'] = 'Pipline create failed: The file you uploaded is not a fasta file'
+            res['message'] = 'Pipeline create failed: The file you uploaded is not a fasta file'
     return Response(res)
 
 @api_view(['POST'])
@@ -193,7 +193,7 @@ def submit_cluster_task(request):
                     taskdetail_dict = task.run_cluster_pipline(
                         taskdetail_dict)
                     res['status'] = 'Success'
-                    res['message'] = 'Pipline create successfully'
+                    res['message'] = 'Pipeline create successfully'
                     res['data'] = {'taskid': newtask.id}
                     print(taskdetail_dict)
                     newtask.task_detail = json.dumps(taskdetail_dict)
@@ -201,7 +201,7 @@ def submit_cluster_task(request):
                     pass
                 except Exception as e:
                     res['status'] = 'Failed'
-                    res['message'] = 'Pipline create failed'
+                    res['message'] = 'Pipeline create failed'
                     newtask.status = 'Failed'
                     traceback.print_exc()
                 newtask.save()
@@ -211,7 +211,7 @@ def submit_cluster_task(request):
 
         else:
             res['status'] = 'Failed'
-            res['message'] = 'Pipline create failed: The file you uploaded is not a fasta file'
+            res['message'] = 'Pipeline create failed: The file you uploaded is not a fasta file'
     return Response(res)
 
 @api_view(['GET'])
