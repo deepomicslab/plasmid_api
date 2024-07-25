@@ -12,6 +12,7 @@ class Plasmid(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)

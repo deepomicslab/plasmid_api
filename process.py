@@ -1,7 +1,7 @@
 import pandas as pd
 from database.models import *
 
-datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DDBJ','TPA']
+datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DDBJ','TPA', 'mMGEs']
 
 # Host.objects.all().delete()
 # tRNA.objects.all().delete()
@@ -9,68 +9,67 @@ datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DD
 # AntimicrobialResistanceGene.objects.all().delete()
 # SecondaryMetabolism.objects.all().delete()
 # SignalPeptides.objects.all().delete()
-# Helices.objects.all().delete()
-# TransmembraneHelices.objects.all().delete()
+Helices.objects.all().delete()
+TransmembraneHelices.objects.all().delete()
 # VirulentFactor.objects.all().delete()
 # Crispr.objects.all().delete()
 # Plasmid.objects.all().delete()
 
 for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
-    if d_index in [0, 1, 2, 3, 4]:
+    if d_index in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
         continue
-    # print('load plasmid list')
-    # data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
-    # plasmid_list = []
-    # for index, row in data.iterrows():
-    #     plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
-    # Plasmid.objects.bulk_create(plasmid_list)
+    print('load plasmid list')
+    data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
+    plasmid_list = []
+    for index, row in data.iterrows():
+        plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
+    Plasmid.objects.bulk_create(plasmid_list)
 
-    if d_index != 5:
-        print('load host list')
-        data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
-        host_list = []
-        for index, row in data.iterrows():
-            plasmid_id=row[0]
-            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-            host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
-        Host.objects.bulk_create(host_list, batch_size=1000000)
+    print('load host list')
+    data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
+    host_list = []
+    for index, row in data.iterrows():
+        plasmid_id=row[0]
+        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+        host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
+    Host.objects.bulk_create(host_list, batch_size=1000000)
 
-        print('load trna list')
-        data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
-        trna_list = []
-        for index, row in data.iterrows():
-            plasmid_id=row[0]
-            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-            if row[5] == 'forward':
-                strand = 0
-            else:
-                strand = 1
-            trna_list.append(tRNA(source=d_index, plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
-        tRNA.objects.bulk_create(trna_list, batch_size=1000000)
-    
-        print('load args list')
-        data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
-        arg_list = []
-        for index, row in data.iterrows():
-            plasmid_id=row[0]
-            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-            if row[5] == '+':
-                strand = 0
-            else:
-                strand = 1
-            arg_list.append(AntimicrobialResistanceGene(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18]))
-        AntimicrobialResistanceGene.objects.bulk_create(arg_list, batch_size=1000000)
+    print('load trna list')
+    data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
+    trna_list = []
+    for index, row in data.iterrows():
+        plasmid_id=row[0]
+        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+        if row[5] == 'forward':
+            strand = 0
+        else:
+            strand = 1
+        trna_list.append(tRNA(source=d_index, plasmid_id=plasmid_id, trna_id=row[1], trna_type=row[2], start=int(row[3]), end=int(row[4]), strand=strand, length = int(row[6]), sequence = row[7]))
+    tRNA.objects.bulk_create(trna_list, batch_size=1000000)
 
-        print('load sms list')
-        # if d_source != 'GenBank':
-        data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
-        sm_list = []
-        for index, row in data.iterrows():
-            plasmid_id=row[0]
-            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-            sm_list.append(SecondaryMetabolism(source=d_index, plasmid_id=plasmid_id, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6]))
-        SecondaryMetabolism.objects.bulk_create(sm_list, batch_size=1000000)
+    print('load args list')
+    data = pd.read_csv('media/data/{0}/data/{0}.ARG_list.xls'.format(d_source), sep='\t')
+    arg_list = []
+    for index, row in data.iterrows():
+        plasmid_id=row[0]
+        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+        if row[5] == '+':
+            strand = 0
+        else:
+            strand = 1
+        arg_list.append(AntimicrobialResistanceGene(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[2], start=int(row[3]), end=int(row[4]), strand=strand, product = row[6], cutoff = row[7], hsp_identifier=row[8], best_hit_aro=row[9], best_identities=row[10], aro=row[11], drug_class=row[12], resistance_mechanism=row[13], amr_gene_family=row[14], antibiotic=row[15], sequence=row[16], snps_in_best_hit_aro=row[17], other_snps=row[18]))
+    AntimicrobialResistanceGene.objects.bulk_create(arg_list, batch_size=1000000)
+
+    print('load sms list')
+    # if d_source != 'GenBank':
+    data = pd.read_csv('media/data/{0}/data/{0}.SMs_list.xls'.format(d_source), sep='\t')
+    sm_list = []
+    for index, row in data.iterrows():
+        plasmid_id=row[0]
+        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+        sm_list.append(SecondaryMetabolism(source=d_index, plasmid_id=plasmid_id, region=row[1],start=int(row[2]), end=int(row[3]), type=row[4], most_similar_known_cluster = row[5], similarity = row[6]))
+    SecondaryMetabolism.objects.bulk_create(sm_list, batch_size=1000000)
 
     print('load sps list')
     data = pd.read_csv('media/data/{0}/data/{0}.SP_list.xls'.format(d_source), sep='\t')
@@ -114,23 +113,23 @@ for d_index, d_source in enumerate(datasource):
             crispr_list.append(Crispr(source=d_index, plasmid_id=plasmid_id, cas_id=row[1], cas_start=int(row[2]), cas_end=int(row[3]), cas_subtype=row[4], crispr_id=row[5], start=int(row[6]), end=int(row[7]), crispr_subtype=row[8], cas_consenus_prediction = row[9], consensus_repeat_sequence = row[10], cas_genes=row[11]))
         Crispr.objects.bulk_create(crispr_list, batch_size=1000000)
 
-# Protein.objects.all().delete()
+Protein.objects.all().delete()
 for d_index, d_source in enumerate(datasource):
-    # print(d_source, '=======')
-    # print('load protein list')
-    # data = pd.read_csv('media/data/{0}/data/{0}.protein_list.xls'.format(d_source), sep='\t')
-    # protein_list = []
-    # for index, row in data.iterrows():
-    #     plasmid_id=row[0]
-    #     # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-    #     if row[6] == '+':
-    #         strand = 0
-    #     else:
-    #         strand = 1
-    #     protein_list.append(Protein(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
-    #     #  uni_port_kb=row[23], 
-    #     sequence=row[23]))
-    # Protein.objects.bulk_create(protein_list, batch_size=1000000)
+    print(d_source, '=======')
+    print('load protein list')
+    data = pd.read_csv('media/data/{0}/data/{0}.protein_list.xls'.format(d_source), sep='\t')
+    protein_list = []
+    for index, row in data.iterrows():
+        plasmid_id=row[0]
+        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+        if row[6] == '+':
+            strand = 0
+        else:
+            strand = 1
+        protein_list.append(Protein(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], orf_source=row[3], start=int(row[4]), end=int(row[5]), strand=strand, product = row[7], cog_category=row[8], function_source = row[9], ec_number=row[10], cog_id=row[11], go=row[12], kegg_ko=row[13], kegg_pathway=row[14], kegg_module=row[15], kegg_reaction=row[16], kegg_rclass=row[17], brite=row[18], kegg_tc=row[19], cazy=row[20], bigg_reaction=row[21], pfam=row[22],
+        #  uni_port_kb=row[23], 
+        sequence=row[23]))
+    Protein.objects.bulk_create(protein_list, batch_size=1000000)
 
     print('load tmhs list')
     data = pd.read_csv('media/data/{0}/data/{0}.TMHs_list.xls'.format(d_source), sep='\t')
@@ -154,23 +153,23 @@ for d_index, d_source in enumerate(datasource):
     TransmembraneHelices.objects.bulk_create(tmh_list, batch_size=1000000)
     Helices.objects.bulk_create(helices_list, batch_size=1000000)
 
-# print('load cluster list')
-# data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
-# cluster_list = []
-# Cluster.objects.all().delete()
-# for index, row in data.iterrows():
-#     cluster_list.append(Cluster(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6]))
-# Cluster.objects.bulk_create(cluster_list)
+print('load cluster list')
+data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
+cluster_list = []
+Cluster.objects.all().delete()
+for index, row in data.iterrows():
+    cluster_list.append(Cluster(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6]))
+Cluster.objects.bulk_create(cluster_list)
 
-# print('load subcluster list')
-# data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
-# subcluster_list = []
-# Subcluster.objects.all().delete()
-# for index, row in data.iterrows(): 
-#     cluster_id =row[5]
-#     cluster = Cluster.objects.get(cluster_id=cluster_id)
-#     subcluster_list.append(Subcluster(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3]))
-# Subcluster.objects.bulk_create(subcluster_list)
+print('load subcluster list')
+data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
+subcluster_list = []
+Subcluster.objects.all().delete()
+for index, row in data.iterrows(): 
+    cluster_id =row[5]
+    cluster = Cluster.objects.get(cluster_id=cluster_id)
+    subcluster_list.append(Subcluster(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3]))
+Subcluster.objects.bulk_create(subcluster_list)
 
 print('load hostnode list')
 hostnode_list = []
