@@ -19,21 +19,21 @@ for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
     if d_index in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
         continue
-    print('load plasmid list')
-    data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
-    plasmid_list = []
-    for index, row in data.iterrows():
-        plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
-    Plasmid.objects.bulk_create(plasmid_list)
+    # print('load plasmid list')
+    # data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
+    # plasmid_list = []
+    # for index, row in data.iterrows():
+    #     plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
+    # Plasmid.objects.bulk_create(plasmid_list)
 
-    print('load host list')
-    data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
-    host_list = []
-    for index, row in data.iterrows():
-        plasmid_id=row[0]
-        # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-        host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
-    Host.objects.bulk_create(host_list, batch_size=1000000)
+    # print('load host list')
+    # data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
+    # host_list = []
+    # for index, row in data.iterrows():
+    #     plasmid_id=row[0]
+    #     # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+    #     host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
+    # Host.objects.bulk_create(host_list, batch_size=1000000)
 
     print('load trna list')
     data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
