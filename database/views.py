@@ -671,6 +671,7 @@ def get_database_overview(request):
         (7, 'DDBJ'),
         (6, 'Kraken2'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
 
     for source in SOURCE_TYPE:
