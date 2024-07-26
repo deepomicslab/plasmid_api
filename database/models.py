@@ -41,6 +41,7 @@ class Protein(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=1000, null=True, blank=True)
     protein_id = models.CharField(max_length=1000)
@@ -79,6 +80,7 @@ class Host(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -112,6 +114,7 @@ class tRNA(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -138,6 +141,7 @@ class AntimicrobialResistanceGene(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=1000, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -172,6 +176,7 @@ class SecondaryMetabolism(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -197,6 +202,7 @@ class SignalPeptides(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -230,6 +236,7 @@ class TransmembraneHelices(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     datasource = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -265,6 +272,7 @@ class VirulentFactor(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -300,6 +308,7 @@ class Crispr(models.Model):
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
+        (9, 'mMGEs'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
