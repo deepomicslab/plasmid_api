@@ -715,7 +715,11 @@ def plasmid_filter(request):
     q_expression = Q()
     if filterdatajson['HostType'] != '':
         host = filterdatajson['HostType']
-        q_expression &= Q(host=host)
+        hosts = Host.objects.filter(phylum=host).values('plasmid_id')
+        plasmid_ids = []
+        for item in hosts:
+            plasmid_ids.append(item['plasmid_id'])
+        q_expression &= Q(plasmid_id__in=plasmid_ids)
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
         q_expression &= Q(cluster=cluster)
