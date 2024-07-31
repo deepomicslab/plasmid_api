@@ -156,6 +156,7 @@ def alignmentdetail(taskpath,cid=None,pids=None):
         sortedlistpath = taskpath+f'/output/rawdata/alignment/{cid}/phage_list_sort.txt'
         aligncirclepath = taskpath+f'/output/rawdata/alignment/{cid}/comparison_link_circle.csv'
     proteinspath = taskpath+'/output/result/protein.tsv'
+    originpath = taskpath+'/output/rawdata/annotation/emapper_out.emapper.annotations'
     proteins = pd.read_csv(proteinspath, sep='\t', index_col=False)
     sortedlist=[]
     order=1
@@ -179,10 +180,35 @@ def alignmentdetail(taskpath,cid=None,pids=None):
         circlealignments=circlealignments[circlealignments['Source_Phage_ID'].isin(pids)]
         circlealignments=circlealignments[circlealignments['Target_Phage_ID'].isin(pids)]
         proteins=proteins[proteins['phageid'].isin(pids)]
+    proteindict = proteins.to_dict(orient='records')
+    newdict = []
+    data = pd.read_csv(originpath, header=None, sep='\t', comment='#')
+    # data = data[data[0].str.contains(phageid)]
+
+    for item in proteindict:
+        cog_category = list(data[data[0] == item["Protein_id"]][6])
+        if len(cog_category):
+            cog_category = cog_category[0]
+        else:
+            cog_category = 'S'
+        if cog_category == '-':
+            cog_category = 'S'
+        new_item = {
+            "protein_id": item["Protein_id"],
+            "plasmid_id": item["phageid"],
+            "product": item["Protein_product"],
+            "cog_category": cog_category,
+            "protein_function_prediction_source": item['protein_function_prediction_source'],
+            "start": item['Start_location'],
+            "end": item['Stop_location'],
+            "strand": item['Strand'],
+            "sequence": item['sequence'],
+        }
+        newdict.append(item|new_item)
     result ={
             'sortedlist':sortedlist,
             'circlealignment':circlealignments.to_dict(orient='records'),
-            'proteins':proteins.to_dict(orient='records')
+            'proteins':newdict
             }
     return result
 
