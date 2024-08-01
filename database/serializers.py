@@ -7,9 +7,13 @@ class PlasmidSerializer(serializers.ModelSerializer):
     fastapath = serializers.SerializerMethodField()
     gbkpath = serializers.SerializerMethodField()
     gffpath = serializers.SerializerMethodField()
+    sm = serializers.SerializerMethodField()
     class Meta:
         model = Plasmid
         fields = '__all__'
+
+    def get_sm(self, obj):
+        return SecondaryMetabolism.objects.filter(plasmid_id=obj.plasmid_id).count()
 
     def get_fastapath(self, obj):
         return os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(obj.get_source_display(), obj.plasmid_id))
