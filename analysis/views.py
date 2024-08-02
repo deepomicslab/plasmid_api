@@ -150,8 +150,11 @@ def submit_cluster_task(request):
     else:
         if request.data['inputtype'] == 'upload':
             file = request.FILES['submitfile']
-            path = default_storage.save(
-                uploadfilepath+'sequence.fasta', ContentFile(file.read()))
+            path = uploadfilepath+'sequence.fasta'
+            with open(path, 'wb') as output:
+                output.write(file.read())
+            # path = default_storage.save(
+            #     uploadfilepath+'sequence.fasta', ContentFile(file.read()))
             
         #request.data['inputtype'] == 'paste'
         else :
