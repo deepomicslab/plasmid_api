@@ -67,9 +67,11 @@ def submit_task(request):
     else:
         if request.data['inputtype'] == 'upload':
             file = request.FILES['submitfile']
-            print(file.read())
-            path = default_storage.save(
-                uploadfilepath+'sequence.fasta', ContentFile(file.read()))
+            path = uploadfilepath+'sequence.fasta'
+            with open(path, 'w') as output:
+                output.write(file.read())
+            # path = default_storage.save(
+            #     uploadfilepath+'sequence.fasta', ContentFile(file.read()))
             
         elif request.data['inputtype'] == 'paste':
             path = uploadfilepath+'sequence.fasta'
