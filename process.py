@@ -154,23 +154,23 @@ for d_index, d_source in enumerate(datasource):
     TransmembraneHelices.objects.bulk_create(tmh_list, batch_size=1000000)
     Helices.objects.bulk_create(helices_list, batch_size=1000000)
 
-# print('load cluster list')
-# data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
-# cluster_list = []
-# Cluster.objects.all().delete()
-# for index, row in data.iterrows():
-#     cluster_list.append(Cluster(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6]))
-# Cluster.objects.bulk_create(cluster_list)
+print('load cluster list')
+data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
+cluster_list = []
+Cluster.objects.all().delete()
+for index, row in data.iterrows():
+    cluster_list.append(Cluster(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6]))
+Cluster.objects.bulk_create(cluster_list)
 
-# print('load subcluster list')
-# data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
-# subcluster_list = []
-# Subcluster.objects.all().delete()
-# for index, row in data.iterrows(): 
-#     cluster_id =row[5]
-#     cluster = Cluster.objects.get(cluster_id=cluster_id)
-#     subcluster_list.append(Subcluster(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3]))
-# Subcluster.objects.bulk_create(subcluster_list)
+print('load subcluster list')
+data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
+subcluster_list = []
+Subcluster.objects.all().delete()
+for index, row in data.iterrows(): 
+    cluster_id =row[5]
+    cluster = Cluster.objects.get(cluster_id=cluster_id)
+    subcluster_list.append(Subcluster(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3]))
+Subcluster.objects.bulk_create(subcluster_list)
 
 print('load hostnode list')
 hostnode_list = []
