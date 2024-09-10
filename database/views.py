@@ -996,7 +996,7 @@ def download_protein_pdb(request):
             if not os.path.exists(pdb):
                 if not os.path.exists(pdb_folder):
                     os.makedirs(pdb_folder)
-                utils.esm_fold_api(protein.sequence, pdb)
+                utils.esm_fold_pdb_api(protein.sequence, pdb)
             pathlist = [pdb]
             content = ''
             for path in pathlist:
@@ -1007,29 +1007,27 @@ def download_protein_pdb(request):
                     continue
         else:
             sequence = querydict['sequence'][:-1]
-            content = utils.esm_fold_api(sequence)
-    # elif 'protein_ids' in querydict:
-    #     protein_ids = querydict['protein_ids']
-    #     protein_ids = protein_ids.split(',')
-    #     protein_obj = Plasmid.objects.filter(id__in=protein_ids)
-    #     pathlist = []
-    #     for protein in protein_obj:
-    #         source = protein.get_source_display()
-    #         pdb = os.path.join(utils.root_path(), '../media/data/{0}/pdb/{1}.pdb'.format(source, protein.protein_id))
-    #         pathlist.append(pdb)
-    # else:
-    #     file = open('/home/platform/phage_db/phage_data/data/phage_sequence/phage_fasta/All_fasta.tar.gz', 'rb')
-    #     response = FileResponse(file)
-    #     filename = file.name.split('/')[-1]
-    #     response['Content-Disposition'] = "attachment; filename="+filename
-    #     response['Content-Type'] = 'application/x-gzip'
-    #     return response
-
+            content = utils.esm_fold_pdb_api(sequence)
     
     content_bytes = content.encode('utf-8')
     buffer = BytesIO(content_bytes)
     response = response = FileResponse(buffer)
     response['Content-Disposition'] = 'attachment; filename="protein.pdb"'
+    response['Content-Type'] = 'text/plain'
+
+    return response
+
+@api_view(["GET"])
+def download_protein_cif(request):
+    querydict = request.query_params.dict()
+    if 'protein_id' in querydict:
+        sequence = querydict['sequence'][:-1]
+        content = utils.esm_fold_cif_api(sequence)
+    
+    content_bytes = content.encode('utf-8')
+    buffer = BytesIO(content_bytes)
+    response = response = FileResponse(buffer)
+    response['Content-Disposition'] = 'attachment; filename="protein.cif"'
     response['Content-Type'] = 'text/plain'
 
     return response
