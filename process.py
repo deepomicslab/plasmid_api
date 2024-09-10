@@ -1,7 +1,7 @@
 import pandas as pd
 from database.models import *
 
-datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DDBJ','TPA', 'mMGEs']
+datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
 
 # Host.objects.all().delete()
 # tRNA.objects.all().delete()
@@ -27,7 +27,7 @@ for d_index, d_source in enumerate(datasource):
     Plasmid.objects.bulk_create(plasmid_list, batch_size=1000000)
 
     print('load host list')
-    if d_source != 'mMGEs':
+    if d_source != 'mMGE':
         data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
         host_list = []
         for index, row in data.iterrows():

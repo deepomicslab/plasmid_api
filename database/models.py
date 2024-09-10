@@ -8,11 +8,11 @@ class Plasmid(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -39,11 +39,11 @@ class Protein(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=1000, null=True, blank=True, db_index=True)
     protein_id = models.CharField(max_length=1000)
@@ -78,11 +78,11 @@ class Host(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -112,11 +112,11 @@ class tRNA(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -139,11 +139,11 @@ class AntimicrobialResistanceGene(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=1000, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -174,11 +174,11 @@ class SecondaryMetabolism(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -200,11 +200,11 @@ class SignalPeptides(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -234,11 +234,11 @@ class TransmembraneHelices(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     datasource = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -270,11 +270,11 @@ class VirulentFactor(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
@@ -306,11 +306,11 @@ class Crispr(models.Model):
         (2, 'COMPASS'),
         (3, 'GenBank'),
         (4, 'RefSeq'),
-        (5, 'EMBL'),
+        (5, 'ENA'),
         (6, 'Kraken2'),
         (7, 'DDBJ'),
         (8, 'TPA'),
-        (9, 'mMGEs'),
+        (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, null=True, blank=True, db_index=True)
     source = models.IntegerField(default=0, choices=SOURCE_TYPE)
