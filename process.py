@@ -9,31 +9,32 @@ datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','EMBL','Kraken2','DD
 # AntimicrobialResistanceGene.objects.all().delete()
 # SecondaryMetabolism.objects.all().delete()
 # SignalPeptides.objects.all().delete()
-Helices.objects.all().delete()
-TransmembraneHelices.objects.all().delete()
+# Helices.objects.all().delete()
+# TransmembraneHelices.objects.all().delete()
 # VirulentFactor.objects.all().delete()
 # Crispr.objects.all().delete()
 # Plasmid.objects.all().delete()
 
 for d_index, d_source in enumerate(datasource):
     print(d_source, '=======')
-    if d_index in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
-        continue
-    # print('load plasmid list')
-    # data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
-    # plasmid_list = []
-    # for index, row in data.iterrows():
-    #     plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
-    # Plasmid.objects.bulk_create(plasmid_list)
+    # if d_index in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
+    #     continue
+    print('load plasmid list')
+    data = pd.read_csv('media/data/{0}/data/{0}.plasmid_list.xls'.format(d_source), sep='\t')
+    plasmid_list = []
+    for index, row in data.iterrows():
+        plasmid_list.append(Plasmid(plasmid_id=row[0], source=d_index, topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]), unique_id=row[11])
+    Plasmid.objects.bulk_create(plasmid_list, batch_size=1000000)
 
-    # print('load host list')
-    # data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
-    # host_list = []
-    # for index, row in data.iterrows():
-    #     plasmid_id=row[0]
-    #     # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
-    #     host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
-    # Host.objects.bulk_create(host_list, batch_size=1000000)
+    print('load host list')
+    if d_source != 'mMGEs':
+        data = pd.read_csv('media/data/{0}/data/{0}.host_list.xls'.format(d_source), sep='\t')
+        host_list = []
+        for index, row in data.iterrows():
+            plasmid_id=row[0]
+            # plasmid = Plasmid.objects.get(plasmid_id=plasmid_id)
+            host_list.append(Host(source=d_index, plasmid_id=plasmid_id, name=row[1], species=row[3], genus=row[4], family=row[5], order = row[6], host_class = row[7], phylum = row[8]))
+        Host.objects.bulk_create(host_list, batch_size=1000000)
 
     print('load trna list')
     data = pd.read_csv('media/data/{0}/data/{0}.trna_list.xls'.format(d_source), sep='\t')
@@ -81,10 +82,10 @@ for d_index, d_source in enumerate(datasource):
             strand = 0
         else:
             strand = 1
-        if d_source == 'IMG-PR':
-            sp_list.append(SignalPeptides(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[7], other=row[8], sp=row[9], lipo=row[10], tat=row[11], tatlipo=row[12], pilin=row[13], cs_position=row[14], probability_of_cs_position=row[15]))
-        else:
-            sp_list.append(SignalPeptides(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[6], other=row[7], sp=row[8], lipo=row[9], tat=row[10], tatlipo=row[11], pilin=row[12], cs_position=row[13], probability_of_cs_position=row[14]))
+        # if d_source == 'IMG-PR':
+        #     sp_list.append(SignalPeptides(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[7], other=row[8], sp=row[9], lipo=row[10], tat=row[11], tatlipo=row[12], pilin=row[13], cs_position=row[14], probability_of_cs_position=row[15]))
+        # else:
+        sp_list.append(SignalPeptides(source=d_index, plasmid_id=plasmid_id, protein_id=row[1], start=int(row[2]), end=int(row[3]), strand=strand, product = row[5], prediction = row[6], other=row[7], sp=row[8], lipo=row[9], tat=row[10], tatlipo=row[11], pilin=row[12], cs_position=row[13], probability_of_cs_position=row[14]))
     SignalPeptides.objects.bulk_create(sp_list, batch_size=1000000)
 
 
@@ -153,23 +154,23 @@ for d_index, d_source in enumerate(datasource):
     TransmembraneHelices.objects.bulk_create(tmh_list, batch_size=1000000)
     Helices.objects.bulk_create(helices_list, batch_size=1000000)
 
-print('load cluster list')
-data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
-cluster_list = []
-Cluster.objects.all().delete()
-for index, row in data.iterrows():
-    cluster_list.append(Cluster(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6]))
-Cluster.objects.bulk_create(cluster_list)
+# print('load cluster list')
+# data = pd.read_csv('media/data/cluster/Clusters_list.xls', sep='\t')
+# cluster_list = []
+# Cluster.objects.all().delete()
+# for index, row in data.iterrows():
+#     cluster_list.append(Cluster(cluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_subclusters=int(row[4]), no_of_members=row[6]))
+# Cluster.objects.bulk_create(cluster_list)
 
-print('load subcluster list')
-data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
-subcluster_list = []
-Subcluster.objects.all().delete()
-for index, row in data.iterrows(): 
-    cluster_id =row[5]
-    cluster = Cluster.objects.get(cluster_id=cluster_id)
-    subcluster_list.append(Subcluster(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3]))
-Subcluster.objects.bulk_create(subcluster_list)
+# print('load subcluster list')
+# data = pd.read_csv('media/data/cluster/SubClusters_list.xls', sep='\t')
+# subcluster_list = []
+# Subcluster.objects.all().delete()
+# for index, row in data.iterrows(): 
+#     cluster_id =row[5]
+#     cluster = Cluster.objects.get(cluster_id=cluster_id)
+#     subcluster_list.append(Subcluster(cluster=cluster, subcluster_id=row[0], avg_gc=float(row[1]), avg_length=float(row[2]), no_of_members=row[4], members=row[3]))
+# Subcluster.objects.bulk_create(subcluster_list)
 
 print('load hostnode list')
 hostnode_list = []
