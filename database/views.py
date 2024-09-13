@@ -56,8 +56,9 @@ class PlasmidViewSet(viewsets.ModelViewSet):
             source = int(self.request.GET['source'])
             if source != -1:
                 q_expression &= Q(source=source)
-        
         queryset = queryset.filter(q_expression)
+        if source == -1:
+            queryset = queryset.distinct('unique_id')
         return queryset
 
 class ProteinViewSet(viewsets.ModelViewSet):
