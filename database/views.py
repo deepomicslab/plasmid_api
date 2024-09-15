@@ -3121,7 +3121,9 @@ def plasmid_filter(request):
     paginator = LargeResultsSetPagination()
     paginated_plasmids = paginator.paginate_queryset(
         query, request)
+    print('hsh')
     serializer = PlasmidSerializer(paginated_plasmids, many=True)
+    print('hah')
     return paginator.get_paginated_response(serializer.data)
 
 @api_view(['GET'])
