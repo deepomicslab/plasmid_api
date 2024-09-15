@@ -177,13 +177,13 @@ def submit_cluster_task(request):
             if len(plasmid_ids) > 10:
                 plasmid_ids = random.sample(plasmid_ids, 10)
             print(plasmid_ids)
-            # try:
-            datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
-            for plasmid_id in plasmid_ids:
-                plasmid_fasta_file = os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(datasource[dataset], plasmid_id))
-                command = os.system('cat {0} >> {1}'.format(plasmid_fasta_file, path))
-            # except:
-            #     pass
+            try:
+                datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
+                for plasmid_id in plasmid_ids:
+                    plasmid_fasta_file = os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(datasource[dataset], plasmid_id))
+                    command = os.system('cat {0} >> {1}'.format(plasmid_fasta_file, path))
+            except:
+                pass
     with open(path, 'r') as file:
         # file format check
         is_upload = tools.is_fasta(path)
