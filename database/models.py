@@ -52,7 +52,7 @@ class AllPlasmid(models.Model):
     mobility = models.TextField(blank=True, null=True)
     cluster = models.CharField(max_length=200, blank=True, null=True)
     subcluster = models.CharField(max_length=200, blank=True, null=True)
-    unique_id = models.CharField(max_length=200, blank=True, null=True)
+    # unique_id = models.CharField(max_length=200, blank=True, null=True)
 
 class Protein(models.Model):
     STRAND = (
