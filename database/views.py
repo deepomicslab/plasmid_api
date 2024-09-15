@@ -3092,8 +3092,8 @@ def plasmid_filter(request):
         # q_expression = Q(plasmid_id__in=plasmid_ids)
         query = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
     else:
-        q_expression = Q()
-        query = Plasmid.objects.filter(q_expression).order_by('id')
+        query = Plasmid.objects.all().order_by('id')
+    q_expression = Q()
     print('lalal')
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
