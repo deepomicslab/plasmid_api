@@ -172,9 +172,16 @@ def submit_cluster_task(request):
                 dataset = 0
             else:
                 dataset = int(dataset)
-            plasmid_ids = list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True))
+            plasmid_ids = random.sample(list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True)), 10)
             print(plasmid_ids)
-    # with open(path, 'r') as file:
+            try:
+                datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
+                for plasmid_id in plasmid_ids:
+                    plasmid_fasta_file = os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(datasource[dataset]), plasmid_id)
+                    command = os.system('cat {0} >> {1}'.format(plasmid_fasta_file, path))
+            except:
+                pass
+    with open(path, 'r') as file:
         # file format check
         is_upload = tools.is_fasta(path)
         if is_upload:
