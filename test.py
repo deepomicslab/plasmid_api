@@ -11,6 +11,7 @@ import pandas as pd
 from database.models import *
 sources = {
     'PLSDB': 0,
+    'PLDSB': 0,
     'IMG-PR': 1,
     'COMPASS': 2,
     'GenBank': 3,
