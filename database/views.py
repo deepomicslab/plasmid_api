@@ -3111,10 +3111,12 @@ def plasmid_filter(request):
     length_e = filterdatajson['LengthE']*1000
     q_expression &= Q(length__gte=length_s, length__lte=length_e)
     query = query.filter(q_expression)
+    print('length')
     gc_s = filterdatajson['gcContentS']/100
     gc_e = filterdatajson['gcContentE']/100
     q_expression &= Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
     query = query.filter(q_expression)
+    print('gc')
     # total_queryset = Plasmid.objects.filter(q_expression)
     paginator = LargeResultsSetPagination()
     paginated_plasmids = paginator.paginate_queryset(
