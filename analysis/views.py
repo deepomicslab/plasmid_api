@@ -172,7 +172,10 @@ def submit_cluster_task(request):
                 dataset = 0
             else:
                 dataset = int(dataset)
-            plasmid_ids = random.sample(list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True)), 10)
+            plasmid_ids = list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True))
+            print(len(plasmid_ids))
+            if len(plasmid_ids) > 10:
+                plasmid_ids = random.sample(plasmid_ids, 10)
             print(plasmid_ids)
             try:
                 datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
