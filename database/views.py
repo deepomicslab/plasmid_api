@@ -2990,6 +2990,17 @@ def get_home_overview(request):
     }
     return Response(data)
 
+def chunked_filter(model, field_name, values, chunk_size=1000):
+    # Create an empty QuerySet
+    query_set = model.objects.none()
+
+    # Process the values in chunks
+    for i in range(0, len(values), chunk_size):
+        chunk = values[i:i + chunk_size]
+        query_set |= model.objects.filter(**{f"{field_name}__in": chunk})
+
+    return query_set
+
 @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
 def plasmid_filter(request):
@@ -3078,10 +3089,11 @@ def plasmid_filter(request):
             plasmid_ids = list(set(plasmid_ids).intersection(list(Host.objects.filter(phylum=host).values_list('plasmid_id', flat=True))))
     print(flag)
     if flag:
-        q_expression = Q(plasmid_id__in=plasmid_ids)
+        # q_expression = Q(plasmid_id__in=plasmid_ids)
+        query = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
     else:
         q_expression = Q()
-    query = Plasmid.objects.filter(q_expression).order_by('id')
+        query = Plasmid.objects.filter(q_expression).order_by('id')
     print('lalal')
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
