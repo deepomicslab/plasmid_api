@@ -3050,11 +3050,11 @@ def plasmid_filter(request):
     
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
-        q_expression = Q(cluster=cluster)
+        q_expression &= Q(cluster=cluster)
         query = query.filter(q_expression)
     if filterdatajson['subcluster'] != '':
         subcluster = filterdatajson['subcluster']
-        q_expression = Q(subcluster=subcluster)
+        q_expression &= Q(subcluster=subcluster)
         query = query.filter(q_expression)
     if filterdatajson['completeness'] != '':
         completeness = filterdatajson['completeness']
@@ -3064,8 +3064,7 @@ def plasmid_filter(request):
         q_expression &= Q(mobility__exact=mobility)
     if filterdatajson['datasets'] != []:
         datasets = filterdatajson['datasets']
-        q_expression = Q(source__in=datasets)
-        query = query.filter(q_expression)
+        q_expression &= Q(source__in=datasets)
     # if filterdatajson['lifestyle'] != '' and filterdatajson['lifestyle'] != 'all':
     #     lifestyle = filterdatajson['lifestyle']
     #     qs = phage_lifestyle.objects.filter(lifestyle=lifestyle)
@@ -3075,11 +3074,11 @@ def plasmid_filter(request):
     #     q_expression &= Q(taxonomy=taxonomy)
     length_s = filterdatajson['LengthS']*1000
     length_e = filterdatajson['LengthE']*1000
-    q_expression = Q(length__gte=length_s, length__lte=length_e)
+    q_expression &= Q(length__gte=length_s, length__lte=length_e)
     query = query.filter(q_expression)
     gc_s = filterdatajson['gcContentS']/100
     gc_e = filterdatajson['gcContentE']/100
-    q_expression = Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
+    q_expression &= Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
     query = query.filter(q_expression)
     # total_queryset = Plasmid.objects.filter(q_expression)
     paginator = LargeResultsSetPagination()
