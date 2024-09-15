@@ -15,7 +15,8 @@ class Plasmid(models.Model):
         (9, 'mMGE'),
     )
     plasmid_id = models.CharField(max_length=200, db_index=True)
-    source = models.IntegerField(default=0, choices=SOURCE_TYPE)
+    # source = models.IntegerField(default=0, choices=SOURCE_TYPE)
+    source = models.CharField(max_length=200, null=True, blank=True)
     topology = models.CharField(max_length=200, null=True, blank=True)
     length = models.IntegerField(null=True, blank=True)
     gc_content = models.FloatField(null=True, blank=True)
