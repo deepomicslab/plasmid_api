@@ -23,6 +23,7 @@ urlpatterns =  [
     # url(r'^query_temp_data/(?P<device_id>[\w\-]+)/$', query_temp_data, name='query_temp_data'),
     re_path(r'^host_node/$', PlasmidHostNodeView.as_view()),
     re_path(r'^host_view/$', PlasmidHostView.as_view()),
+    re_path(r'^host_filter/$', host_filter, name='host_filter'),
     re_path(r'^get_plasmid_tmhs/$', get_plasmid_tmhs, name='get_plasmid_tmhs'),
     re_path(r'^get_cluster_plasmids/$', get_cluster_plasmids, name='get_cluster_plasmids'),
     re_path(r'^get_subcluster_plasmids/$', get_subcluster_plasmids, name='get_subcluster_plasmids'),

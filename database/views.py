@@ -226,6 +226,36 @@ class PlasmidHostView(APIView):
         serializer = HostSerializer(paginated_plasmids, many=True)
         return paginator.get_paginated_response(serializer.data)
 
+@api_view(["POST"])
+# @permission_classes([IsAuthenticated])
+def host_filter(request):
+    hostjson = json.loads(request.data['hosts'])
+    total_qs = Host.objects.none()
+    for checkednode in hostjson:
+        hosts = checkednode['label']
+        rank = checkednode['rank']
+        if rank == 'Phylum':
+            plasmids = Host.objects.filter(phylum=hosts)
+        elif rank == 'Class':
+            plasmids = Host.objects.filter(host_class=hosts)
+        elif rank == 'Order':
+            plasmids = Host.objects.filter(order=hosts)
+        elif rank == 'Family':
+            plasmids = Host.objects.filter(family=hosts)
+        elif rank == 'Genus':
+            plasmids = Host.objects.filter(genus=hosts)
+        elif rank == 'Species':
+            plasmids = Host.objects.filter(species=hosts)
+        else:
+            plasmids = Host.objects.filter(name=hosts)
+        total_qs = plasmids | total_qs
+
+    paginator = LargeResultsSetPagination()
+    paginated_plasmids = paginator.paginate_queryset(
+            total_qs, request)
+    serializer = HostSerializer(paginated_plasmids, many=True)
+    return paginator.get_paginated_response(serializer.data)
+
 class tRNAViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
