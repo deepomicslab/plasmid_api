@@ -2997,44 +2997,64 @@ def plasmid_filter(request):
     plasmid_ids = []
     flag = False
     if filterdatajson['args'] == 'true':
-        plasmid_ids = list(AntimicrobialResistanceGene.objects.all().values_list('plasmid_id', flat=True))
+        # 使用 map() 处理每行数据
+        with open(os.path.join(settings.METADATA, 'ALL/data/args.index'), 'r', encoding='utf-8') as file:
+            plasmid_ids = list(map(str.strip, file))
         flag = True
     if filterdatajson['vfs'] == 'true':
+        vfs = []
+        with open(os.path.join(settings.METADATA, 'ALL/data/vfs.index'), 'r', encoding='utf-8') as file:
+            vfs = list(map(str.strip, file))
         if flag == False:
-            plasmid_ids = list(VirulentFactor.objects.all().values_list('plasmid_id', flat=True))
+            plasmid_ids = vfs
             flag = True
         else:
-            plasmid_ids = list(set(plasmid_ids).intersection(list(VirulentFactor.objects.all().values_list('plasmid_id', flat=True))))
+            plasmid_ids = list(set(plasmid_ids).intersection(vfs))
     if filterdatajson['sms'] == 'true':
+        sms = []
+        with open(os.path.join(settings.METADATA, 'ALL/data/sms.index'), 'r', encoding='utf-8') as file:
+            sms = list(map(str.strip, file))
         if flag == False:
-            plasmid_ids = list(SecondaryMetabolism.objects.all().values_list('plasmid_id', flat=True))
+            plasmid_ids = sms
             flag = True
         else:
-            plasmid_ids = list(set(plasmid_ids).intersection(list(SecondaryMetabolism.objects.all().values_list('plasmid_id', flat=True))))
+            plasmid_ids = list(set(plasmid_ids).intersection(sms))
     if filterdatajson['sps'] == 'true':
+        sps = []
+        with open(os.path.join(settings.METADATA, 'ALL/data/sps.index'), 'r', encoding='utf-8') as file:
+            sps = list(map(str.strip, file))
         if flag == False:
-            plasmid_ids = list(SignalPeptides.objects.all().values_list('plasmid_id', flat=True))
+            plasmid_ids = sps
             flag = True
         else:
-            plasmid_ids = list(set(plasmid_ids).intersection(list(SignalPeptides.objects.all().values_list('plasmid_id', flat=True))))
+            plasmid_ids = list(set(plasmid_ids).intersection(sps))
     if filterdatajson['tmhs'] == 'true':
+        tps = []
+        with open(os.path.join(settings.METADATA, 'ALL/data/tps.index'), 'r', encoding='utf-8') as file:
+            tps = list(map(str.strip, file))
         if flag == False:
-            plasmid_ids = list(TransmembraneHelices.objects.all().values_list('plasmid_id', flat=True))
+            plasmid_ids = tps
             flag = True
         else:
-            plasmid_ids = list(set(plasmid_ids).intersection(list(TransmembraneHelices.objects.all().values_list('plasmid_id', flat=True))))
+            plasmid_ids = list(set(plasmid_ids).intersection(tps))
     if filterdatajson['trnas'] == 'true':
+        trnas = []
+        with open(os.path.join(settings.METADATA, 'ALL/data/trnas.index'), 'r', encoding='utf-8') as file:
+            trnas = list(map(str.strip, file))
         if flag == False:
-            plasmid_ids = list(tRNA.objects.all().values_list('plasmid_id', flat=True))
+            plasmid_ids = trnas
             flag = True
         else:
-            plasmid_ids = list(set(plasmid_ids).intersection(list(tRNA.objects.all().values_list('plasmid_id', flat=True))))
+            plasmid_ids = list(set(plasmid_ids).intersection(trnas))
     if filterdatajson['crisprs'] == 'true':
+        crispr = []
+        with open(os.path.join(settings.METADATA, 'ALL/data/crispr.index'), 'r', encoding='utf-8') as file:
+            crispr = list(map(str.strip, file))
         if flag == False:
-            plasmid_ids = list(Crispr.objects.all().values_list('plasmid_id', flat=True))
+            plasmid_ids = crispr
             flag = True
         else:
-            plasmid_ids = list(set(plasmid_ids).intersection(list(Crispr.objects.all().values_list('plasmid_id', flat=True))))
+            plasmid_ids = list(set(plasmid_ids).intersection(crispr))
     if filterdatajson['HostType'] != '':
         host = filterdatajson['HostType']
         if flag == False:
