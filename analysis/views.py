@@ -148,6 +148,9 @@ def submit_cluster_task(request):
             settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'sequence.fasta')
         path = uploadfilepath+'sequence.fasta'
     else:
+        filterdatajson = json.loads(request.data['filterdata'])
+        compare = request.data['compare']
+        print(compare, filterdatajson)
         if request.data['inputtype'] == 'upload':
             file = request.FILES['submitfile']
             path = uploadfilepath+'sequence.fasta'
@@ -163,7 +166,7 @@ def submit_cluster_task(request):
                 file.write(request.data['file'])
             
 
-    with open(path, 'r') as file:
+    # with open(path, 'r') as file:
         # file format check
         is_upload = tools.is_fasta(path)
         if is_upload:
