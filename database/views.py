@@ -3117,7 +3117,7 @@ def plasmid_filter(request):
     q_expression &= Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
     query = query.filter(q_expression)
     print('gc')
-    print(query)
+    print(query.count())
     # total_queryset = Plasmid.objects.filter(q_expression)
     paginator = LargeResultsSetPagination()
     paginated_plasmids = paginator.paginate_queryset(
