@@ -28,6 +28,17 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'pagesize'
     max_page_size = 10000
 
+def chunked_filter(model, field_name, values, chunk_size=1000):
+    # Create an empty QuerySet
+    query_set = model.objects.none()
+
+    # Process the values in chunks
+    for i in range(0, len(values), chunk_size):
+        chunk = values[i:i + chunk_size]
+        query_set |= model.objects.filter(**{f"{field_name}__in": chunk})
+
+    return query_set
+
 class PlasmidViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.
@@ -38,7 +49,18 @@ class PlasmidViewSet(viewsets.ModelViewSet):
     pagination_class = LargeResultsSetPagination
     
     def get_queryset(self):
-        queryset = Plasmid.objects.all().order_by('unique_id')
+        
+        if 'source' in self.request.GET:
+            source = int(self.request.GET['source'])
+            if source != -1:
+                queryset = Plasmid.objects.filter(source=source).order_by('id')
+            else:
+                plasmid_ids = []
+                with open(os.path.join(settings.METADATA, 'ALL/data/plasmid.index'), 'r', encoding='utf-8') as file:
+                    plasmid_ids = list(map(str.strip, file))
+                queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
+        else:
+            queryset = Plasmid.objects.all().order_by('id')
         q_expression = Q()
 
         if 'search' in self.request.GET:
@@ -52,15 +74,7 @@ class PlasmidViewSet(viewsets.ModelViewSet):
             q_expression |= Q(cluster__icontains=searchstr)
             q_expression |= Q(subcluster__icontains=searchstr)
 
-        if 'source' in self.request.GET:
-            source = int(self.request.GET['source'])
-            if source != -1:
-                q_expression &= Q(source=source)
         queryset = queryset.filter(q_expression)
-        if 'source' in self.request.GET:
-            source = int(self.request.GET['source'])
-            if source == -1:
-                queryset = queryset.distinct('unique_id')
         return queryset
 
 class ProteinViewSet(viewsets.ModelViewSet):
@@ -2990,16 +3004,7 @@ def get_home_overview(request):
     }
     return Response(data)
 
-def chunked_filter(model, field_name, values, chunk_size=1000):
-    # Create an empty QuerySet
-    query_set = model.objects.none()
 
-    # Process the values in chunks
-    for i in range(0, len(values), chunk_size):
-        chunk = values[i:i + chunk_size]
-        query_set |= model.objects.filter(**{f"{field_name}__in": chunk})
-
-    return query_set
 
 @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
