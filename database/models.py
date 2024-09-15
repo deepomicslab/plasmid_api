@@ -27,6 +27,32 @@ class Plasmid(models.Model):
     subcluster = models.CharField(max_length=200, blank=True, null=True)
     unique_id = models.CharField(max_length=200, blank=True, null=True)
 
+# Create your models here.
+class AllPlasmid(models.Model):
+    SOURCE_TYPE = (
+        (0, 'PLSDB'),
+        (1, 'IMG-PR'),
+        (2, 'COMPASS'),
+        (3, 'GenBank'),
+        (4, 'RefSeq'),
+        (5, 'ENA'),
+        (6, 'Kraken2'),
+        (7, 'DDBJ'),
+        (8, 'TPA'),
+        (9, 'mMGE'),
+    )
+    plasmid_id = models.CharField(max_length=200, db_index=True)
+    source = models.IntegerField(default=0, choices=SOURCE_TYPE)
+    topology = models.CharField(max_length=200, null=True, blank=True)
+    length = models.IntegerField(null=True, blank=True)
+    gc_content = models.FloatField(null=True, blank=True)
+    host = models.TextField(blank=True, null=True)
+    completeness = models.CharField(max_length=200, blank=True, null=True)
+    mob_type = models.TextField(blank=True, null=True)
+    mobility = models.TextField(blank=True, null=True)
+    cluster = models.CharField(max_length=200, blank=True, null=True)
+    subcluster = models.CharField(max_length=200, blank=True, null=True)
+    unique_id = models.CharField(max_length=200, blank=True, null=True)
 
 class Protein(models.Model):
     STRAND = (

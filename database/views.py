@@ -55,10 +55,11 @@ class PlasmidViewSet(viewsets.ModelViewSet):
             if source != -1:
                 queryset = Plasmid.objects.filter(source=source).order_by('id')
             else:
-                plasmid_ids = []
-                with open(os.path.join(settings.METADATA, 'ALL/data/plasmid.index'), 'r', encoding='utf-8') as file:
-                    plasmid_ids = list(map(str.strip, file))
-                queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
+                # plasmid_ids = []
+                # with open(os.path.join(settings.METADATA, 'ALL/data/plasmid.index'), 'r', encoding='utf-8') as file:
+                #     plasmid_ids = list(map(str.strip, file))
+                # queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
+                queryset = AllPlasmid.objects.all().order_by('id')
         else:
             queryset = Plasmid.objects.all().order_by('id')
         q_expression = Q()
