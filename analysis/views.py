@@ -18,7 +18,7 @@ import csv
 import pandas as pd
 from django.http import FileResponse
 import utils.modules as taskmodules
-
+from django.db.models import Q
 
 # Create your views here.
 @api_view(['GET'])
@@ -164,8 +164,16 @@ def submit_cluster_task(request):
             path = uploadfilepath+'sequence.fasta'
             with open(path, 'w') as file:
                 file.write(request.data['file'])
-            
-
+        if compare == 'true':
+            dataset = filterdatajson['datasets']
+            start = filterdatajson['LengthS']*1000
+            end = filterdatajson['LengthE']*1000
+            if dataset == '':
+                dataset = 0
+            else:
+                dataset = int(dataset)
+            plasmid_ids = list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True))
+            print(plasmid_ids)
     # with open(path, 'r') as file:
         # file format check
         is_upload = tools.is_fasta(path)
