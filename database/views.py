@@ -3081,7 +3081,7 @@ def plasmid_filter(request):
         q_expression = Q(plasmid_id__in=plasmid_ids)
     else:
         q_expression = Q()
-    query = Plasmid.objects.filter(q_expression)
+    query = Plasmid.objects.filter(q_expression).order_by('id')
     print('lalal')
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
@@ -3115,7 +3115,7 @@ def plasmid_filter(request):
     gc_s = filterdatajson['gcContentS']/100
     gc_e = filterdatajson['gcContentE']/100
     q_expression &= Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
-    query = query.filter(q_expression).order_by('id')
+    query = query.filter(q_expression)
     print('gc')
     print(query)
     # total_queryset = Plasmid.objects.filter(q_expression)
