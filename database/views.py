@@ -3004,44 +3004,44 @@ def plasmid_filter(request):
             plasmid_ids = list(VirulentFactor.objects.all().values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(VirulentFactor.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(VirulentFactor.objects.all().values_list('plasmid_id', flat=True))))
     if filterdatajson['sms'] == 'true':
         if flag == False:
             plasmid_ids = list(SecondaryMetabolism.objects.all().values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(SecondaryMetabolism.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(SecondaryMetabolism.objects.all().values_list('plasmid_id', flat=True))))
     if filterdatajson['sps'] == 'true':
         if flag == False:
             plasmid_ids = list(SignalPeptides.objects.all().values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(SignalPeptides.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(SignalPeptides.objects.all().values_list('plasmid_id', flat=True))))
     if filterdatajson['tmhs'] == 'true':
         if flag == False:
             plasmid_ids = list(TransmembraneHelices.objects.all().values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(TransmembraneHelices.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(TransmembraneHelices.objects.all().values_list('plasmid_id', flat=True))))
     if filterdatajson['trnas'] == 'true':
         if flag == False:
             plasmid_ids = list(tRNA.objects.all().values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(tRNA.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(tRNA.objects.all().values_list('plasmid_id', flat=True))))
     if filterdatajson['crisprs'] == 'true':
         if flag == False:
             plasmid_ids = list(Crispr.objects.all().values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(Crispr.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(Crispr.objects.all().values_list('plasmid_id', flat=True))))
     if filterdatajson['HostType'] != '':
         host = filterdatajson['HostType']
         if flag == False:
             plasmid_ids = list(Host.objects.filter(phylum=host).values_list('plasmid_id', flat=True))
             flag = True
         else:
-            plasmid_ids = list(Host.objects.filter(phylum=host, plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+            plasmid_ids = list(set(plasmid_ids).intersection(list(Host.objects.filter(phylum=host).values_list('plasmid_id', flat=True))))
     if flag:
         q_expression = Q(plasmid_id__in=plasmid_ids)
     else:
