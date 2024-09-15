@@ -2997,59 +2997,73 @@ def plasmid_filter(request):
     plasmid_ids = []
     flag = False
     if filterdatajson['args'] == 'true':
+        print('args')
         # 使用 map() 处理每行数据
         with open(os.path.join(settings.METADATA, 'ALL/data/args.index'), 'r', encoding='utf-8') as file:
             plasmid_ids = list(map(str.strip, file))
         flag = True
+        print(plasmid_ids)
     if filterdatajson['vfs'] == 'true':
+        print('vfs')
         vfs = []
         with open(os.path.join(settings.METADATA, 'ALL/data/vfs.index'), 'r', encoding='utf-8') as file:
             vfs = list(map(str.strip, file))
+        print(vfs)
         if flag == False:
             plasmid_ids = vfs
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(vfs))
     if filterdatajson['sms'] == 'true':
+        print('sms')
         sms = []
         with open(os.path.join(settings.METADATA, 'ALL/data/sms.index'), 'r', encoding='utf-8') as file:
             sms = list(map(str.strip, file))
+        print(sms)
         if flag == False:
             plasmid_ids = sms
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(sms))
     if filterdatajson['sps'] == 'true':
+        print('sps')
         sps = []
         with open(os.path.join(settings.METADATA, 'ALL/data/sps.index'), 'r', encoding='utf-8') as file:
             sps = list(map(str.strip, file))
+        print(sps)
         if flag == False:
             plasmid_ids = sps
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(sps))
     if filterdatajson['tmhs'] == 'true':
+        print('tps')
         tps = []
         with open(os.path.join(settings.METADATA, 'ALL/data/tps.index'), 'r', encoding='utf-8') as file:
             tps = list(map(str.strip, file))
+        print(tps)
         if flag == False:
             plasmid_ids = tps
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(tps))
     if filterdatajson['trnas'] == 'true':
+        print('trna')
         trnas = []
         with open(os.path.join(settings.METADATA, 'ALL/data/trnas.index'), 'r', encoding='utf-8') as file:
             trnas = list(map(str.strip, file))
+        print(trnas)
         if flag == False:
             plasmid_ids = trnas
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(trnas))
     if filterdatajson['crisprs'] == 'true':
+        print('crispr')
         crispr = []
         with open(os.path.join(settings.METADATA, 'ALL/data/crispr.index'), 'r', encoding='utf-8') as file:
             crispr = list(map(str.strip, file))
+        print(crispr)
         if flag == False:
             plasmid_ids = crispr
             flag = True
