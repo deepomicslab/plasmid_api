@@ -3008,73 +3008,59 @@ def plasmid_filter(request):
     plasmid_ids = []
     flag = False
     if filterdatajson['args'] == 'true':
-        print('args')
         # 使用 map() 处理每行数据
         with open(os.path.join(settings.METADATA, 'ALL/data/args.index'), 'r', encoding='utf-8') as file:
             plasmid_ids = list(map(str.strip, file))
         flag = True
-        print(plasmid_ids)
     if filterdatajson['vfs'] == 'true':
-        print('vfs')
         vfs = []
         with open(os.path.join(settings.METADATA, 'ALL/data/vfs.index'), 'r', encoding='utf-8') as file:
             vfs = list(map(str.strip, file))
-        print(vfs)
         if flag == False:
             plasmid_ids = vfs
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(vfs))
     if filterdatajson['sms'] == 'true':
-        print('sms')
         sms = []
         with open(os.path.join(settings.METADATA, 'ALL/data/sms.index'), 'r', encoding='utf-8') as file:
             sms = list(map(str.strip, file))
-        print(sms)
         if flag == False:
             plasmid_ids = sms
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(sms))
     if filterdatajson['sps'] == 'true':
-        print('sps')
         sps = []
         with open(os.path.join(settings.METADATA, 'ALL/data/sps.index'), 'r', encoding='utf-8') as file:
             sps = list(map(str.strip, file))
-        print(sps)
         if flag == False:
             plasmid_ids = sps
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(sps))
     if filterdatajson['tmhs'] == 'true':
-        print('tps')
         tps = []
         with open(os.path.join(settings.METADATA, 'ALL/data/tps.index'), 'r', encoding='utf-8') as file:
             tps = list(map(str.strip, file))
-        print(tps)
         if flag == False:
             plasmid_ids = tps
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(tps))
     if filterdatajson['trnas'] == 'true':
-        print('trna')
         trnas = []
         with open(os.path.join(settings.METADATA, 'ALL/data/trnas.index'), 'r', encoding='utf-8') as file:
             trnas = list(map(str.strip, file))
-        print(trnas)
         if flag == False:
             plasmid_ids = trnas
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(trnas))
     if filterdatajson['crisprs'] == 'true':
-        print('crispr')
         crispr = []
         with open(os.path.join(settings.METADATA, 'ALL/data/crispr.index'), 'r', encoding='utf-8') as file:
             crispr = list(map(str.strip, file))
-        print(crispr)
         if flag == False:
             plasmid_ids = crispr
             flag = True
@@ -3087,14 +3073,12 @@ def plasmid_filter(request):
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(list(Host.objects.filter(phylum=host).values_list('plasmid_id', flat=True))))
-    print(flag)
     if flag:
         # q_expression = Q(plasmid_id__in=plasmid_ids)
         query = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
     else:
         query = Plasmid.objects.all().order_by('id')
     q_expression = Q()
-    print('lalal')
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
         q_expression &= Q(cluster=cluster)
@@ -3123,20 +3107,15 @@ def plasmid_filter(request):
     length_e = filterdatajson['LengthE']*1000
     q_expression &= Q(length__gte=length_s, length__lte=length_e)
     query = query.filter(q_expression)
-    print('length')
     gc_s = filterdatajson['gcContentS']/100
     gc_e = filterdatajson['gcContentE']/100
     q_expression &= Q(gc_content__gte=gc_s, gc_content__lte=gc_e)
     query = query.filter(q_expression)
-    print('gc')
-    print(query.count())
     # total_queryset = Plasmid.objects.filter(q_expression)
     paginator = LargeResultsSetPagination()
     paginated_plasmids = paginator.paginate_queryset(
         query, request)
-    print('hsh')
     serializer = PlasmidSerializer(paginated_plasmids, many=True)
-    print('hah')
     return paginator.get_paginated_response(serializer.data)
 
 @api_view(['GET'])
