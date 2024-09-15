@@ -3076,12 +3076,13 @@ def plasmid_filter(request):
             flag = True
         else:
             plasmid_ids = list(set(plasmid_ids).intersection(list(Host.objects.filter(phylum=host).values_list('plasmid_id', flat=True))))
+    print(flag)
     if flag:
         q_expression = Q(plasmid_id__in=plasmid_ids)
     else:
         q_expression = Q()
     query = Plasmid.objects.filter(q_expression)
-    
+    print('lalal')
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
         q_expression &= Q(cluster=cluster)
