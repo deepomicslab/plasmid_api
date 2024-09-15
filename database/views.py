@@ -2994,16 +2994,60 @@ def get_home_overview(request):
 # @permission_classes([IsAuthenticated])
 def plasmid_filter(request):
     filterdatajson = json.loads(request.data['filterdata'])
-    q_expression = Q()
-    query = Plasmid.objects.filter(q_expression)
+    plasmid_ids = []
+    flag = False
+    if filterdatajson['args'] == 'true':
+        plasmid_ids = list(AntimicrobialResistanceGene.objects.all().values_list('plasmid_id', flat=True))
+        flag = True
+    if filterdatajson['vfs'] == 'true':
+        if flag == False:
+            plasmid_ids = list(VirulentFactor.objects.all().values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(VirulentFactor.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+    if filterdatajson['sms'] == 'true':
+        if flag == False:
+            plasmid_ids = list(SecondaryMetabolism.objects.all().values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(SecondaryMetabolism.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+    if filterdatajson['sps'] == 'true':
+        if flag == False:
+            plasmid_ids = list(SignalPeptides.objects.all().values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(SignalPeptides.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+    if filterdatajson['tmhs'] == 'true':
+        if flag == False:
+            plasmid_ids = list(TransmembraneHelices.objects.all().values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(TransmembraneHelices.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+    if filterdatajson['trnas'] == 'true':
+        if flag == False:
+            plasmid_ids = list(tRNA.objects.all().values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(tRNA.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+    if filterdatajson['crisprs'] == 'true':
+        if flag == False:
+            plasmid_ids = list(Crispr.objects.all().values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(Crispr.objects.filter(plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
     if filterdatajson['HostType'] != '':
         host = filterdatajson['HostType']
-        hosts = Host.objects.filter(phylum=host).values('plasmid_id')
-        plasmid_ids = []
-        for item in hosts:
-            plasmid_ids.append(item['plasmid_id'])
+        if flag == False:
+            plasmid_ids = list(Host.objects.filter(phylum=host).values_list('plasmid_id', flat=True))
+            flag = True
+        else:
+            plasmid_ids = list(Host.objects.filter(phylum=host, plasmid_id__in=plasmid_ids).values_list('plasmid_id', flat=True))
+    if flag:
         q_expression = Q(plasmid_id__in=plasmid_ids)
-        query = query.filter(q_expression)
+    else:
+        q_expression = Q()
+    query = Plasmid.objects.filter(q_expression)
+    
     if filterdatajson['cluster'] != '':
         cluster = filterdatajson['cluster']
         q_expression = Q(cluster=cluster)
@@ -3012,9 +3056,12 @@ def plasmid_filter(request):
         subcluster = filterdatajson['subcluster']
         q_expression = Q(subcluster=subcluster)
         query = query.filter(q_expression)
-    # if filterdatajson['quality'] != '':
-    #     quality = filterdatajson['quality']
-    #     q_expression &= Q(completeness__exact=quality)
+    if filterdatajson['completeness'] != '':
+        completeness = filterdatajson['completeness']
+        q_expression &= Q(completeness__exact=completeness)
+    if filterdatajson['mobility'] != '':
+        mobility = filterdatajson['mobility']
+        q_expression &= Q(mobility__exact=mobility)
     if filterdatajson['datasets'] != []:
         datasets = filterdatajson['datasets']
         q_expression = Q(source__in=datasets)
