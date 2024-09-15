@@ -601,16 +601,26 @@ def get_plasmid_crisprs(request):
 def get_database_overview(request):
     data = {
         "overview": {
-            "plasmid": Plasmid.objects.all().count(),
-            "host": HostNode.objects.all().count(),
-            "protein": Protein.objects.all().count(),
-            'trna': tRNA.objects.all().count(),
-            'arg': AntimicrobialResistanceGene.objects.all().count(),
-            'sm': SecondaryMetabolism.objects.all().count(),
-            'sp': SignalPeptides.objects.all().count(),
-            'tmh': TransmembraneHelices.objects.all().count(),
-            'vf': VirulentFactor.objects.all().count(),
-            'crispr': Crispr.objects.all().count()
+            # "plasmid": Plasmid.objects.all().count(),
+            # "host": HostNode.objects.all().count(),
+            # "protein": Protein.objects.all().count(),
+            # 'trna': tRNA.objects.all().count(),
+            # 'arg': AntimicrobialResistanceGene.objects.all().count(),
+            # 'sm': SecondaryMetabolism.objects.all().count(),
+            # 'sp': SignalPeptides.objects.all().count(),
+            # 'tmh': TransmembraneHelices.objects.all().count(),
+            # 'vf': VirulentFactor.objects.all().count(),
+            # 'crispr': Crispr.objects.all().count()
+            "plasmid": 852600,
+            "host": 9572,
+            "protein": 25231059,
+            "trna": 82718,
+            "arg": 21090397,
+            "sm": 40466,
+            "sp": 2710395,
+            "tmh": 5191488,
+            "vf": 306218,
+            "crispr": 4083
         },
         "hosts": [],
         "datasources": {
@@ -688,25 +698,2264 @@ def get_database_overview(request):
     #     if host.node == '-':
     #         continue
         
-        
+    data = {
+        "overview": {
+            "plasmid": 852600,
+            "host": 9572,
+            "protein": 25231059,
+            "trna": 82718,
+            "arg": 21090397,
+            "sm": 40466,
+            "sp": 2710395,
+            "tmh": 5191488,
+            "vf": 306218,
+            "crispr": 4083
+        },
+        "hosts": [
+            "Pseudomonadota",
+            "Bacillota",
+            "Bacteroidota",
+            "Actinomycetota",
+            "Spirochaetota",
+            "Cyanobacteriota",
+            "Campylobacterota",
+            "Euryarchaeota",
+            "Deinococcota",
+            "Fusobacteriota"
+        ],
+        "datasources": {
+            "sources": [
+                "IMG-PR",
+                "mMGE",
+                "GenBank",
+                "RefSeq",
+                "PLSDB",
+                "COMPASS",
+                "ENA",
+                "DDBJ",
+                "Kraken2",
+                "TPA"
+            ],
+            "counts": [
+                699973,
+                92492,
+                91783,
+                85995,
+                50553,
+                12084,
+                6251,
+                5320,
+                898,
+                7
+            ]
+        },
+        "datahosts": {
+            "hosts": [
+                "Pseudomonadota",
+                "Bacillota",
+                "Bacteroidota",
+                "Actinomycetota",
+                "Spirochaetota",
+                "Cyanobacteriota",
+                "Campylobacterota",
+                "Euryarchaeota",
+                "Deinococcota",
+                "Fusobacteriota"
+            ],
+            "counts": [
+                286695,
+                144001,
+                43730,
+                24815,
+                14569,
+                5158,
+                3649,
+                1995,
+                1302,
+                1261
+            ]
+        },
+        "piedatasource": [
+            {
+                "value": 699973,
+                "name": "IMG-PR"
+            },
+            {
+                "value": 92492,
+                "name": "mMGE"
+            },
+            {
+                "value": 91783,
+                "name": "GenBank"
+            },
+            {
+                "value": 85995,
+                "name": "RefSeq"
+            },
+            {
+                "value": 50553,
+                "name": "PLSDB"
+            },
+            {
+                "value": 12084,
+                "name": "COMPASS"
+            },
+            {
+                "value": 6251,
+                "name": "ENA"
+            },
+            {
+                "value": 5320,
+                "name": "DDBJ"
+            },
+            {
+                "value": 898,
+                "name": "Kraken2"
+            },
+            {
+                "value": 7,
+                "name": "TPA"
+            }
+        ],
+        "piehosts": [
+            {
+                "value": 286695,
+                "name": "Pseudomonadota"
+            },
+            {
+                "value": 144001,
+                "name": "Bacillota"
+            },
+            {
+                "value": 43730,
+                "name": "Bacteroidota"
+            },
+            {
+                "value": 24815,
+                "name": "Actinomycetota"
+            },
+            {
+                "value": 14569,
+                "name": "Spirochaetota"
+            },
+            {
+                "value": 5158,
+                "name": "Cyanobacteriota"
+            },
+            {
+                "value": 3649,
+                "name": "Campylobacterota"
+            },
+            {
+                "value": 1995,
+                "name": "Euryarchaeota"
+            },
+            {
+                "value": 1302,
+                "name": "Deinococcota"
+            },
+            {
+                "value": 1261,
+                "name": "Fusobacteriota"
+            }
+        ],
+        "treedata": [
+            {
+                "name": "Pseudomonadota",
+                "value": 286695,
+                "children": [
+                    {
+                        "name": "Hydrogenophilia",
+                        "value": 131,
+                        "children": [
+                            {
+                                "name": "Hydrogenophilales",
+                                "value": 131,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "-",
+                        "value": 197,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 12,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Mycoplasmoidales",
+                                "value": 204,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 422457,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 39,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Peronosporales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 836,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Absconditabacterales",
+                                "value": 8,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Fermentimicrarchaeales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Obscuribacterales",
+                                "value": 63,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Caldicellulosiruptorales",
+                                "value": 46,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 197,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Gammaproteobacteria",
+                        "value": 226279,
+                        "children": [
+                            {
+                                "name": "Lysobacterales",
+                                "value": 5058,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Cardiobacteriales",
+                                "value": 137,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Orbales",
+                                "value": 53,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Acidiferrobacterales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Methylococcales",
+                                "value": 276,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Pasteurellales",
+                                "value": 2109,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Cellvibrionales",
+                                "value": 75,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Thiotrichales",
+                                "value": 1521,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Nevskiales",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Moraxellales",
+                                "value": 15067,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Oceanospirillales",
+                                "value": 533,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Pseudomonadales",
+                                "value": 9650,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Legionellales",
+                                "value": 964,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Steroidobacterales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Xanthomonadales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Enterobacterales",
+                                "value": 180987,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Aeromonadales",
+                                "value": 2664,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Vibrionales",
+                                "value": 4590,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1306,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Salinisphaerales",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Chromatiales",
+                                "value": 189,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Alteromonadales",
+                                "value": 1081,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Alphaproteobacteria",
+                        "value": 47160,
+                        "children": [
+                            {
+                                "name": "Emcibacterales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Rickettsiales",
+                                "value": 430,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Hyphomonadales",
+                                "value": 55,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Rhodobacterales",
+                                "value": 10015,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Holosporales",
+                                "value": 47,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Micropepsales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Puniceispirillales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Rhodothalassiales",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Sphingomonadales",
+                                "value": 5329,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Geminicoccales",
+                                "value": 59,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Magnetococcales",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Parvularculales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Hyphomicrobiales",
+                                "value": 25625,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Rhodospirillales",
+                                "value": 5300,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Maricaulales",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Iodidimonadales",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Kordiimonadales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 40,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Caulobacterales",
+                                "value": 232,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Pelagibacterales",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Betaproteobacteria",
+                        "value": 12754,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 24,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Burkholderiales",
+                                "value": 10073,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Ferrovales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Neisseriales",
+                                "value": 2112,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Nitrosomonadales",
+                                "value": 270,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Rhodocyclales",
+                                "value": 271,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Zetaproteobacteria",
+                        "value": 5,
+                        "children": [
+                            {
+                                "name": "Mariprofundales",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Acidithiobacillia",
+                        "value": 169,
+                        "children": [
+                            {
+                                "name": "Acidithiobacillales",
+                                "value": 169,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Bacillota",
+                "value": 144001,
+                "children": [
+                    {
+                        "name": "Bacilli",
+                        "value": 82741,
+                        "children": [
+                            {
+                                "name": "Lactobacillales",
+                                "value": 37298,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Bacillales",
+                                "value": 45016,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 427,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Tissierellia",
+                        "value": 114,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Tissierellales",
+                                "value": 110,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Erysipelotrichia",
+                        "value": 2172,
+                        "children": [
+                            {
+                                "name": "Erysipelotrichales",
+                                "value": 2172,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Negativicutes",
+                        "value": 1311,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 27,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Acidaminococcales",
+                                "value": 179,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Selenomonadales",
+                                "value": 590,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Veillonellales",
+                                "value": 515,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Limnochordia",
+                        "value": 1,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Clostridia",
+                        "value": 57597,
+                        "children": [
+                            {
+                                "name": "Halobacteroidales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Monoglobales",
+                                "value": 22,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Eubacteriales",
+                                "value": 23964,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Peptostreptococcales",
+                                "value": 950,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Christensenellales",
+                                "value": 291,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Lutisporales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Natranaerobiales",
+                                "value": 15,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Thermoanaerobacterales",
+                                "value": 37,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 13118,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Acetivibrionales",
+                                "value": 40,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Lachnospirales",
+                                "value": 19151,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Saccharofermentanales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Moorellales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "-",
+                        "value": 65,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 12,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Mycoplasmoidales",
+                                "value": 204,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 422457,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 39,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Peronosporales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 836,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Absconditabacterales",
+                                "value": 8,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Fermentimicrarchaeales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Obscuribacterales",
+                                "value": 63,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Caldicellulosiruptorales",
+                                "value": 46,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 197,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Bacteroidota",
+                "value": 43730,
+                "children": [
+                    {
+                        "name": "Saprospiria",
+                        "value": 37,
+                        "children": [
+                            {
+                                "name": "Saprospirales",
+                                "value": 37,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Cytophagia",
+                        "value": 939,
+                        "children": [
+                            {
+                                "name": "Cytophagales",
+                                "value": 939,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Bacteroidia",
+                        "value": 41540,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 11,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Bacteroidales",
+                                "value": 41529,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Sphingobacteriia",
+                        "value": 90,
+                        "children": [
+                            {
+                                "name": "Sphingobacteriales",
+                                "value": 90,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Chitinophagia",
+                        "value": 19,
+                        "children": [
+                            {
+                                "name": "Chitinophagales",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "-",
+                        "value": 7,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 12,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Mycoplasmoidales",
+                                "value": 204,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 422457,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 39,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Peronosporales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 836,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Absconditabacterales",
+                                "value": 8,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Fermentimicrarchaeales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Obscuribacterales",
+                                "value": 63,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Caldicellulosiruptorales",
+                                "value": 46,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 197,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Flavobacteriia",
+                        "value": 1098,
+                        "children": [
+                            {
+                                "name": "Flavobacteriales",
+                                "value": 1098,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Actinomycetota",
+                "value": 24815,
+                "children": [
+                    {
+                        "name": "Actinomycetes",
+                        "value": 21835,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 137,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Actinomycetales",
+                                "value": 774,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Bifidobacteriales",
+                                "value": 3417,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Actinomarinales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Nanopelagicales",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Cryptosporangiales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Frankiales",
+                                "value": 69,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Geodermatophilales",
+                                "value": 28,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Glycomycetales",
+                                "value": 8,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Jiangellales",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Kineosporiales",
+                                "value": 35,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Kitasatosporales",
+                                "value": 5647,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Micrococcales",
+                                "value": 3200,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Micromonosporales",
+                                "value": 240,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Motilibacterales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Mycobacteriales",
+                                "value": 6702,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Nakamurellales",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Propionibacteriales",
+                                "value": 793,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Pseudonocardiales",
+                                "value": 417,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Streptosporangiales",
+                                "value": 348,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Saccharomycetes",
+                        "value": 5,
+                        "children": [
+                            {
+                                "name": "Saccharomycetales",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Saccharomycetales",
+                                "value": 129,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Coriobacteriia",
+                        "value": 2081,
+                        "children": [
+                            {
+                                "name": "Coriobacteriales",
+                                "value": 1986,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Eggerthellales",
+                                "value": 95,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Acidimicrobiia",
+                        "value": 19,
+                        "children": [
+                            {
+                                "name": "Acidimicrobiales",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Nitriliruptoria",
+                        "value": 4,
+                        "children": [
+                            {
+                                "name": "Euzebyales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "-",
+                        "value": 836,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 12,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Mycoplasmoidales",
+                                "value": 204,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 422457,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 39,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Peronosporales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 836,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Absconditabacterales",
+                                "value": 8,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Fermentimicrarchaeales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Obscuribacterales",
+                                "value": 63,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Caldicellulosiruptorales",
+                                "value": 46,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 197,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Rubrobacteria",
+                        "value": 28,
+                        "children": [
+                            {
+                                "name": "Rubrobacterales",
+                                "value": 28,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Thermoleophilia",
+                        "value": 7,
+                        "children": [
+                            {
+                                "name": "Miltoncostaeales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Solirubrobacterales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Spirochaetota",
+                "value": 14569,
+                "children": [
+                    {
+                        "name": "Spirochaetia",
+                        "value": 14569,
+                        "children": [
+                            {
+                                "name": "Brachyspirales",
+                                "value": 33,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Leptospirales",
+                                "value": 756,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Spirochaetales",
+                                "value": 13764,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Treponematales",
+                                "value": 16,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Cyanobacteriota",
+                "value": 5158,
+                "children": [
+                    {
+                        "name": "Cyanophyceae",
+                        "value": 5158,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 11,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Acaryochloridales",
+                                "value": 159,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Chroococcales",
+                                "value": 1048,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Chroococcidiopsidales",
+                                "value": 54,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Coleofasciculales",
+                                "value": 49,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Cyanobacteriales",
+                                "value": 12,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Desertifilales",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Elainellales",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Geitlerinematales",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Gloeobacterales",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Gomontiellales",
+                                "value": 80,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Leptolyngbyales",
+                                "value": 179,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Nodosilineales",
+                                "value": 40,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Nostocales",
+                                "value": 2816,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Oscillatoriales",
+                                "value": 253,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Phormidesmiales",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Pleurocapsales",
+                                "value": 63,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Pseudanabaenales",
+                                "value": 96,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Spirulinales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Synechococcales",
+                                "value": 258,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Campylobacterota",
+                "value": 3649,
+                "children": [
+                    {
+                        "name": "Desulfurellia",
+                        "value": 3,
+                        "children": [
+                            {
+                                "name": "Desulfurellales",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Epsilonproteobacteria",
+                        "value": 3646,
+                        "children": [
+                            {
+                                "name": "Campylobacterales",
+                                "value": 3626,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Nautiliales",
+                                "value": 20,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Euryarchaeota",
+                "value": 1995,
+                "children": [
+                    {
+                        "name": "Archaeoglobi",
+                        "value": 4,
+                        "children": [
+                            {
+                                "name": "Archaeoglobales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Halobacteria",
+                        "value": 1838,
+                        "children": [
+                            {
+                                "name": "Halobacteriales",
+                                "value": 1838,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Methanobacteria",
+                        "value": 25,
+                        "children": [
+                            {
+                                "name": "Methanobacteriales",
+                                "value": 25,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Methanococci",
+                        "value": 24,
+                        "children": [
+                            {
+                                "name": "Methanococcales",
+                                "value": 24,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Methanomicrobia",
+                        "value": 54,
+                        "children": [
+                            {
+                                "name": "Methanosarcinales",
+                                "value": 50,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Methanotrichales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Methanosarcinia",
+                        "value": 6,
+                        "children": [
+                            {
+                                "name": "Methanosarcinales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Methanotrichales",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Stenosarchaea group",
+                        "value": 3,
+                        "children": [
+                            {
+                                "name": "Halobacteria",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Thermococci",
+                        "value": 41,
+                        "children": [
+                            {
+                                "name": "Thermococcales",
+                                "value": 41,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Deinococcota",
+                "value": 1302,
+                "children": [
+                    {
+                        "name": "Deinococci",
+                        "value": 1302,
+                        "children": [
+                            {
+                                "name": "Deinococcales",
+                                "value": 548,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Thermales",
+                                "value": 754,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            },
+            {
+                "name": "Fusobacteriota",
+                "value": 1261,
+                "children": [
+                    {
+                        "name": "-",
+                        "value": 6,
+                        "children": [
+                            {
+                                "name": "-",
+                                "value": 12,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 2,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Mycoplasmoidales",
+                                "value": 204,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 422457,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 39,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 6,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Peronosporales",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 4,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 836,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Absconditabacterales",
+                                "value": 8,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Fermentimicrarchaeales",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 1,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Candidatus Obscuribacterales",
+                                "value": 63,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 3,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 5,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "Caldicellulosiruptorales",
+                                "value": 46,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 19,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 7,
+                                "children": [],
+                                "rank": "Order"
+                            },
+                            {
+                                "name": "-",
+                                "value": 197,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    },
+                    {
+                        "name": "Fusobacteriia",
+                        "value": 1255,
+                        "children": [
+                            {
+                                "name": "Fusobacteriales",
+                                "value": 1255,
+                                "children": [],
+                                "rank": "Order"
+                            }
+                        ],
+                        "rank": "Class"
+                    }
+                ],
+                "rank": "Phylum"
+            }
+        ]
+    }
     return Response(data)
 
 
 @api_view(["GET"])
 # @permission_classes([IsAuthenticated])
 def get_home_overview(request):
+    # data = {
+    #         "plasmid": Plasmid.objects.all().count(),
+    #         "host": HostNode.objects.all().count(),
+    #         "protein": Protein.objects.all().count(),
+    #         'trna': tRNA.objects.all().count(),
+    #         'arg': AntimicrobialResistanceGene.objects.all().count(),
+    #         'sm': SecondaryMetabolism.objects.all().count(),
+    #         'sp': SignalPeptides.objects.all().count(),
+    #         'tmh': TransmembraneHelices.objects.all().count(),
+    #         'vf': VirulentFactor.objects.all().count(),
+    #         'crispr': Crispr.objects.all().count()
+    #     }
     data = {
-            "plasmid": Plasmid.objects.all().count(),
-            "host": HostNode.objects.all().count(),
-            "protein": Protein.objects.all().count(),
-            'trna': tRNA.objects.all().count(),
-            'arg': AntimicrobialResistanceGene.objects.all().count(),
-            'sm': SecondaryMetabolism.objects.all().count(),
-            'sp': SignalPeptides.objects.all().count(),
-            'tmh': TransmembraneHelices.objects.all().count(),
-            'vf': VirulentFactor.objects.all().count(),
-            'crispr': Crispr.objects.all().count()
-        }
+        "plasmid": 852600,
+        "host": 9572,
+        "protein": 25231059,
+        "trna": 82718,
+        "arg": 21090397,
+        "sm": 40466,
+        "sp": 2710395,
+        "tmh": 5191488,
+        "vf": 306218,
+        "crispr": 4083
+    }
     return Response(data)
 
 @api_view(["POST"])
