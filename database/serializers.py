@@ -8,9 +8,13 @@ class PlasmidSerializer(serializers.ModelSerializer):
     gbkpath = serializers.SerializerMethodField()
     gffpath = serializers.SerializerMethodField()
     sm = serializers.SerializerMethodField()
+    id = serializers.SerializerMethodField()
     class Meta:
         model = Plasmid
         fields = '__all__'
+
+    def get_id(self, obj):
+        return Plasmid.objects.filter(plasmid_id=obj.plasmid_id)[0].id
 
     def get_sm(self, obj):
         return SecondaryMetabolism.objects.filter(plasmid_id=obj.plasmid_id).count()
