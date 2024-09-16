@@ -148,9 +148,6 @@ def submit_cluster_task(request):
             settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'sequence.fasta')
         path = uploadfilepath+'sequence.fasta'
     else:
-        filterdatajson = json.loads(request.data['filterdata'])
-        compare = request.data['compare']
-        print(compare, filterdatajson)
         if request.data['inputtype'] == 'upload':
             file = request.FILES['submitfile']
             path = uploadfilepath+'sequence.fasta'
@@ -164,26 +161,30 @@ def submit_cluster_task(request):
             path = uploadfilepath+'sequence.fasta'
             with open(path, 'w') as file:
                 file.write(request.data['file'])
-        if compare == 'true':
-            dataset = filterdatajson['datasets']
-            start = filterdatajson['LengthS']*1000
-            end = filterdatajson['LengthE']*1000
-            if dataset == '':
-                dataset = 0
-            else:
-                dataset = int(dataset)
-            plasmid_ids = list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True))
-            print(len(plasmid_ids))
-            if len(plasmid_ids) > 10:
-                plasmid_ids = random.sample(plasmid_ids, 10)
-            print(plasmid_ids)
-            try:
-                datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
-                for plasmid_id in plasmid_ids:
-                    plasmid_fasta_file = os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(datasource[dataset], plasmid_id))
-                    command = os.system('cat {0} >> {1}'.format(plasmid_fasta_file, path))
-            except:
-                pass
+        if 'filterdata' and 'compare' in request.data:
+            filterdatajson = json.loads(request.data['filterdata'])
+            compare = request.data['compare']
+            print(compare, filterdatajson)
+            if compare == 'true':
+                dataset = filterdatajson['datasets']
+                start = filterdatajson['LengthS']*1000
+                end = filterdatajson['LengthE']*1000
+                if dataset == '':
+                    dataset = 0
+                else:
+                    dataset = int(dataset)
+                plasmid_ids = list(Plasmid.objects.filter(source=dataset, length__gte=start, length__lte=end).values_list('plasmid_id', flat=True))
+                print(len(plasmid_ids))
+                if len(plasmid_ids) > 10:
+                    plasmid_ids = random.sample(plasmid_ids, 10)
+                print(plasmid_ids)
+                try:
+                    datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
+                    for plasmid_id in plasmid_ids:
+                        plasmid_fasta_file = os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(datasource[dataset], plasmid_id))
+                        command = os.system('cat {0} >> {1}'.format(plasmid_fasta_file, path))
+                except:
+                    pass
     with open(path, 'r') as file:
         # file format check
         is_upload = tools.is_fasta(path)
