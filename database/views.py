@@ -60,9 +60,9 @@ class PlasmidViewSet(viewsets.ModelViewSet):
                 #     plasmid_ids = list(map(str.strip, file))
                 # queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
                 if 'search' in self.request.GET and self.request.GET['search'].strip() != '':
-                    queryset = AllPlasmid.objects.all().order_by('id')
-                else:
                     queryset = Plasmid.objects.all().order_by('id')
+                else:
+                    queryset = AllPlasmid.objects.all().order_by('id')
         else:
             queryset = Plasmid.objects.all().order_by('id')
         q_expression = Q()
