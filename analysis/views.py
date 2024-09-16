@@ -145,7 +145,7 @@ def submit_cluster_task(request):
     if request.data['rundemo'] == 'true':
         ##!!!need to use settings_local config
         shutil.copy(
-            settings.DEMOFILE+"plasmid.fasta", uploadfilepath+'sequence.fasta')
+            settings.DEMOFILE+"alignment.fasta", uploadfilepath+'sequence.fasta')
         path = uploadfilepath+'sequence.fasta'
     else:
         if request.data['inputtype'] == 'upload':
