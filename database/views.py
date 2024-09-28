@@ -104,7 +104,7 @@ class AllPlasmidViewSet(viewsets.ModelViewSet):
                 if 'search' in self.request.GET and self.request.GET['search'].strip() != '':
                     queryset = Plasmid.objects.all().order_by('-id')
                 else:
-                    queryset = AllPlasmid.objects.all().order_by('-id')
+                    queryset = AllPlasmid.objects.all().order_by('id')
         else:
             queryset = Plasmid.objects.all().order_by('id')
         q_expression = Q()
