@@ -4,6 +4,7 @@ from django.urls import include, re_path, path
 
 router = DefaultRouter()
 router.register(r'plasmid', PlasmidViewSet, basename='plasmid')
+router.register(r'allplasmid', AllPlasmidViewSet, basename='allplasmid')
 router.register(r'protein', ProteinViewSet, basename='protein')
 router.register(r'host', HostViewSet, basename='host')
 router.register(r'trna', tRNAViewSet, basename='trna')

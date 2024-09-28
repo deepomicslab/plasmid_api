@@ -81,6 +81,48 @@ class PlasmidViewSet(viewsets.ModelViewSet):
         queryset = queryset.filter(q_expression)
         return queryset
 
+class AllPlasmidViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+
+    # queryset = Plasmid.objects.all()
+    serializer_class = AllPlasmidSerializer
+    pagination_class = LargeResultsSetPagination
+    
+    def get_queryset(self):
+        
+        if 'source' in self.request.GET:
+            source = int(self.request.GET['source'])
+            if source != -1:
+                queryset = Plasmid.objects.filter(source=source).order_by('-id')
+            else:
+                # plasmid_ids = []
+                # with open(os.path.join(settings.METADATA, 'ALL/data/plasmid.index'), 'r', encoding='utf-8') as file:
+                #     plasmid_ids = list(map(str.strip, file))
+                # queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
+                if 'search' in self.request.GET and self.request.GET['search'].strip() != '':
+                    queryset = Plasmid.objects.all().order_by('-id')
+                else:
+                    queryset = AllPlasmid.objects.all().order_by('-id')
+        else:
+            queryset = Plasmid.objects.all().order_by('id')
+        q_expression = Q()
+
+        if 'search' in self.request.GET:
+            searchstr = self.request.GET['search']
+            q_expression |= Q(plasmid_id__icontains=searchstr)
+            q_expression |= Q(topology__icontains=searchstr)
+            q_expression |= Q(host__icontains=searchstr)
+            q_expression |= Q(completeness__icontains=searchstr)
+            q_expression |= Q(mob_type__icontains=searchstr)
+            q_expression |= Q(mobility__icontains=searchstr)
+            q_expression |= Q(cluster__icontains=searchstr)
+            q_expression |= Q(subcluster__icontains=searchstr)
+
+        queryset = queryset.filter(q_expression)
+        return queryset
+
 class ProteinViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing user instances.

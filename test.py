@@ -22,8 +22,8 @@ sources = {
     'TPA': 8,
     'mMGEs': 9
 }
-data = pd.read_csv('media/data/ALL/data/ALL.plasmid_list.xls', sep='\t')
+data = pd.read_csv('media/data/ALL/data/ALL.plasmid_list.download.xls', sep='\t')
 plasmid_list = []
 for index, row in data.iterrows():
-    plasmid_list.append(AllPlasmid(plasmid_id=row[0], source=sources[row[1]], topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
+    plasmid_list.append(AllPlasmid(plasmid_id=row[0], source=row[1], topology=row[2], completeness=row[3], length=int(row[4]), gc_content = float(row[5]), host = row[6], mob_type = row[7], mobility = row[8], cluster = row[9], subcluster = row[10]))
 AllPlasmid.objects.bulk_create(plasmid_list, batch_size=1000000)

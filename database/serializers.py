@@ -28,6 +28,31 @@ class PlasmidSerializer(serializers.ModelSerializer):
     def get_gffpath(self, obj):
         return os.path.join(settings.METADATA, '{0}/gff/{1}.gff'.format(obj.get_source_display(), obj.plasmid_id))
 
+class AllPlasmidSerializer(serializers.ModelSerializer):
+    fastapath = serializers.SerializerMethodField()
+    gbkpath = serializers.SerializerMethodField()
+    gffpath = serializers.SerializerMethodField()
+    sm = serializers.SerializerMethodField()
+    id = serializers.SerializerMethodField()
+    class Meta:
+        model = AllPlasmid
+        fields = '__all__'
+
+    def get_id(self, obj):
+        return Plasmid.objects.filter(plasmid_id=obj.plasmid_id)[0].id
+
+    def get_sm(self, obj):
+        return SecondaryMetabolism.objects.filter(plasmid_id=obj.plasmid_id).count()
+
+    def get_fastapath(self, obj):
+        return os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(obj.get_source_display(), obj.plasmid_id))
+
+    def get_gbkpath(self, obj):
+        return os.path.join(settings.METADATA, '{0}/gbk/{1}.gbk'.format(obj.get_source_display(), obj.plasmid_id))
+    
+    def get_gffpath(self, obj):
+        return os.path.join(settings.METADATA, '{0}/gff/{1}.gff'.format(obj.get_source_display(), obj.plasmid_id))
+
 class ProteinSerializer(serializers.ModelSerializer):
     # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
     plasmid = serializers.SerializerMethodField('get_plasmid_id')
