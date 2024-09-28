@@ -39,7 +39,7 @@ class AllPlasmidSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_id(self, obj):
-        return Plasmid.objects.filter(plasmid_id=obj.plasmid_id)[0].id
+        return Plasmid.objects.filter(plasmid_id=obj.plasmid_id.split(',')[0])[0].id
 
     def get_sm(self, obj):
         return SecondaryMetabolism.objects.filter(plasmid_id=obj.plasmid_id).count()
