@@ -41,7 +41,7 @@ class AllPlasmid(models.Model):
         (8, 'TPA'),
         (9, 'mMGE'),
     )
-    plasmid_id = models.TextField(blank=True, null=True, db_index=True)
+    plasmid_id = models.TextField(blank=True, null=True)
     source = models.TextField(blank=True, null=True)
     topology = models.CharField(max_length=200, null=True, blank=True)
     length = models.IntegerField(null=True, blank=True)
