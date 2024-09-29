@@ -2,6 +2,7 @@ from rest_framework import serializers
 from plasmid_api import settings
 from database.models import *
 import os
+datasource = ['PLSDB','IMG-PR','COMPASS','GenBank','RefSeq','ENA','Kraken2','DDBJ','TPA', 'mMGE']
 
 class PlasmidSerializer(serializers.ModelSerializer):
     fastapath = serializers.SerializerMethodField()
@@ -45,13 +46,22 @@ class AllPlasmidSerializer(serializers.ModelSerializer):
         return SecondaryMetabolism.objects.filter(plasmid_id=obj.plasmid_id).count()
 
     def get_fastapath(self, obj):
-        return os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(obj.source.split(',')[0], obj.plasmid_id))
+        if isinstance(obj.source, int):
+            return os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(datasource[obj.source], obj.plasmid_id))
+        else:
+            return os.path.join(settings.METADATA, '{0}/fasta/{1}.fasta'.format(obj.source.split(',')[0], obj.plasmid_id))
 
     def get_gbkpath(self, obj):
-        return os.path.join(settings.METADATA, '{0}/gbk/{1}.gbk'.format(obj.source.split(',')[0], obj.plasmid_id))
+        if isinstance(obj.source, int):
+            return os.path.join(settings.METADATA, '{0}/gbk/{1}.gbk'.format(datasource[obj.source], obj.plasmid_id))
+        else:
+            return os.path.join(settings.METADATA, '{0}/gbk/{1}.gbk'.format(obj.source.split(',')[0], obj.plasmid_id))
     
     def get_gffpath(self, obj):
-        return os.path.join(settings.METADATA, '{0}/gff/{1}.gff'.format(obj.source.split(',')[0], obj.plasmid_id))
+        if isinstance(obj.source, int):
+            return os.path.join(settings.METADATA, '{0}/gff/{1}.gff'.format(datasource[obj.source], obj.plasmid_id))
+        else:
+            return os.path.join(settings.METADATA, '{0}/gff/{1}.gff'.format(obj.source.split(',')[0], obj.plasmid_id))
 
 class ProteinSerializer(serializers.ModelSerializer):
     # plasmid_id = serializers.CharField(source='plasmid.plasmid_id')
