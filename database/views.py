@@ -97,14 +97,14 @@ class AllPlasmidViewSet(viewsets.ModelViewSet):
             if source != -1:
                 queryset = Plasmid.objects.filter(source=source).order_by('-id')
             else:
-                # plasmid_ids = []
-                # with open(os.path.join(settings.METADATA, 'ALL/data/plasmid.index'), 'r', encoding='utf-8') as file:
-                #     plasmid_ids = list(map(str.strip, file))
-                # queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
-                if 'search' in self.request.GET and self.request.GET['search'].strip() != '':
-                    queryset = Plasmid.objects.all().order_by('-id')
-                else:
-                    queryset = AllPlasmid.objects.all().order_by('id')
+                # # plasmid_ids = []
+                # # with open(os.path.join(settings.METADATA, 'ALL/data/plasmid.index'), 'r', encoding='utf-8') as file:
+                # #     plasmid_ids = list(map(str.strip, file))
+                # # queryset = chunked_filter(Plasmid, 'plasmid_id', plasmid_ids)
+                # if 'search' in self.request.GET and self.request.GET['search'].strip() != '':
+                #     queryset = Plasmid.objects.all().order_by('-id')
+                # else:
+                queryset = AllPlasmid.objects.all().order_by('id')
         else:
             queryset = Plasmid.objects.all().order_by('id')
         q_expression = Q()
